@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_08_175615) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_08_192915) do
   create_table "bins", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
@@ -22,7 +22,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_175615) do
   end
 
   create_table "items", force: :cascade do |t|
-    t.integer "bin_id", null: false
+    t.integer "bin_id"
     t.string "name"
     t.text "description"
     t.datetime "created_date"
