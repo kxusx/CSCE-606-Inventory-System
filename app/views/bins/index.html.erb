@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Bins" %>
+
+<h1>Bins</h1>
+
+<div id="bins">
+  <% @bins.each do |bin| %>
+    <%= render bin %>
+    <p>
+      <%= link_to "Show this bin", bin %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New bin", new_bin_path %>

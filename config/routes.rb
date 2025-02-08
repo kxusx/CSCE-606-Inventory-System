@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :bins
   get "dashboard/index"
   get "login", to: "sessions#new", as: "login"   # Show login form
   post "login", to: "sessions#create" # Handle login form submission

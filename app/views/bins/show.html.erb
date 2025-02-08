@@ -1,0 +1,10 @@
+<<h1><%= @bin.name %></h1>
+
+<p><strong>Location:</strong> <%= @bin.location %></p>
+<p><strong>Category:</strong> <%= @bin.category_name %></p>
+
+<div>
+  <%= link_to "Edit This Bin", edit_bin_path(@bin), class: "btn btn-warning" %>
+  <%= button_to "Delete This Bin", @bin, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+  <%= link_to "Back to All Bins", bins_path, class: "btn btn-secondary" %>
+</div>
