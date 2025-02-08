@@ -4,9 +4,17 @@
         <form action="<%= login_path %>" method="post">
             <%= csrf_meta_tags %>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <% if flash[:alert] %>
+                <div class="error-message">
+                    <%= flash[:alert] %>
+                </div>
+                <% end %>
+            </div>
+            
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 

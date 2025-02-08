@@ -23,9 +23,9 @@
   </head>
 
   <body>
-    <% if flash[:alert] %>
+    <% if flash[:notice] %>
       <script>
-        alert("<%= j(flash[:alert]) %>");
+        alert("<%= j(flash[:notice]) %>");
         console.log("<%= j(flash[:notice]) %>");
       </script>
     <% end %>

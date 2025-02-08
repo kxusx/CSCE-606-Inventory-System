@@ -27,4 +27,6 @@
 #       "yes": yup
 #       enabled: "ON"
 en:
-  hello_world: "Hello World"
+  errors:
+    messages:
+      confirmation: "Passwords don't match"

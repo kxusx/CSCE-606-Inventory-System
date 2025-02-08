@@ -72,3 +72,10 @@ a:hover {
     text-decoration: underline;
 }
 
+.error-message {
+    color: #e11126;
+    text-align: left ;
+    font-size: 13px; /* Smaller font size */
+    margin-top: 5px; /* Space between the input and message */
+    display: block;
+}
