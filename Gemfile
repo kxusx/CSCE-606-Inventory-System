@@ -63,12 +63,11 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rspec-rails'      # RSpec for testing
-  gem 'cucumber-rails', require: false  # Cucumber for BDD
-  gem 'database_cleaner-active_record'  # Database cleanup for Cucumber
+  gem "rspec-rails"      # RSpec for testing
+  gem "cucumber-rails", require: false  # Cucumber for BDD
+  gem "database_cleaner-active_record"  # Database cleanup for Cucumber
 end
 
 group :production do
-    # Heroku gem for deployment
+  # Heroku gem for deployment
 end
-
