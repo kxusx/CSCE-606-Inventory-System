@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :items
   resources :bins
   get "dashboard/index"
   get "login", to: "sessions#new", as: "login"   # Show login form
@@ -11,13 +12,10 @@ Rails.application.routes.draw do
   #dashboard route"
   get "dashboard", to: "dashboard#index", as: "dashboard"
 
-  #Resources Routes, nested , items belong to bins 
-  resources :bins do
-    resources :items 
-  end
+  #Resources Routes, no nested
+  resources :bins
+  resources :items 
 
-  # standalone items will be route separetaly
-  resources :items, only: [:index, :show, :create, :update, :destroy]
 
 
 end
