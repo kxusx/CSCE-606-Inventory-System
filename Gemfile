@@ -1,82 +1,68 @@
 source "https://rubygems.org"
 ruby "3.3.4"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# Rails Framework
 gem "rails", "~> 8.0.1"
 
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
+# Asset Pipeline for Rails
 gem "propshaft"
 
-# Use sqlite3 as the database for development and test only
+# Database setup
 group :development, :test do
-  gem "sqlite3", ">= 2.1"
+  gem "sqlite3", ">= 2.1"  # SQLite for local development and tests
 end
 
-# Use PostgreSQL for production (Heroku)
 group :production do
-  gem "pg", ">= 1.4" # PostgreSQL for Heroku
+  gem "pg", ">= 1.4"  # PostgreSQL for Heroku or production environment
 end
 
-# Use the Puma web server [https://github.com/puma/puma]
+# Web server
 gem "puma", ">= 5.0"
 
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+# Import maps for managing JavaScript dependencies
 gem "importmap-rails"
 
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
+# Hotwire components for interactivity
+gem "turbo-rails"      # SPA-like page navigation
+gem "stimulus-rails"   # JavaScript framework
 
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+# JSON APIs
 gem "jbuilder"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# Password hashing
 gem "bcrypt", "~> 3.1.7"
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ windows jruby ]
+# Zone info for time-related functions
+gem "tzinfo-data", platforms: %i[windows jruby]
 
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
-# gem "solid_cache"
-# gem "solid_queue"
-# gem "solid_cable"
-
-# Reduces boot times through caching; required in config/boot.rb
+# Bootsnap for faster booting
 gem "bootsnap", require: false
 
-# Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
-gem "kamal", require: false
+# Deployment tools
+gem "kamal", require: false  # Docker-based deployment
+gem "thruster", require: false  # HTTP asset caching/compression
 
-# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
-gem "thruster", require: false
-
+# Development and Test Group Gems
 group :development, :test do
-  # Debugging
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+  gem "brakeman", require: false  # Security analysis
+  gem "rubocop-rails-omakase", require: false  # Style guide
 
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
+  # Testing
+  gem "rspec-rails"      # RSpec for unit testing
+  gem "cucumber-rails", require: false  # Cucumber for BDD
+  gem "database_cleaner-active_record"  # Clean database between tests
 
-  # Ruby style guide and linting
-  gem "rubocop-rails-omakase", require: false
+  # System tests
+  gem "capybara"         # Capybara for feature tests
+  gem "selenium-webdriver"  # Selenium for browser automation
 end
 
+# Console on error pages in development
 group :development do
-  # Use console on exception pages
   gem "web-console"
 end
 
-group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-end
-
-group :development, :test do
-  # Testing tools
-  gem "rspec-rails"
-  gem "cucumber-rails", require: false
-  gem "database_cleaner-active_record"
-end
+# Benchmarking and interactive Ruby console (included explicitly)
+gem "benchmark", "0.4.0"
+gem "irb", "1.15.1"
