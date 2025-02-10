@@ -1,4 +1,3 @@
-# Default settings for all environments
 default: &default
   adapter: postgresql
   encoding: unicode
@@ -19,4 +18,4 @@ test:
 
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>  # Use the PostgreSQL database provided by Heroku
