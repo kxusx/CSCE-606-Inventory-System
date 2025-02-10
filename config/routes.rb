@@ -9,13 +9,6 @@ Rails.application.routes.draw do
   post "signup", to: "users#create"
   root to: "sessions#new"
 
-  #dashboard route"
+  # dashboard route"
   get "dashboard", to: "dashboard#index", as: "dashboard"
-
-  #Resources Routes, no nested
-  resources :bins
-  resources :items 
-
-
-
 end
