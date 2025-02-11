@@ -2,12 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Bin, type: :model do
   # Setup test data
-  let(:user) { User.create(name: 'Test User', email: 'test@example.com', password: 'password123') }
+  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!') }
   let(:valid_attributes) do
     {
       name: 'Storage Box',
-      location: 'Attic',
-      category_name: 'Holiday',
       user: user
     }
   end
@@ -54,13 +52,13 @@ RSpec.describe Bin, type: :model do
 
   # Instance Methods
   describe '#items_in_bin' do
-    let(:bin) { Bin.create(valid_attributes) }
+    let(:bin) { Bin.create!(valid_attributes) }
     
     it 'returns items belonging to the bin' do
-      item1 = Item.create(name: 'Item 1', bin: bin, user: user)
-      item2 = Item.create(name: 'Item 2', bin: bin, user: user)
-      other_bin = Bin.create(valid_attributes)
-      other_item = Item.create(name: 'Other Item', bin: other_bin, user: user)
+      item1 = Item.create!(name: 'Item 1', bin: bin)
+      item2 = Item.create!(name: 'Item 2', bin: bin)
+      other_bin = Bin.create!(valid_attributes)
+      other_item = Item.create!(name: 'Item 3', bin: other_bin)
 
       items = bin.items_in_bin
       expect(items).to include(item1, item2)

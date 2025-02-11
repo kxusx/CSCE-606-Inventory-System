@@ -2,14 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Item, type: :model do
   # Setup test data
-  let(:user) { User.create(name: 'Test User', email: 'test@example.com', password: 'password123') }
-  let(:bin) { Bin.create(name: 'Holiday Decorations', location: 'Attic') }
+  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!') }
+  let(:bin) { Bin.create!(name: 'Storage Box', user: user) }
   let(:valid_attributes) do
     {
-      name: 'Christmas Lights',
-      description: 'Box of outdoor LED lights',
-      storage_location: 'Attic',
-      user: user,
+      name: 'Test Item',
+      description: 'A test item',
+      value: 100.00,
       bin: bin
     }
   end
@@ -27,30 +26,40 @@ RSpec.describe Item, type: :model do
       expect(item.errors[:name]).to include("can't be blank")
     end
 
-    it 'requires a storage location' do
-      item = Item.new(valid_attributes.merge(storage_location: nil))
+    it 'validates value is greater than or equal to 0' do
+      item = Item.new(valid_attributes.merge(value: -1))
       expect(item).not_to be_valid
-      expect(item.errors[:storage_location]).to include("can't be blank")
-    end
-
-    it 'requires a user' do
-      item = Item.new(valid_attributes.merge(user: nil))
-      expect(item).not_to be_valid
-      expect(item.errors[:user]).to include("can't be blank")
+      expect(item.errors[:value]).to include('must be greater than or equal to 0')
     end
   end
 
   # Associations
   describe 'associations' do
-    it 'belongs to a user' do
-      association = described_class.reflect_on_association(:user)
-      expect(association.macro).to eq :belongs_to
-    end
-
     it 'belongs to a bin' do
       association = described_class.reflect_on_association(:bin)
       expect(association.macro).to eq :belongs_to
-      expect(association.options[:optional]).to eq true
+    end
+
+    it 'has many attached item pictures' do
+      item = Item.new(valid_attributes)
+      expect(item).to respond_to(:item_pictures)
+      expect(item.item_pictures).to be_an_instance_of(ActiveStorage::Attached::Many)
+    end
+  end
+
+  # Attachment handling
+  describe 'item pictures' do
+    let(:item) { Item.create!(valid_attributes) }
+
+    it 'can have multiple attached pictures' do
+      file1 = fixture_file_upload('spec/fixtures/test_image1.jpg', 'image/jpeg')
+      file2 = fixture_file_upload('spec/fixtures/test_image2.jpg', 'image/jpeg')
+      
+      item.item_pictures.attach(file1)
+      item.item_pictures.attach(file2)
+
+      expect(item.item_pictures).to be_attached
+      expect(item.item_pictures.count).to eq(2)
     end
   end
 
@@ -65,9 +74,9 @@ RSpec.describe Item, type: :model do
 
       it 'saves all provided attributes' do
         item = Item.create(valid_attributes)
-        expect(item.name).to eq('Christmas Lights')
-        expect(item.description).to eq('Box of outdoor LED lights')
-        expect(item.storage_location).to eq('Attic')
+        expect(item.name).to eq('Test Item')
+        expect(item.description).to eq('A test item')
+        expect(item.value).to eq(100.00)
       end
     end
 

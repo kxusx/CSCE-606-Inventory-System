@@ -1,58 +1,79 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  let(:valid_attributes) do
+    {
+      name: 'Test User',
+      email: 'test@example.com',
+      password: 'Password1!',
+      password_confirmation: 'Password1!'
+    }
+  end
+
   # Validations
   describe 'validations' do
+    it 'is valid with valid attributes' do
+      user = User.new(valid_attributes)
+      expect(user).to be_valid
+    end
+
     it 'requires a name' do
-      user = User.new(name: nil)
+      user = User.new(valid_attributes.merge(name: nil))
       expect(user).not_to be_valid
       expect(user.errors[:name]).to include("can't be blank")
     end
 
     it 'requires an email' do
-      user = User.new(email: nil)
+      user = User.new(valid_attributes.merge(email: nil))
       expect(user).not_to be_valid
       expect(user.errors[:email]).to include("can't be blank")
     end
 
     it 'requires a unique email' do
-      existing_user = User.create(name: 'Test User', email: 'test@example.com', password: 'password123')
-      user = User.new(email: 'test@example.com')
+      User.create!(valid_attributes)
+      user = User.new(valid_attributes)
       expect(user).not_to be_valid
       expect(user.errors[:email]).to include('has already been taken')
     end
 
     it 'requires a valid email format' do
-      user = User.new(email: 'invalid_email')
+      user = User.new(valid_attributes.merge(email: 'invalid_email'))
       expect(user).not_to be_valid
       expect(user.errors[:email]).to include('is invalid')
     end
 
-    it 'requires password to be at least 6 characters' do
-      user = User.new(password: '12345')
+    it 'requires password to meet complexity requirements' do
+      user = User.new(valid_attributes.merge(password: 'simple', password_confirmation: 'simple'))
       expect(user).not_to be_valid
-      expect(user.errors[:password]).to include('is too short (minimum is 6 characters)')
+      expect(user.errors[:password]).to include('must include at least one uppercase letter, one lowercase letter, one number, and one special character')
+    end
+
+    it 'requires password to be at least 8 characters' do
+      user = User.new(valid_attributes.merge(password: 'Short1!', password_confirmation: 'Short1!'))
+      expect(user).not_to be_valid
+      expect(user.errors[:password]).to include('is too short (minimum is 8 characters)')
     end
   end
 
   # Authentication
   describe 'authentication' do
-    let(:user) { User.create(name: 'Test User', email: 'test@example.com', password: 'password123') }
+    let(:user) { User.create!(valid_attributes) }
 
     it 'authenticates with correct password' do
-      expect(user.authenticate('password123')).to eq(user)
+      expect(user.authenticate('Password1!')).to eq(user)
     end
 
     it 'does not authenticate with incorrect password' do
-      expect(user.authenticate('wrongpassword')).to be false
+      expect(user.authenticate('WrongPass1!')).to be false
     end
   end
 
   # Associations
   describe 'associations' do
-    it 'has many items' do
-      association = described_class.reflect_on_association(:items)
+    it 'has many bins with dependent destroy' do
+      association = described_class.reflect_on_association(:bins)
       expect(association.macro).to eq :has_many
+      expect(association.options[:dependent]).to eq :destroy
     end
   end
 
