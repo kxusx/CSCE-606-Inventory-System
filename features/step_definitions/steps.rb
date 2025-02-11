@@ -1,52 +1,43 @@
-# features/step_definitions/steps.rb
-
-Given('I am logged in as {string} with password {string}') do |email, password|
-  visit '/login' # sessions#new
-  fill_in 'Email', with: email
-  fill_in 'Password', with: password
-  click_button 'Log in' # Ensure this matches the button in your form
-end
-
 Given('a user exists with email {string} and password {string}') do |email, password|
-  User.create!(email: email, password: password, password_confirmation: password)
-end
-
-Given('a bin named {string} exists') do |bin_name|
-  Bin.create!(name: bin_name)
-end
-
-When('I visit the new bin page') do
-  visit new_bin_path # Correct route for new bin creation
-end
-
-When('I visit the new item page') do
-  visit '/items/new' # Adjust if this path is different in your routes
-end
-
-When('I visit the registration page') do
-  visit '/register' # Adjust this if your registration route is different
+  User.create!(
+    name: "Rafael",  # Placeholder name for the user
+    email: email,
+    password: password,
+    password_confirmation: password
+  )
 end
 
 When('I visit the login page') do
-  visit '/login' # sessions#new
+  visit login_path
 end
 
 When('I fill in {string} with {string}') do |field, value|
-  fill_in field, with: value
-end
-
-When('I select {string} from {string}') do |option, dropdown|
-  select option, from: dropdown
+  case field
+  when "Name"
+    fill_in "user[name]", with: value
+  when "Email"
+    fill_in "user[email]", with: value
+  when "Password"
+    fill_in "user[password]", with: value
+  when "Password confirmation"
+    fill_in "user[password_confirmation]", with: value
+  else
+    fill_in field, with: value
+  end
 end
 
 When('I press {string}') do |button|
   click_button button
 end
 
-Then('I should see {string}') do |text|
-  expect(page).to have_content(text)
+Given('I am on the sign-up page') do
+  visit signup_path
 end
 
-Then('I should not see {string}') do |text|
-  expect(page).not_to have_content(text)
+Then('I should see {string}') do |expected_text|
+  expect(page).to have_content(expected_text)
+end
+
+Then('I should be on the login page') do
+  expect(current_path).to eq(login_path)
 end
