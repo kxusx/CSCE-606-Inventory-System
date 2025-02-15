@@ -66,3 +66,6 @@ end
 # Benchmarking and interactive Ruby console (included explicitly)
 gem "benchmark", "0.4.0"
 gem "irb", "1.15.1"
+
+#QR code generator
+gem "rqrcode" 

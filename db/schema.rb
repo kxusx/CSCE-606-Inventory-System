@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_08_192915) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_15_152620) do
   create_table "bins", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "name"
@@ -18,6 +18,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_192915) do
     t.string "category_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "qr_code"
+    t.index ["qr_code"], name: "index_bins_on_qr_code", unique: true
     t.index ["user_id"], name: "index_bins_on_user_id"
   end
 
