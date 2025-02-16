@@ -10,9 +10,10 @@ When("I visit the new bin page") do
   visit new_bin_path
 end
 
-When(/^I fill in "(.*)" with "(.*)"$/) do |field, value|
+When(/^I fill in the bin "(.*)" with "(.*)"$/) do |field, value|
   fill_in field, with: value
 end
+
 
 When(/^I select "(.*)" from "(.*)"$/) do |value, field|
   select value, from: field
@@ -22,10 +23,42 @@ When("I click {string}") do |button|
   click_button button
 end
 
-Then("I should see {string}") do |text|
-  expect(page).to have_content(text)
+Then(/^I should see the bin success message "(.*)"$/) do |message|
+  expect(page).to have_selector('.flash-message', text: message, visible: :visible)
 end
 
+
+
+
 Then("I should see a QR code") do
-  expect(page).to have_css("svg") # ✅ Checks if an SVG exists in the page
+  expect(page).to have_css("svg") # Checks if an SVG exists in the page
+end
+
+# step definition for scan
+ 
+Given(/^I have a bin named "(.*)" with a QR code$/) do |bin_name|
+  @bin = Bin.create!(
+    name: bin_name,
+    location: "Garage",
+    category_name: "Misc",
+    user: @user # Assuming @user is already set from a previous step
+  )
+
+  # Ensure QR code is generated after creation
+  @bin.send(:update_qr_code)
+end
+
+When(/^I scan the QR code for "(.*)"$/) do |bin_name|
+  bin = Bin.find_by(name: bin_name)
+  expect(bin).not_to be_nil, "Bin '#{bin_name}' was not found"
+
+  # Simulate scanning the QR code by visiting its URL
+  visit bin_path(bin)
+end
+
+
+Then(/^I should be redirected to the bin page for "(.*)"$/) do |bin_name|
+  bin = Bin.find_by(name: bin_name)
+  expect(page).to have_current_path(bin_path(bin))
+  expect(page).to have_content(bin_name)
 end

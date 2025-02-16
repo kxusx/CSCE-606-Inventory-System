@@ -6,9 +6,9 @@ Feature: QR Code Generation for Bins
   Scenario: User creates a bin and sees the QR code
     Given I am a logged-in user
     When I visit the new bin page
-    And I fill in "Name" with "Storage Bin"
-    And I fill in "Location" with "Garage"
-    And I select "Misc" from "Category Name"
+    And I fill in the bin "Name" with "Storage Bin"
+    And I fill in the bin "Location" with "Garage"
+    And I fill in the bin "bin_category_name" with "Misc"
     And I click "Create Bin"
-    Then I should see "Bin was successfully created"
+    Then I should see the bin success message "Bin was successfully created"
     And I should see a QR code
