@@ -10,18 +10,18 @@
                 <%= f.email_field :email, required: true, autofocus: true %>
             </div>
 
-            <!-- Password Field -->
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <%= f.password_field :password, required: true %>
-            </div>
-
             <!-- Error Message Display -->
             <% if flash[:alert] %>
                 <div class="error-message">
                     <%= flash[:alert] %>
                 </div>
             <% end %>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <%= f.password_field :password, required: true %>
+            </div>
 
             <!-- Login Button -->
             <%= f.submit "Login", class: "btn " %>

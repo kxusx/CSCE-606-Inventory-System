@@ -47,7 +47,7 @@ body {
   .error-message {
     color: red;
     font-size: 14px;
-    margin-top: 5px;
+    margin-top: 2px;
   }
   
   .btn, input[type="submit"] {
