@@ -1,5 +1,5 @@
 class BinsController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!
   before_action :set_bin, only: %i[show edit update destroy]
   before_action :authorize_user, only: %i[show edit update destroy]
 

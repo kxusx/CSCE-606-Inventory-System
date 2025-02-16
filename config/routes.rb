@@ -5,12 +5,7 @@ Rails.application.routes.draw do
     get "signup", to: "users#new", as: "signup"
     get "users/sign_out", to: 'sessions#destroy'
     post "signup", to: "users#create"
-    authenticated :user do
-      root to: "dashboard#index", as: :authenticated_root # After login, go to dashboard
-    end
-    unauthenticated do
-      root to: "sessions#new", as: :unauthenticated_root # Before login, show login page
-    end
+    root to: "sessions#new", as: :unauthenticated_root
   end
   
   get "dashboard", to: "dashboard#index", as: "dashboard"
