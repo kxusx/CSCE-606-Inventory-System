@@ -68,4 +68,9 @@ gem "benchmark", "0.4.0"
 gem "irb", "1.15.1"
 
 #QR code generator
-gem "rqrcode" 
+gem "rqrcode"
+
+# simple cov
+group :test do
+  gem 'simplecov', require: false
+end

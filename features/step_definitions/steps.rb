@@ -41,3 +41,55 @@ end
 Then('I should be on the login page') do
   expect(current_path).to eq(login_path)
 end
+
+
+# for updating bin 
+Given('I am logged in as {string} with password {string}') do |email, password|
+  @user = User.create!(email: email, password: password, name: "Test User")
+  
+  visit login_path
+  fill_in "Email", with: email
+  fill_in "Password", with: password
+  click_button "Login"
+  @bin = @user.bins.create!(name: "bin1", location: "Garage", category_name: "Misc")
+  expect(page).to have_content("Logged in successfully") # Adjust based on your app's flash message
+end
+
+
+When('I visit the edit page for {string}') do |bin_name|
+  bin = Bin.find_by(name: bin_name)
+  visit edit_bin_path(bin)
+
+  expect(page).to have_content("Editing bin") # Adjust based on your edit page title
+end
+
+When('I fill in the bin name with {string}') do |new_name|
+  fill_in "Name", with: new_name
+end
+
+Then('I should see {string} on the bins list') do |updated_bin_name|
+  visit bins_path # Ensure we are on the bins index page
+  expect(page).to have_content(updated_bin_name)
+end
+
+#adding an item
+Given('a bin named {string} exists') do |bin_name|
+  @bin = Bin.create!(name: bin_name, location: "Garage", category_name: "Misc", user: @user)
+end
+
+When('I visit the new item page') do
+  visit new_item_path # Make sure this route exists in your `config/routes.rb`
+end
+
+When('I ended selecting {string} from {string}') do |option, field|
+  fill_in field, with: option
+end
+
+When('I fill in the item field {string} with {string}') do |field, value|
+  fill_in "item_#{field.downcase}", with: value
+end
+
+Then('I should be redirected to the item details page') do
+  expect(current_path).to match(%r{/items/\d+}) # Matches /items/1, /items/2, etc.
+end
+
