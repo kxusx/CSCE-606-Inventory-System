@@ -20,10 +20,13 @@ class Bin < ApplicationRecord
     self.update_column(:qr_code, generate_qr_code) #update after saving
   end
 
+  def qr_code_data
+    "http://127.0.0.1:3000/bins/#{self.id}"
+  end
 
   #this function generate the qr code
   def generate_qr_code
-    base_url = "http://127.0.0.1:3000/bins/#{self.id}" # Generate URL dynamically
+    base_url = qr_code_data # Generate URL dynamically
     qr = RQRCode::QRCode.new(base_url) #generate unique QR code data
     qr.as_svg(
       offset: 0,
