@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: "sessions" }
+  devise_for :users, controllers: { sessions: "sessions" }, skip: [:registrations]
 
   devise_scope :user do
+    get "signup", to: "users#new", as: "signup"
+    post "signup", to: "users#create"
+
     authenticated :user do
       root to: "dashboard#index", as: :authenticated_root # After login, go to dashboard
     end
@@ -26,6 +29,4 @@ Rails.application.routes.draw do
   # Log history route
   get "log-history", to: "logs#index", as: "log_history"
 
-  # Dashboard route
-  get "dashboard", to: "dashboard#index", as: "dashboard"
 end
