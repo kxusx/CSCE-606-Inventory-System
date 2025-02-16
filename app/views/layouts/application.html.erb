@@ -29,6 +29,16 @@
         console.log("<%= j(flash[:notice]) %>");
       </script>
     <% end %>
+
+    <% if flash[:console_alert] %>
+      <script>
+          setTimeout(function() {
+              alert("<%= j(flash[:console_alert]) %>");
+              console.log("<%= j(flash[:console_alert]) %>");
+          }, 500); // Delay to ensure execution
+      </script>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>
