@@ -26,7 +26,7 @@ class SessionsController < Devise::SessionsController
 
   # Prevent already logged-in users from accessing login/signup pages
   def redirect_if_authenticated
-    if user_signed_in?
+    if user_signed_in? && request.path != dashboard_path
       redirect_to dashboard_path, alert: "You are already signed in."
     end
   end
