@@ -21,7 +21,7 @@ class Bin < ApplicationRecord
   end
 
   def qr_code_data
-    if Rails.env.production?
+    if Rails.env.production? #call rails.env to know if it is in production or development
       "https://inventory-system-lightfoot-c73b05a2c5ae.herokuapp.com/bins/#{self.id}"
     else
       "http://127.0.0.1:3000/bins/#{self.id}"
