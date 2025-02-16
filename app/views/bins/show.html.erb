@@ -31,6 +31,13 @@
 <h3>QR Code</h3>
 <%= raw @bin.qr_code %>  <!-- This will render the QR code as an SVG -->
 
-<div>
+<!-- Display the Bin URL -->
+<p><strong>Bin URL:</strong> <span id="bin-url"><%= request.original_url %></span></p>
+
+<!-- Copy to Clipboard Button -->
+<button class="btn btn-primary" onclick="copyToClipboard()">Copy URL to NCF Chip</button>
+
+
+<div style='margin-top: 20px;'>
   <%= link_to "Back to All Bins", bins_path, class: "btn btn-secondary" %>
 </div>

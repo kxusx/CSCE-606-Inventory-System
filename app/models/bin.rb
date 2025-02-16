@@ -21,7 +21,11 @@ class Bin < ApplicationRecord
   end
 
   def qr_code_data
-    "http://127.0.0.1:3000/bins/#{self.id}"
+    if Rails.env.production?
+      "https://inventory-system-lightfoot-c73b05a2c5ae.herokuapp.com/bins/#{self.id}"
+    else
+      "http://127.0.0.1:3000/bins/#{self.id}"
+    end
   end
 
   #this function generate the qr code
