@@ -1,20 +1,15 @@
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
+  before_action :authenticate_user!, except: [:new]
 
-  #Needs to know the current user to access to dashboar
-  helper_method :current_user # available to views
+  # Ensure only modern browsers are supported (remove if unnecessary)
+  # allow_browser versions: :modern 
 
-  #now, let's check if session[:user_id] exist (if user is logged in), tore the result in @current_user
-  # use memoization for better performance
-  def current_user
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  # Redirect user to dashboard after login
+  def after_sign_in_path_for(resource)
+    dashboard_path
   end
 
-  # method use in dashboard_controller for login
-  def require_login
-    unless current_user
-      redirect_to login_path, alert: "You must logged in to access this page"
-    end
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path # Ensures logout redirects to login page
   end
 end

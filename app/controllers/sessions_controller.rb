@@ -1,22 +1,25 @@
-class SessionsController < ApplicationController
+class SessionsController < Devise::SessionsController
+  before_action :redirect_if_authenticated, only: [:new]
+
   def new
-    # Just render the login form (new.html.erb)
+    super
   end
 
   def create
-    user = User.find_by(email: params[:email])
-
-    if user&.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to dashboard_path, notice: "Logged in successfully"
-    else
-      flash.now[:alert] = "Invalid email or password"
-      render :new, status: :unprocessable_entity
-    end
+    super
   end
 
   def destroy
-    session[:user_id] = nil
-    redirect_to login_path, notice: "Logged out successfully"
+    sign_out(current_user) # Devise method to log out
+    redirect_to new_user_session_path, notice: "Logged out successfully"
+  end
+
+  private
+
+  # Prevent already logged-in users from accessing login/signup pages
+  def redirect_if_authenticated
+    if user_signed_in?
+      redirect_to dashboard_path, alert: "You are already signed in."
+    end
   end
 end

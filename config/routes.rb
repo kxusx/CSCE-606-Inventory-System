@@ -1,14 +1,31 @@
 Rails.application.routes.draw do
-  resources :items
-  resources :bins
-  get "dashboard/index"
-  get "login", to: "sessions#new", as: "login"   # Show login form
-  post "login", to: "sessions#create" # Handle login form submission
-  delete "logout", to: "sessions#destroy", as: "logout"# Logout action
-  get "signup", to: "users#new", as: "signup"
-  post "signup", to: "users#create"
-  root to: "sessions#new"
+  devise_for :users, controllers: { sessions: "sessions" }
 
-  # dashboard route"
+  devise_scope :user do
+    authenticated :user do
+      root to: "dashboard#index", as: :authenticated_root # After login, go to dashboard
+    end
+
+    unauthenticated do
+      root to: "sessions#new", as: :unauthenticated_root # Before login, show login page
+    end
+  end
+
+  resources :items
+  resources :bins do
+    collection do
+      get "view", to: "bins#index", as: "view"
+      get "add", to: "bins#new", as: "add"
+    end
+    member do
+      delete "delete", to: "bins#destroy", as: "delete"
+    end
+  end
+  get "delete-bins", to: "bins#delete_page", as: "delete_bins"
+
+  # Log history route
+  get "log-history", to: "logs#index", as: "log_history"
+
+  # Dashboard route
   get "dashboard", to: "dashboard#index", as: "dashboard"
 end

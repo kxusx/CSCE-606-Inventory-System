@@ -1,11 +1,30 @@
-<h1>Welcome, <%= @user.name %>!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RobertLightFoot</title>
+</head>
+<body>
+    <div class="container">
+        <% if @user.present? %>
+            <h1>Welcome, <%= @user.name.capitalize %>!</h1>
+            <p>Your inventory management system</p>
+        <% else %>
+            <h1>Welcome, Guest!</h1>
+            <p>Please log in to manage your inventory.</p>
+        <% end %>
 
-<p>You have <strong><%= @bins_count %></strong> bins.</p>
+        <div class="button-container">
+            <%= link_to "View Bins", view_bins_path, class: "btn" %>
+            <%= link_to "Add Bins", add_bins_path, class: "btn" %>
+            <%= link_to "Delete Bins", delete_bins_path, class: "btn" %>
+            <%= link_to "Log History", log_history_path, class: "btn" %>
+        </div>
 
+        <!-- Logout button -->
+        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn", data: { confirm: "Are you sure you want to log out?" } %>
 
-<div class= "dashboard-buttons">
-<%= link_to "View My Bins", bins_path, class: "btn btn-primary" %>
-<%= link_to "View My Items", items_path, class: "btn btn-primary" %>
-<%= button_to "Logout", logout_path, method: :delete, class: "btn btn-danger", 
-    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" } %>
-</div>
+    </div>
+</body>
+</html>

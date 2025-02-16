@@ -1,25 +1,32 @@
+<%= stylesheet_link_tag "sessions", media: "all" %>
 <div class="container">
     <div class="form-container">
         <h2>Login</h2>
-        <form action="<%= login_path %>" method="post">
-            <%= csrf_meta_tags %>
 
+        <%= form_with url: new_user_session_path, method: :post do |f| %>
             <!-- Email Field -->
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <% if flash[:alert] %>
+                <%= f.email_field :email, required: true, autofocus: true %>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <%= f.password_field :password, required: true %>
+            </div>
+
+            <!-- Error Message Display -->
+            <% if flash[:alert] %>
                 <div class="error-message">
                     <%= flash[:alert] %>
                 </div>
-                <% end %>
-            </div>
-            
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <% end %>
 
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? <a href="<%= signup_path %>">Sign up</a></p>
+            <!-- Login Button -->
+            <%= f.submit "Login", class: "btn " %>
+        <% end %>
+
+        <p>Don't have an account? <%= link_to "Sign up", new_user_registration_path %></p>
     </div>
 </div>

@@ -46,8 +46,8 @@ gem "thruster", require: false  # HTTP asset caching/compression
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "brakeman", require: false  # Security analysis
-  gem "rubocop-rails-omakase", require: false  # Style guide
-
+  gem "rubocop-rails-omakase", require: false  # Style guide 
+  
   # Testing
   gem "rspec-rails"      # RSpec for unit testing
   gem "cucumber-rails", require: false  # Cucumber for BDD
@@ -66,3 +66,4 @@ end
 # Benchmarking and interactive Ruby console (included explicitly)
 gem "benchmark", "0.4.0"
 gem "irb", "1.15.1"
+gem 'devise'
