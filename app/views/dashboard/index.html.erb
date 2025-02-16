@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <%= stylesheet_link_tag "dashboard", media: "all" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - RobertLightFoot</title>
 </head>
@@ -23,7 +24,7 @@
         </div>
 
         <!-- Logout button -->
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn", data: { confirm: "Are you sure you want to log out?" } %>
+        <%= link_to "Logout", destroy_user_session_path(:user), method: :delete, class: "logout-btn", data: {confirm: "Are you sure you want to log out?" } %>
 
     </div>
 </body>
