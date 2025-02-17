@@ -25,8 +25,13 @@ class PasswordController < ApplicationController
     def send_reset_code
       @user = User.find_by(email: params[:email])
       if @user
-        @user.update(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
-    
+        if @user.update_columns(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
+          puts " User successfully updated: #{@user.inspect}"
+        else
+          puts " Failed to update user: #{@user.errors.full_messages}"
+        end
+
+        session[:reset_user_id] = @user.id
         # Send email
         UserMailer.reset_password_email(@user).deliver_now
 
@@ -44,25 +49,24 @@ class PasswordController < ApplicationController
   
     def verify_reset_code
       if current_reset_user&.reset_sent_at&.>(15.minutes.ago) && current_reset_user&.reset_code == params[:reset_code]
-        session[:reset_user_id] = current_reset_user.id
         redirect_to new_password_reset_path
       else
-        flash[:error] = "Invalid or expired reset code"
+        flash[:console_alert] = "Invalid or expired reset code"
         redirect_to reset_code_path
       end
     end
   
     def resend_reset_code
       if current_reset_user
-        current_reset_user.update(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
-
+        current_reset_user.update_columns(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
+        
         # Send email again
-        UserMailer.reset_password_email(@user).deliver_now
+        UserMailer.reset_password_email(current_reset_user).deliver_now
 
-        flash[:success] = "New reset code sent to your email."
+        flash[:notice] = "New reset code sent to your email."
         redirect_to reset_code_path
       else
-        flash[:error] = "Session expired. Please request a new reset code."
+        flash[:notice] = "Session expired. Please request a new reset code."
         redirect_to forgot_password_path
       end
     end

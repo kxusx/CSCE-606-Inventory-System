@@ -3,7 +3,7 @@
 <div class="form-container">
     <h2>Reset Password</h2>
 
-    <%= form_with url: update_password_path, method: :post do |f| %>
+    <%= form_with url: update_password_path, method: :post, data: { turbo: false } do |f| %>
         <label for="password">New Password:</label>
         <%= f.password_field :password, id: "password", required: true %>
 
