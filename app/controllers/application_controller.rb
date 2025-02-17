@@ -1,11 +1,12 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!, except: [:new, :create]
+  
   before_action :configure_permitted_parameters, if: :devise_controller?
   
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || dashboard_path
   end
-  
+
   protected
 
   # Ensure Devise allows additional parameters like name

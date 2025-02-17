@@ -1,6 +1,23 @@
 class PasswordController < ApplicationController
+    skip_before_action :authenticate_user!, only: [
+    :forgot, 
+    :send_reset_code, 
+    :reset_code, 
+    :verify_reset_code, 
+    :resend_reset_code, 
+    :reset, 
+    :update
+    ]
+
     require 'securerandom'
-  
+    def new
+        super
+    end
+
+    def create
+        super
+    end
+
     def forgot
       render 'password/forgot'
     end
@@ -9,8 +26,11 @@ class PasswordController < ApplicationController
       @user = User.find_by(email: params[:email])
       if @user
         @user.update(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
-        # Simulate sending email
-        puts "Reset code sent to #{@user.email}: #{@user.reset_code}"
+    
+        # Send email
+        UserMailer.reset_password_email(@user).deliver_now
+
+        flash[:success] = "Reset code sent to your email."
         redirect_to reset_code_path
       else
         flash[:error] = "Mail not registered in the database"
@@ -24,6 +44,7 @@ class PasswordController < ApplicationController
   
     def verify_reset_code
       if current_reset_user&.reset_sent_at&.>(15.minutes.ago) && current_reset_user&.reset_code == params[:reset_code]
+        session[:reset_user_id] = current_reset_user.id
         redirect_to new_password_reset_path
       else
         flash[:error] = "Invalid or expired reset code"
@@ -34,9 +55,14 @@ class PasswordController < ApplicationController
     def resend_reset_code
       if current_reset_user
         current_reset_user.update(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
-        puts "New reset code sent: #{current_reset_user.reset_code}"
+
+        # Send email again
+        UserMailer.reset_password_email(@user).deliver_now
+
+        flash[:success] = "New reset code sent to your email."
         redirect_to reset_code_path
       else
+        flash[:error] = "Session expired. Please request a new reset code."
         redirect_to forgot_password_path
       end
     end
@@ -47,7 +73,7 @@ class PasswordController < ApplicationController
   
     def update
       if current_reset_user && params[:password].match(/\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+\z/)
-        current_reset_user.update(password: params[:password])
+        current_reset_user.update(password: params[:password], reset_code: nil)
         session[:reset_user_id] = nil
         flash[:success] = "Password reset successful!"
         redirect_to new_user_session_path

@@ -13,7 +13,8 @@ class User < ApplicationRecord
     # Validations
     validates :name, presence: true
     validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-
+    validates :reset_code, uniqueness: true, allow_nil: true
+    
     # Validate password presence, length, and complexity
     validates :password, presence: true, format: { 
       with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+\z/, 

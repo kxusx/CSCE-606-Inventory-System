@@ -56,6 +56,8 @@ group :development, :test do
   # System tests
   gem "capybara"         # Capybara for feature tests
   gem "selenium-webdriver"  # Selenium for browser automation
+
+  gem 'dotenv-rails'
 end
 
 # Console on error pages in development
