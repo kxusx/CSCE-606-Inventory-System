@@ -33,7 +33,7 @@ class PasswordController < ApplicationController
         flash[:notice] = "Reset code sent to your email."
         redirect_to reset_code_path
       else
-        flash[:error] = "Mail not registered in the database"
+        flash[:error] = "User not registered in the database"
         redirect_to forgot_password_path 
       end
     end

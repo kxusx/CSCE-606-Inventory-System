@@ -3,14 +3,21 @@
 <div class="form-container">
     <h2>Forgot Password</h2>
 
-    <%= form_with url: send_reset_code_path, method: :post, local: true, data: { turbo: false } do |f| %>
+
+    <%= form_with url: send_reset_code_path, method: :post, data: { turbo: false } do |f| %>
         <label for="email">Enter your registered email:</label>
+        <%# Flash Message for Errors %>
+        <% if flash[:error] %>
+            <div class="flash-error">
+                <%= flash[:error] %>
+            </div>
+        <% end %>
         <%= f.email_field :email, id: "email", required: true %>
 
         <%= f.submit "Send Reset Code", class: "btn"%>
     <% end %>
 
-    <p>
+    <p id="back_to_login">
         <%= link_to "Back to Login", unauthenticated_root_path %>
     </p>
 </div>
