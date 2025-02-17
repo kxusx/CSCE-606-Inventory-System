@@ -29,3 +29,10 @@
     </div>
 </body>
 </html>
+
+<% if flash[:console_alert] %>
+    <script>
+        alert("<%= j(flash[:console_alert]) %>");
+        console.log("<%= j(flash[:console_alert]) %>");
+    </script>
+<% end %>

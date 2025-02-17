@@ -32,10 +32,3 @@
         <p>Don't have an account? <%= link_to "Sign up", signup_path %></p>
     </div>
 </div>
-
-<% if flash[:console_alert] %>
-    <script>
-        alert("<%= j(flash[:console_alert]) %>");
-        console.log("<%= j(flash[:console_alert]) %>");
-    </script>
-<% end %>
