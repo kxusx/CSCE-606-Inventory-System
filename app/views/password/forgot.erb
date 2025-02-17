@@ -3,7 +3,7 @@
 <div class="form-container">
     <h2>Forgot Password</h2>
 
-    <%= form_with url: send_reset_code_path, method: :post do |f| %>
+    <%= form_with url: send_reset_code_path, method: :post, local: true, data: { turbo: false } do |f| %>
         <label for="email">Enter your registered email:</label>
         <%= f.email_field :email, id: "email", required: true %>
 
@@ -14,4 +14,3 @@
         <%= link_to "Back to Login", unauthenticated_root_path %>
     </p>
 </div>
-

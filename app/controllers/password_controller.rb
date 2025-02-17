@@ -30,11 +30,11 @@ class PasswordController < ApplicationController
         # Send email
         UserMailer.reset_password_email(@user).deliver_now
 
-        flash[:success] = "Reset code sent to your email."
+        flash[:notice] = "Reset code sent to your email."
         redirect_to reset_code_path
       else
         flash[:error] = "Mail not registered in the database"
-        redirect_to forgot_password_path
+        redirect_to forgot_password_path 
       end
     end
   
