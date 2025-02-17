@@ -37,6 +37,11 @@
   </div>
 
   <div>
+    <%= form.label :item_picture, "Upload Picture", style: "display: block" %>
+    <%= form.file_field :item_picture %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

@@ -24,4 +24,13 @@
     <%= item.bin_id %>
   </p>
 
+  <% if item.item_picture.attached? %>
+    <p>
+      <strong>Picture:</strong><br>
+      <%= image_tag item.item_picture, size: "200x200" %>
+    </p>
+  <% else %>
+    <p>No picture uploaded</p>
+  <% end %>
+
 </div>
