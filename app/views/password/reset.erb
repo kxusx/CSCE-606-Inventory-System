@@ -1,0 +1,33 @@
+<%= stylesheet_link_tag "passwords", media: "all" %>
+
+<div class="form-container">
+    <h2>Reset Password</h2>
+
+    <%= form_with url: update_password_path, method: :post do |f| %>
+        <label for="password">New Password:</label>
+        <%= f.password_field :password, id: "password", required: true %>
+
+        <label for="confirm_password">Confirm Password:</label>
+        <%= f.password_field :confirm_password, id: "confirm_password", required: true %>
+
+        <%= f.submit "Reset Password", class: "btn" %>
+    <% end %>
+</div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function(event) {
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirm_password").value;
+        let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
+
+        if (!regex.test(password)) {
+            alert("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            event.preventDefault();
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            event.preventDefault();
+        }
+    });
+</script>
