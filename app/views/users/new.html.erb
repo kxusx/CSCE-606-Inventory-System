@@ -33,45 +33,45 @@
             <% end %>
 
             <%= form_with(model: @user, url: signup_path, local: true, data: { turbo: false}) do |form| %>
-            <div class="form-group">
-                <%= form.label :name %>
-                <%= form.text_field :name, required: true %>
-            </div>
-
-            <div class="form-group">
-                <%= form.label :email %>
-                <%= form.email_field :email, required: true %>
-            </div>
-
-            <div class="form-group">
-                <label for="password">
-                    Password
-                    <span class="tooltip">❓
-                        <span class="tooltip-text">
-                            Your password must:
-                            <ul>
-                                <li>Be at least 8 characters long</li>
-                                <li>Include at least one uppercase letter</li>
-                                <li>Include at least one lowercase letter</li>
-                                <li>Include at least one special character</li>
-                            </ul>
-                        </span>
-                    </span>
-                </label>
-            
-                <div class="input-wrapper">
-                    <input type="password" id="password" name="user[password]" required>
+                <div class="form-group">
+                    <%= form.label :name %>
+                    <%= form.text_field :name, required: true %>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <%= form.label :password_confirmation %>
-                <%= form.password_field :password_confirmation, required: true %>
-            </div>
+                <div class="form-group">
+                    <%= form.label :email %>
+                    <%= form.email_field :email, required: true %>
+                </div>
 
-            <div class="actions">
-                <%= form.submit "Sign Up", class: "btn" %>
-            </div>
+                <div class="form-group">
+                    <label for="password">
+                        Password
+                        <span class="tooltip">❓
+                            <span class="tooltip-text">
+                                Your password must:
+                                <ul>
+                                    <li>Be at least 8 characters long</li>
+                                    <li>Include at least one uppercase letter</li>
+                                    <li>Include at least one lowercase letter</li>
+                                    <li>Include at least one special character</li>
+                                </ul>
+                            </span>
+                        </span>
+                    </label>
+                
+                    <div class="input-wrapper">
+                        <%= form.password_field :password, id: "password", required: true %>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <%= form.label :password_confirmation %>
+                    <%= form.password_field :password_confirmation, id: "password_confirmation", required: true %>
+                </div>
+
+                <div class="actions">
+                    <%= form.submit "Sign Up", class: "btn" %>
+                </div>
             <% end %>
 
             <p>Already have an account? <%= link_to "Login here", new_user_session_path %></p>

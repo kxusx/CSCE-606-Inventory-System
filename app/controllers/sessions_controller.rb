@@ -29,8 +29,9 @@ class SessionsController < Devise::SessionsController
   def redirect_if_authenticated
     if user_signed_in? 
       flash[:console_alert] = "You are already signed in."
-      flash.keep(:console_alert)
+      #flash.keep(:console_alert)
       redirect_to dashboard_path
     end
   end
+
 end

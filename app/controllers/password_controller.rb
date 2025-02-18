@@ -8,7 +8,7 @@ class PasswordController < ApplicationController
     :reset, 
     :update
     ]
-
+    
     require 'securerandom'
     def new
         super
@@ -25,13 +25,10 @@ class PasswordController < ApplicationController
     def send_reset_code
       @user = User.find_by(email: params[:email])
       if @user
-        if @user.update_columns(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
-          puts " User successfully updated: #{@user.inspect}"
-        else
-          puts " Failed to update user: #{@user.errors.full_messages}"
-        end
+        @user.update_columns(reset_code: SecureRandom.hex(3), reset_sent_at: Time.now)
 
         session[:reset_user_id] = @user.id
+        
         # Send email
         UserMailer.reset_password_email(@user).deliver_now
 
@@ -66,7 +63,7 @@ class PasswordController < ApplicationController
         flash[:notice] = "New reset code sent to your email."
         redirect_to reset_code_path
       else
-        flash[:notice] = "Session expired. Please request a new reset code."
+        flash[:console_alert] = "Session expired. Please request a new reset code."
         redirect_to forgot_password_path
       end
     end
@@ -96,5 +93,6 @@ class PasswordController < ApplicationController
     def password_params
       params.require(:user).permit(:password, :password_confirmation)
     end
+
   end
   
