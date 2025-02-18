@@ -15,9 +15,11 @@ class User < ApplicationRecord
     validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
     validates :reset_code, uniqueness: true, allow_nil: true
     
-    # Validate password presence, length, and complexity
-    validates :password, presence: true, format: { 
-      with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+\z/, 
-      message: "must include at least one uppercase letter, one lowercase letter, one number, and one special character" 
-    }    
+
+    # Custom format validations for specific requirements
+    validates :password, format: { with: /[A-Z]/, message: "must include at least one uppercase letter" }
+    validates :password, format: { with: /[a-z]/, message: "must include at least one lowercase letter" }
+    validates :password, format: { with: /\d/, message: "must include at least one number" }
+    validates :password, format: { with: /[\W_]/, message: "must include at least one special character" }
+
 end

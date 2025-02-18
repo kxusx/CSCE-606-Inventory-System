@@ -72,18 +72,18 @@ class PasswordController < ApplicationController
     end
   
     def reset
+      @user=current_reset_user
       render 'password/reset'
     end
   
     def update
-      if current_reset_user && params[:password].match(/\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+\z/)
-        current_reset_user.update(password: params[:password], reset_code: nil)
+      @user=current_reset_user
+      if @user.update(password_params.merge(reset_code: nil))
         session[:reset_user_id] = nil
-        flash[:success] = "Password reset successful!"
+        flash[:notice] = "Password reset successful!"
         redirect_to new_user_session_path
       else
-        flash[:error] = "Password format incorrect!"
-        redirect_to new_password_reset_path
+        render 'password/reset',status: :unprocessable_entity
       end
     end
   
@@ -91,6 +91,10 @@ class PasswordController < ApplicationController
   
     def current_reset_user
       @current_reset_user ||= User.find_by(id: session[:reset_user_id])
+    end
+
+    def password_params
+      params.require(:user).permit(:password, :password_confirmation)
     end
   end
   
