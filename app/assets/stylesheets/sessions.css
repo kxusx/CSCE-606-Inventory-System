@@ -49,6 +49,8 @@ body {
     font-size: 14px;
     display: block;
     text-align: left;
+    margin-top: -1px;
+    margin-bottom: 5px;
   }
 
   .forgot-password:hover {
