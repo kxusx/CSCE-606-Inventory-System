@@ -4,7 +4,7 @@ Feature: Adding Bins
   So that I can organize items efficiently
 
   Background:
-    Given I am logged in as "user@example.com" with password "password123"
+    Given I am logged in as "user@example.com" with password "Password123!"
 
   Scenario: Successfully adding a bin
     When I visit the new bin page
