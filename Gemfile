@@ -45,8 +45,11 @@ gem "thruster", require: false  # HTTP asset caching/compression
 # Development and Test Group Gems
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+  gem 'factory_bot_rails'
   gem "brakeman", require: false  # Security analysis
   gem "rubocop-rails-omakase", require: false  # Style guide 
+  gem 'rack_session_access'
+  gem 'rack-test'
   
   # Testing
   gem "rspec-rails"      # RSpec for unit testing
@@ -63,6 +66,10 @@ end
 # Console on error pages in development
 group :development do
   gem "web-console"
+end
+
+group :test do
+  gem 'rails-controller-testing'
 end
 
 # Benchmarking and interactive Ruby console (included explicitly)

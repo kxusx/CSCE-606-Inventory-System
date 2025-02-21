@@ -1,5 +1,10 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require 'factory_bot_rails'
+require 'capybara/rspec'
+require 'selenium-webdriver'
+require "rack_session_access/capybara"
+Capybara.javascript_driver = :selenium_chrome_headless
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
@@ -33,6 +38,17 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config|
+  config.before(:each, type: :system) do
+    driven_by(:selenium_chrome_headless)
+  end
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include FactoryBot::Syntax::Methods
+
+  [:controller, :view, :request].each do |type|
+    config.include ::Rails::Controller::Testing::TestProcess, type: type
+    config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
+    config.include ::Rails::Controller::Testing::Integration, type: type
+  end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
