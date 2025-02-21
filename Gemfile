@@ -79,3 +79,13 @@ group :test do
 end
 
 gem "image_processing", ">= 1.2"
+
+#factory
+group :test do
+  gem 'factory_bot_rails'
+end
+
+#faker
+group :development, :test do
+  gem 'faker'
+end

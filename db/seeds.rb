@@ -20,6 +20,7 @@ def create_user_with_bins_and_items(name, email, bins_and_items)
   user = User.find_or_create_by!(email: email) do |u|
     u.name = name
     u.password = "Abc1234!"
+    u.password_confirmation = "Abc1234!"  # Ensure Devise processes it
   end
 
   # Create unique bins and items for this user

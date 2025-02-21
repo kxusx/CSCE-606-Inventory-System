@@ -12,8 +12,7 @@ class SessionsController < Devise::SessionsController
     if user && user.valid_password?(params[:password]) # Devise method to check password
       sign_in(user)
       # Retrieve the stored location BEFORE redirecting
-      redirect_path = get_stored_location || dashboard_path
-      redirect_to redirect_path, notice: "Logged in successfully!"
+   redirect_to after_sign_in_path_for(user), notice: "Signed in successfully!"
     else
       flash.now[:alert] = "Invalid Email or password."
       render :new, status: :unprocessable_entity
