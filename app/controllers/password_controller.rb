@@ -75,8 +75,7 @@ class PasswordController < ApplicationController
   
     def update
       @user=current_reset_user
-      if @user && @user.update(password_params.merge(reset_code: nil)) # Ensure user exists before update
-      #if @user.update(password_params.merge(reset_code: nil))
+      if @user.update(password_params.merge(reset_code: nil))
         session[:reset_user_id] = nil
         flash[:notice] = "Password reset successful!"
         redirect_to new_user_session_path
