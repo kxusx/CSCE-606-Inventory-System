@@ -9,7 +9,6 @@ RSpec.describe "Sessions", type: :request do
     Rails.application.reload_routes!
   end
 
-
   describe "GET /login" do
     it "returns http success" do
       get new_user_session_path
@@ -17,7 +16,6 @@ RSpec.describe "Sessions", type: :request do
       puts "✅ Test Passed: GET login"
     end
   end
-  
 
   # ✅ Test login action (signing in the user)
   describe "POST /login" do
@@ -38,8 +36,17 @@ RSpec.describe "Sessions", type: :request do
       expect(response).to redirect_to(unauthenticated_root_path)  #  Update expectation
       follow_redirect!
       expect(response.body).to include("Password")  # ✅ Ensure the login page is shown
-      puts "Test Passed: DELETE logout"
+      puts "✅ Test Passed: DELETE logout"
     end
   end
-  
+
+  # ✅ Test the `after_sign_in_path_for` redirection
+  describe "after sign in redirection" do
+    it "redirects user to the correct path after login" do
+      sign_in user
+      get unauthenticated_root_path # Ensure we use the correct route
+      expect(response).to redirect_to(dashboard_path) # Ensure redirection happens correctly
+      puts "✅ Test Passed: after sign in redirection"
+    end
+  end
 end

@@ -89,3 +89,8 @@ end
 group :development, :test do
   gem 'faker'
 end
+
+# rails-controller -testing
+group :test do
+  gem 'rails-controller-testing'
+end

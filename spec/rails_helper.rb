@@ -2,6 +2,10 @@
 require 'devise'
 require 'spec_helper'
 require 'faker'
+require 'rails-controller-testing'
+Rails::Controller::Testing.install
+
+
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
