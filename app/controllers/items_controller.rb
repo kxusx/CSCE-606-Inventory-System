@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :require_login
+  before_action :authenticate_user!
   before_action :set_item, only: %i[ show edit update destroy ]
   before_action :authorize_user, only: [ :show, :edit, :update, :destroy ]
 

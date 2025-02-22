@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe BinsController, type: :routing do
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+
+  before(:each) do
+    Rails.application.reload_routes!
+  end
+  
   describe "routing" do
     it "routes to #index" do
       expect(get: "/bins").to route_to("bins#index")

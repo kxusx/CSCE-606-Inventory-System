@@ -1,24 +1,45 @@
 require 'rails_helper'
 
 RSpec.describe "Sessions", type: :request do
-  describe "GET /new" do
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+  let(:user) { create(:user) }
+
+  before(:each) do
+    Rails.application.reload_routes!
+  end
+
+
+  describe "GET /login" do
     it "returns http success" do
-      get "/sessions/new"
+      get new_user_session_path
       expect(response).to have_http_status(:success)
+      puts "✅ Test Passed: GET login"
+    end
+  end
+  
+
+  # ✅ Test login action (signing in the user)
+  describe "POST /login" do
+    it "logs in the user successfully" do
+      post user_session_path, params: { user: { email: user.email, password: "Password1!" } }
+      expect(response).to redirect_to(dashboard_path)
+      follow_redirect!
+      expect(response.body).to include("Dashboard")
+      puts "✅ Test Passed: POST login"
     end
   end
 
-  describe "GET /create" do
-    it "returns http success" do
-      get "/sessions/create"
-      expect(response).to have_http_status(:success)
+  # ✅ Test logout action (signing out the user)
+  describe "DELETE /logout" do
+    it "logs out the user successfully" do
+      sign_in user  # Ensure the user is logged in before logging out
+      delete destroy_user_session_path  # Use the Devise logout path
+      expect(response).to redirect_to(unauthenticated_root_path)  #  Update expectation
+      follow_redirect!
+      expect(response.body).to include("Password")  # ✅ Ensure the login page is shown
+      puts "Test Passed: DELETE logout"
     end
   end
-
-  describe "GET /destroy" do
-    it "returns http success" do
-      get "/sessions/destroy"
-      expect(response).to have_http_status(:success)
-    end
-  end
+  
 end

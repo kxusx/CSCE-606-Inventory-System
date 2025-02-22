@@ -1,19 +1,22 @@
 require 'rails_helper'
 
 RSpec.describe "Items", type: :request do
-  let(:user) { User.create!(name: "Test User", email: "test@example.com", password: "Password1!") }
-  let(:bin) { user.bins.create!(name: "Storage Bin", location: "Garage", category_name: "Misc") }
-  let(:item) { bin.items.create!(name: "Item A", description: "A test item", value: 100) }
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+  let(:user) { create(:user) }
+  let(:bin) { create(:bin, user: user) }
+  let(:item) { create(:item, bin: bin) }  # Ensures the item is associated with a bin
 
-  before do
-    post login_path, params: { email: user.email, password: "Password1!" }
-    follow_redirect!
+  before(:each) do
+    Rails.application.reload_routes!
+    sign_in user
   end
 
   describe "GET /index" do
     it "returns http success" do
       get items_path
       expect(response).to have_http_status(:success)
+      puts "✅ Test Passed: GET /index"
     end
   end
 
@@ -21,6 +24,7 @@ RSpec.describe "Items", type: :request do
     it "returns http success" do
       get item_path(item)
       expect(response).to have_http_status(:success)
+      puts "✅ Test Passed: GET /show"
     end
   end
 
@@ -28,6 +32,7 @@ RSpec.describe "Items", type: :request do
     it "returns http success" do
       get new_item_path
       expect(response).to have_http_status(:success)
+      puts "✅ Test Passed: GET /new"
     end
   end
 
@@ -38,6 +43,7 @@ RSpec.describe "Items", type: :request do
       }.to change(Item, :count).by(1)
 
       expect(response).to redirect_to(item_path(Item.last))
+      puts "✅ Test Passed: POST /create"
     end
   end
 
@@ -47,6 +53,7 @@ RSpec.describe "Items", type: :request do
       expect(response).to redirect_to(item_path(item))
       follow_redirect!
       expect(response.body).to include("Updated Item Name")
+      puts "✅ Test Passed: PATCH /update"
     end
   end
 
@@ -59,6 +66,7 @@ RSpec.describe "Items", type: :request do
       }.to change(Item, :count).by(-1)
 
       expect(response).to redirect_to(items_path)
+      puts "✅ Test Passed: DELETE /destroy"
     end
   end
 end
