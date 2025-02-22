@@ -3,7 +3,9 @@
     <div class="form-container">
         <h2>Login</h2>
 
-        <%= form_with url: new_user_session_path, method: :post do |f| %>
+        <%= form_with model: resource, url: user_session_path, method: :post, data: { turbo: false } do |f| %>
+
+
             <!-- Email Field -->
             <div class="form-group">
                 <label for="email">Email:</label>

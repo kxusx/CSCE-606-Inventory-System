@@ -21,6 +21,7 @@ class SessionsController < Devise::SessionsController
 
   def destroy
     sign_out(current_user)# Devise method to log out
+    reset_session  # ✅ Clears all session data (including stored locations)
     redirect_to new_user_session_path, notice: "Logged out successfully"
   end
 
