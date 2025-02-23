@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   # Store the original URL before redirecting to login
   def store_location
-    ignored_paths = [new_user_session_path, signup_path]
+    ignored_paths = [new_user_session_path, signup_path,"/password/reset"]
     if request.get? && !request.xhr? && !devise_controller? && !ignored_paths.include?(request.fullpath)
       store_location_for(:user, request.fullpath) 
     end
