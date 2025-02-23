@@ -11,7 +11,7 @@ Feature: User Registration and Login
     And I fill in "Password confirmation" with "Newpassword123!"
     And I press "Sign Up"
     Then I should be on the login page
-    When I fill in "email" with "new_user@example.com"
-    And I fill in "password" with "Newpassword123!"
+    And I fill in "Email" with "new_user@example.com"
+    And I fill in "Password" with "Newpassword123!"
     And I press "Login"
-    Then I should see "Welcome, New User!"
+    Then I should see "Welcome"

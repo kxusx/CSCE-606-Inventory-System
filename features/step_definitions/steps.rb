@@ -8,7 +8,7 @@ Given('a user exists with email {string} and password {string}') do |email, pass
 end
 
 When('I visit the login page') do
-  visit login_path
+  visit new_user_session_path
 end
 
 When('I fill in {string} with {string}') do |field, value|
@@ -16,7 +16,7 @@ When('I fill in {string} with {string}') do |field, value|
   when "Name"
     fill_in "user[name]", with: value
   when "Email"
-    fill_in "user[email]", with: value
+    find("input[name='user[email]']", visible: true).set(value)
   when "Password"
     fill_in "user[password]", with: value
   when "Password confirmation"
@@ -25,6 +25,7 @@ When('I fill in {string} with {string}') do |field, value|
     fill_in field, with: value
   end
 end
+
 
 When('I press {string}') do |button|
   click_button button
@@ -39,7 +40,7 @@ Then('I should see {string}') do |expected_text|
 end
 
 Then('I should be on the login page') do
-  expect(current_path).to eq(login_path)
+  expect(current_path).to eq(new_user_session_path)
 end
 
 
@@ -47,12 +48,12 @@ end
 Given('I am logged in as {string} with password {string}') do |email, password|
   @user = User.create!(email: email, password: password, name: "Test User")
   
-  visit login_path
+  visit new_user_session_path
   fill_in "Email", with: email
   fill_in "Password", with: password
-  click_button "Login"
+  click_button "Log in"
   @bin = @user.bins.create!(name: "bin1", location: "Garage", category_name: "Misc")
-  expect(page).to have_content("Logged in successfully") # Adjust based on your app's flash message
+  expect(page).to have_content("Signed in successfully") # Adjust based on your app's flash message
 end
 
 
@@ -93,3 +94,6 @@ Then('I should be redirected to the item details page') do
   expect(current_path).to match(%r{/items/\d+}) # Matches /items/1, /items/2, etc.
 end
 
+Given('I have a bin named {string}') do |bin_name|
+  @bin = Bin.create!(name: bin_name, user: @user, location: "Garage", category_name: "Misc")
+end

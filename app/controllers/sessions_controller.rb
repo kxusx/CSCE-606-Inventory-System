@@ -7,14 +7,17 @@ class SessionsController < Devise::SessionsController
   end
 
   def create
-    user = User.find_by(email: params[:email]) # Ensure correct parameter format
+    #puts params.inspect
+    user = User.find_by(email: params[:user][:email]) # Ensure correct parameter format
 
-    if user && user.valid_password?(params[:password]) # Devise method to check password
-      sign_in(user)
+    if user && user.valid_password?(params[:user][:password]) # Devise method to check password
+      sign_in(:user, user) # ✅ Fix: Specify the scope
+      #sign_in(user)
       # Retrieve the stored location BEFORE redirecting
-   redirect_to after_sign_in_path_for(user), notice: "Signed in successfully!"
+      redirect_to after_sign_in_path_for(user), notice: "Signed in successfully!"
     else
       flash.now[:alert] = "Invalid Email or password."
+      self.resource = User.new # ✅ Ensure the form reloads with a valid resource
       render :new, status: :unprocessable_entity
     end
   end

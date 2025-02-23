@@ -4,10 +4,11 @@
     So that I can modify its details
   
   Background:
-    Given I am logged in as "user@example.com" with password "Password123!"
+    Given I am a logged-in user
+    And I have a bin named "Storage Bin"
 
   Scenario: Updating the bins
-    When I visit the edit page for "bin1"
+    When I visit the edit page for "Storage Bin"
     And I fill in the bin name with "Updated Bin"
     And I press "Update Bin"
     Then I should see "Bin was successfully updated"

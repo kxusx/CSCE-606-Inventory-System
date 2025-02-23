@@ -4,8 +4,8 @@ Feature: Adding Items to Bin
   So that I can manage inventory
 
   Background:
-    Given I am logged in as "user@example.com" with password "Password123!"
-    And a bin named "Bin 1" exists
+    Given I am a logged-in user
+    And I have a bin named "Storage Bin"
 
   Scenario: Successfully adding an item to a bin
     When I visit the new item page
