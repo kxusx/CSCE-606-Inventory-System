@@ -1,7 +1,9 @@
 # CSCE-606-Inventory-System
+
 # README
 
-[Heroku Link]( https://inventory-system-lightfoot-c73b05a2c5ae.herokuapp.com/)
+[Heroku Link](https://robert-inventory-f91e26f91bb2.herokuapp.com/)
+
 ### **Code Climate report**
 
 Temporary Report link :
