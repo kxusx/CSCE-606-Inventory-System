@@ -78,6 +78,6 @@ class BinsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def bin_params
-    params.require(:bin).permit(:name, :location, :category_name) # Fixed params.expect → params.require & permit
+    params.require(:bin).permit(:name, :location, :category_name, :bin_picture) # Fixed params.expect → params.require & permit
   end
 end
