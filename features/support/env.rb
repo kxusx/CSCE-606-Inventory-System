@@ -3,6 +3,14 @@
 
 require 'cucumber/rails'
 
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_filter '/config/'
+  add_filter '/spec/'
+  add_filter '/features/'
+end
+
+
 # Ensures that Rails path helpers like `new_user_session_path` work in your steps
 World(Rails.application.routes.url_helpers)
 

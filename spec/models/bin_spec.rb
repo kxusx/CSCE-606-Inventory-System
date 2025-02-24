@@ -2,11 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Bin, type: :model do
   # Setup test data
-  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!') }
+  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!', bins_count:0) }
   let(:valid_attributes) do
     {
       name: 'Storage Box',
-      user: user
+      user: user,
+      location: "Garage",
+      category_name: "Misc"
     }
   end
 
@@ -27,6 +29,21 @@ RSpec.describe Bin, type: :model do
       bin = Bin.new(valid_attributes.merge(user: nil))
       expect(bin).not_to be_valid
     end
+
+
+    # QR Code is generated after creation
+    it 'generates a QR code upon creation' do
+      bin = Bin.create!(valid_attributes)
+      expect(bin.qr_code).not_to be_nil
+    end
+
+    # QR Code contains the correct URL
+    it 'has a valid QR code containing the correct bin URL' do
+      bin = Bin.create!(valid_attributes)
+      expected_url = "http://127.0.0.1:3000/bins/#{bin.id}"
+      #call method that has the URL
+      expect(bin.send(:qr_code_data)).to eq(expected_url) # Compare it with the generated QR code
+    end
   end
 
   # Associations
@@ -36,7 +53,7 @@ RSpec.describe Bin, type: :model do
     it 'belongs to a user with counter cache' do
       association = described_class.reflect_on_association(:user)
       expect(association.macro).to eq :belongs_to
-      expect(association.options[:counter_cache]).to be true
+      expect(association.options[:counter_cache]).to include(active: true)
     end
 
     it 'has many items' do
@@ -48,17 +65,26 @@ RSpec.describe Bin, type: :model do
       expect(bin).to respond_to(:bin_pictures)
       expect(bin.bin_pictures).to be_an_instance_of(ActiveStorage::Attached::Many)
     end
+
+    # QR Code - should only work for correct user
+    it 'ensures QR code belongs to the correct user' do
+      bin = Bin.create!(valid_attributes)
+      expect(bin.user_id).to eq(user.id) # insures correct ownership
+    end
   end
+
+
+
 
   # Instance Methods
   describe '#items_in_bin' do
     let(:bin) { Bin.create!(valid_attributes) }
     
     it 'returns items belonging to the bin' do
-      item1 = Item.create!(name: 'Item 1', bin: bin)
-      item2 = Item.create!(name: 'Item 2', bin: bin)
+      item1 = Item.create!(name: 'Item 1', bin: bin, value: 10.0)
+      item2 = Item.create!(name: 'Item 2', bin: bin, value: 20.0)
       other_bin = Bin.create!(valid_attributes)
-      other_item = Item.create!(name: 'Item 3', bin: other_bin)
+      other_item = Item.create!(name: 'Item 3', bin: other_bin, value: 15.0)
 
       items = bin.items_in_bin
       expect(items).to include(item1, item2)

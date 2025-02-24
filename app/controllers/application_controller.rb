@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :store_location
   before_action :authenticate_user!, except: [:new, :create]
   
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -14,5 +15,24 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
   end
+  
+  # method use in dashboard_controller for login
+  #def require_login
+  #  unless current_user
+  #    store_location # Save URL before redirecting
+  #    redirect_to login_path, alert: "You must logged in to access this page"
+  #  end
+  #end
+
+  private
+
+  # Store the original URL before redirecting to login
+  def store_location
+    ignored_paths = [new_user_session_path, signup_path,"/password/reset"]
+    if request.get? && !request.xhr? && !devise_controller? && !ignored_paths.include?(request.fullpath)
+      store_location_for(:user, request.fullpath) 
+    end
+  end
+  
 end
 

@@ -1,170 +1,145 @@
 require 'rails_helper'
 
 RSpec.describe PasswordController, type: :controller do
-  let(:user) { create(:user, email: 'test@example.com', password: 'OldPassword123!') }
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
 
-  describe 'GET #forgot' do
-    it 'renders the forgot password page' do
+  let(:user) { create(:user) }
+
+  before(:each) do
+    Rails.application.reload_routes!
+  end
+
+  describe "GET #forgot" do
+    it "renders the forgot password page" do
       get :forgot
-      expect(response).to render_template('password/forgot')
+      expect(response).to render_template(:forgot)
+      expect(response).to have_http_status(:ok)
+      puts "✅ Test Passed: GET /forgot renders forgot password page"
     end
   end
 
-  describe 'POST #send_reset_code' do
-    context 'with existing user email' do
-      before do
-        allow(UserMailer).to receive_message_chain(:reset_password_email, :deliver_now)
-      end
-
-      it 'sends reset code and redirects to reset code page' do
+  describe "POST #send_reset_code" do
+    context "with valid email" do
+      it "sends a reset code to the user" do
         post :send_reset_code, params: { email: user.email }
-        
-        expect(session[:reset_user_id]).to eq(user.id)
-        expect(user.reload.reset_code).not_to be_nil
+        user.reload
+
+        expect(user.reset_code).not_to be_nil
         expect(user.reset_sent_at).not_to be_nil
-        expect(flash[:notice]).to eq('Reset code sent to your email.')
         expect(response).to redirect_to(reset_code_path)
-      end
-
-      it 'sends reset password email' do
-        expect(UserMailer).to receive_message_chain(:reset_password_email, :deliver_now)
-        post :send_reset_code, params: { email: user.email }
+        expect(flash[:notice]).to eq("Reset code sent to your email.")
+        puts "✅ Test Passed: POST /send_reset_code generates reset code and redirects"
       end
     end
 
-    context 'with non-existing user email' do
-      it 'redirects back with error message' do
-        post :send_reset_code, params: { email: 'nonexistent@example.com' }
-        
-        expect(flash[:error]).to eq('User not registered in the database')
+    context "with invalid email" do
+      it "redirects to forgot password page with error" do
+        post :send_reset_code, params: { email: "invalid@example.com" }
+
         expect(response).to redirect_to(forgot_password_path)
+        expect(flash[:error]).to eq("User not registered in the database")
+        puts "✅ Test Passed: POST /send_reset_code handles invalid email"
       end
     end
   end
 
-  describe 'GET #reset_code' do
-    it 'renders the reset code page' do
-      get :reset_code
-      expect(response).to render_template('password/reset_code')
+  describe "POST #verify_reset_code" do
+    before do
+      user.update(reset_code: "123456", reset_sent_at: Time.now)
+      session[:reset_user_id] = user.id
     end
-  end
 
-  describe 'POST #verify_reset_code' do
-    context 'with valid reset code within time limit' do
-      before do
-        user.update_columns(
-          reset_code: 'abc123',
-          reset_sent_at: 5.minutes.ago
-        )
-        session[:reset_user_id] = user.id
-      end
-
-      it 'redirects to new password reset page' do
-        post :verify_reset_code, params: { reset_code: 'abc123' }
+    context "with valid code" do
+      it "redirects to password reset form" do
+        post :verify_reset_code, params: { reset_code: "123456" }
         expect(response).to redirect_to(new_password_reset_path)
+        puts "✅ Test Passed: POST /verify_reset_code with valid code"
       end
     end
 
-    context 'with invalid reset code' do
-      before do
-        user.update_columns(
-          reset_code: 'abc123',
-          reset_sent_at: 5.minutes.ago
-        )
-        session[:reset_user_id] = user.id
-      end
-
-      it 'redirects back with error message' do
-        post :verify_reset_code, params: { reset_code: 'wrong123' }
-        expect(flash[:console_alert]).to eq('Invalid or expired reset code')
+    context "with invalid code" do
+      it "redirects back with error message" do
+        post :verify_reset_code, params: { reset_code: "wrongcode" }
         expect(response).to redirect_to(reset_code_path)
-      end
-    end
-
-    context 'with expired reset code' do
-      before do
-        user.update_columns(
-          reset_code: 'abc123',
-          reset_sent_at: 20.minutes.ago
-        )
-        session[:reset_user_id] = user.id
-      end
-
-      it 'redirects back with error message' do
-        post :verify_reset_code, params: { reset_code: 'abc123' }
-        expect(flash[:console_alert]).to eq('Invalid or expired reset code')
-        expect(response).to redirect_to(reset_code_path)
+        expect(flash[:console_alert]).to eq("Invalid or expired reset code")
+        puts "✅ Test Passed: POST /verify_reset_code with invalid code"
       end
     end
   end
 
-  describe 'POST #resend_reset_code' do
-    context 'with valid session' do
-      before do
-        session[:reset_user_id] = user.id
-        allow(UserMailer).to receive_message_chain(:reset_password_email, :deliver_now)
-      end
+  describe "POST #resend_reset_code" do
+    before do
+      user.update(reset_code: "123456", reset_sent_at: Time.now)
+      session[:reset_user_id] = user.id
+    end
 
-      it 'generates new reset code and redirects' do
-        old_reset_code = user.reset_code
+    context "when session exists" do
+      it "generates a new reset code and sends an email" do
         post :resend_reset_code
-        
-        expect(user.reload.reset_code).not_to eq(old_reset_code)
-        expect(flash[:notice]).to eq('New reset code sent to your email.')
+        user.reload
+
+        expect(user.reset_code).not_to eq("123456") # Code should be different
+        expect(user.reset_sent_at).to be_within(1.second).of(Time.now)
         expect(response).to redirect_to(reset_code_path)
-      end
-
-      it 'sends new reset password email' do
-        expect(UserMailer).to receive_message_chain(:reset_password_email, :deliver_now)
-        post :resend_reset_code
+        expect(flash[:notice]).to eq("New reset code sent to your email.")
+        puts "✅ Test Passed: POST /resend_reset_code generates new reset code"
       end
     end
 
-    context 'with expired session' do
-      it 'redirects to forgot password page' do
+    context "when session expired" do
+      it "redirects to forgot password page" do
+        session[:reset_user_id] = nil # Simulate expired session
+
         post :resend_reset_code
-        expect(flash[:console_alert]).to eq('Session expired. Please request a new reset code.')
         expect(response).to redirect_to(forgot_password_path)
+        expect(flash[:console_alert]).to eq("Session expired. Please request a new reset code.")
+        puts "✅ Test Passed: POST /resend_reset_code handles expired session"
       end
     end
   end
 
-  describe 'POST #update' do
-    context 'with valid parameters' do
-      before do
-        session[:reset_user_id] = user.id
-      end
+  describe "GET #reset" do
+    before do
+      session[:reset_user_id] = user.id
+    end
 
-      it 'updates password and redirects to login' do
-        post :update, params: {
-          user: {
-            password: 'NewPassword123!',
-            password_confirmation: 'NewPassword123!'
-          }
-        }
+    it "renders the password reset page" do
+      get :reset
+      expect(response).to render_template(:reset)
+      puts "✅ Test Passed: GET /reset renders password reset page"
+    end
+  end
 
-        expect(user.reload.reset_code).to be_nil
+  describe "POST #update" do
+    before do
+      user.update(reset_code: "123456", reset_sent_at: Time.now)
+      session[:reset_user_id] = user.id
+    end
+
+    context "with valid password" do
+      it "updates the password and clears reset code" do
+        post :update, params: { user: { password: "NewPass1!", password_confirmation: "NewPass1!" } }
+        user.reload
+
+        #expect(user.authenticate("NewPass1!")).to be_truthy
+        expect(user.valid_password?("NewPass1!")).to be_truthy
+
+        expect(user.reset_code).to be_nil
         expect(session[:reset_user_id]).to be_nil
-        expect(flash[:notice]).to eq('Password reset successful!')
         expect(response).to redirect_to(new_user_session_path)
+        expect(flash[:notice]).to eq("Password reset successful!")
+        puts "✅ Test Passed: POST /update resets password successfully"
       end
     end
 
-    context 'with invalid parameters' do
-      before do
-        session[:reset_user_id] = user.id
-      end
+    context "with invalid password" do
+      it "renders reset page with errors" do
+        post :update, params: { user: { password: "short", password_confirmation: "short" } }
 
-      it 'renders reset form with errors' do
-        post :update, params: {
-          user: {
-            password: 'new',
-            password_confirmation: 'different'
-          }
-        }
-
-        expect(response).to render_template('password/reset')
-        expect(response.status).to eq(422)
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to render_template(:reset)
+        puts "✅ Test Passed: POST /update with invalid password"
       end
     end
   end

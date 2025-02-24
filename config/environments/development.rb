@@ -91,13 +91,12 @@ Rails.application.configure do
 
   # SMTP Settings (Same as production)
   config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: "gmail.com",
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: ENV["EMAIL_USER"],  # Use environment variables for security
-    password: ENV["EMAIL_PASS"]    # Set this in your environment variables
+    address: Rails.application.credentials.dig(:smtp, :address),
+    port: Rails.application.credentials.dig(:smtp, :port),
+    authentication: Rails.application.credentials.dig(:smtp, :authentication),
+    enable_starttls_auto: Rails.application.credentials.dig(:smtp, :enable_starttls_auto),
+    user_name: Rails.application.credentials.dig(:smtp, :user_name),
+    password: Rails.application.credentials.dig(:smtp, :password)   # Set this in your environment variables
   }
   
   # Ensure caching is disabled in development

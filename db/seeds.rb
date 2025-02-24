@@ -20,11 +20,14 @@ def create_user_with_bins_and_items(name, email, bins_and_items)
   user = User.find_or_create_by!(email: email) do |u|
     u.name = name
     u.password = "Abc1234!"
+    u.password_confirmation = "Abc1234!"  # Ensure Devise processes it
   end
 
   # Create unique bins and items for this user
   bins_and_items.each do |bin_info|
     bin = user.bins.create!(name: bin_info[:name], location: bin_info[:location], category_name: bin_info[:category])
+    # Generate and save QR Code
+    bin.send(:update_qr_code)
 
     bin_info[:items].each do |item|
       bin.items.create!(name: item[:name], description: item[:description], created_date: Time.now, value: item[:value])

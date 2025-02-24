@@ -4,10 +4,13 @@ Feature: Adding Bins
   So that I can organize items efficiently
 
   Background:
-    Given I am logged in as "user@example.com" with password "password123"
+    Given I am a logged-in user
 
   Scenario: Successfully adding a bin
     When I visit the new bin page
-    And I fill in "Name" with "Bin 1"
-    And I press "Create Bin"
+    When I visit the new bin page
+    And I fill in the bin "Name" with "Storage Bin"
+    And I fill in the bin "Location" with "Garage"
+    And I fill in the bin "bin_category_name" with "Misc"
+    And I click "Create Bin"
     Then I should see "Bin was successfully created"

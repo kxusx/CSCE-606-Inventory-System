@@ -76,3 +76,30 @@ end
 gem "benchmark", "0.4.0"
 gem "irb", "1.15.1"
 gem 'devise'
+
+# QR code generator
+gem "rqrcode"
+
+# simple cov
+group :test do
+  gem "simplecov", require: false
+end
+
+gem "image_processing", ">= 1.2"
+
+gem "ruby-vips"
+
+#factory
+group :test do
+  gem 'factory_bot_rails'
+end
+
+#faker
+group :development, :test do
+  gem 'faker'
+end
+
+# rails-controller -testing
+group :test do
+  gem 'rails-controller-testing'
+end
