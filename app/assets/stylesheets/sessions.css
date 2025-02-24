@@ -1,81 +1,93 @@
+/* sessions.css */
 body {
+    background-color: #f4f4f4;
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f4f4f4;
-}
-
-.container {
-    width: 100%;
-    max-width: 400px;
+  }
+  
+  .container {
     background: white;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-
-.form-container {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
-
-h2 {
-    margin-bottom: 20px;
+    width: 350px;
+  }
+  
+  h2 {
     color: #333;
-}
-
-label {
-    display: block;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
     text-align: left;
-    margin-top: 10px;
+  }
+  
+  label {
+    display: block;
     font-weight: bold;
-    color: #555;
-}
-
-input {
+    margin-bottom: 5px;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
-}
+    font-size: 16px;
+    box-sizing: border-box;
+  }
 
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    background: #28a745;
+  .forgot-password {
+    color: red;
+    font-size: 14px;
+    display: block;
+    text-align: left;
+    margin-top: -1px;
+    margin-bottom: 5px;
+  }
+
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  
+  .btn, input[type="submit"] {
+    background-color: #28a745; /* Green login button */
     color: white;
     border: none;
+    padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-}
-
-button:hover {
-    background: #218838;
-}
-
-p {
-    margin-top: 15px;
-    color: #555;
-}
-
-a {
+    width: 100%;
+  }
+  
+  .btn:hover, input[type="submit"]:hover{
+    background-color: #218838;
+  }
+  
+  p {
+    margin-top: 10px;
+  }
+  
+ a {
     color: #007bff;
     text-decoration: none;
-}
-
-a:hover {
+  }
+  
+  a:hover {
     text-decoration: underline;
-}
-
-.error-message {
-    color: #e11126;
-    text-align: left ;
-    font-size: 13px; /* Smaller font size */
-    margin-top: 5px; /* Space between the input and message */
-    display: block;
-}
+  }
+  

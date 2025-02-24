@@ -1,23 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe "bins/index", type: :view do
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+  let(:user) { create(:user) }
+  let(:bins) { create_list(:bin, 2, user: user) }  # ✅ Generate bins dynamically
+
   before(:each) do
-    user = User.create!(name: "Test User", email: "test@example.com", password: "Password1!")
-    
-    assign(:bins, [
-      Bin.create!(
-        name: "Name 1",
-        location: "Location 1",
-        category_name: "Category 1",
-        user: user # Ensure bin is associated with a user
-      ),
-      Bin.create!(
-        name: "Name 2",
-        location: "Location 2",
-        category_name: "Category 2",
-        user: user
-      )
-    ])
+    Rails.application.reload_routes!
+  end
+
+
+  before do
+    assign(:bins, bins)
+    allow(view).to receive(:bin_path) { |bin| "/bins/#{bin.id}" }  # ✅ Stub bin_path for each bin
   end
 
   it "renders a list of bins inside a table" do
@@ -30,17 +26,15 @@ RSpec.describe "bins/index", type: :view do
       assert_select "thead tr th", text: "Category", count: 1
       assert_select "thead tr th", text: "Actions", count: 1
 
-      # Ensure table has at least two rows for bins
+      # Ensure table has the correct number of rows
       assert_select "tbody tr", count: 2
 
-      # Ensure bin details are in the table
-      assert_select "tbody tr td", text: "Name 1", count: 1
-      assert_select "tbody tr td", text: "Location 1", count: 1
-      assert_select "tbody tr td", text: "Category 1", count: 1
-
-      assert_select "tbody tr td", text: "Name 2", count: 1
-      assert_select "tbody tr td", text: "Location 2", count: 1
-      assert_select "tbody tr td", text: "Category 2", count: 1
+      # ✅ Use dynamically generated bin names from FactoryBot
+      bins.each do |bin|
+        assert_select "tbody tr td", text: bin.name, count: 1
+        assert_select "tbody tr td", text: bin.location, count: 1
+        assert_select "tbody tr td", text: bin.category_name, count: 1
+      end
     end
   end
 end

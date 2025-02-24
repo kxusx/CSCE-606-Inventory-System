@@ -24,5 +24,5 @@ Scenario: A logged-out user scans an NFC tag that doesn't belong to him
     When I also scan the NFC chip for "Storage Bin"
     Then I should be redirected to the login page
     When I log in creating new user as "not_me@example.com"
-    Then I should be redirected to the page "Dashboard"
+    Then I should be redirected to the page "bins"
 

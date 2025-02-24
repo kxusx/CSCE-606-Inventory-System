@@ -86,4 +86,23 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # Use SMTP for email delivery
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
+  # Default host for email links
+  config.action_mailer.default_url_options = { host: 'yourdomain.com', protocol: 'https' }
+
+  # SMTP Settings (Use environment variables or Rails credentials)
+  config.action_mailer.smtp_settings = {
+    address: Rails.application.credentials.dig(:smtp, :address),
+    port: Rails.application.credentials.dig(:smtp, :port),
+    domain: Rails.application.credentials.dig(:smtp, :domain), # Ensure this is set
+    authentication: Rails.application.credentials.dig(:smtp, :authentication),
+    enable_starttls_auto: Rails.application.credentials.dig(:smtp, :enable_starttls_auto),
+    user_name: Rails.application.credentials.dig(:smtp, :user_name),
+    password: Rails.application.credentials.dig(:smtp, :password) # Should be set in credentials
+}
+
 end

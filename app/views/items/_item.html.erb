@@ -24,7 +24,7 @@
     <%= item.bin_id %>
   </p>
 
-  <% if item.item_picture.attached? %>
+  <% if item.item_pictures.attached? %>
     <p>
       <strong>Picture:</strong><br>
       <%= image_tag item.item_picture, size: "200x200" %>

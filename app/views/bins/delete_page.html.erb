@@ -1,0 +1,8 @@
+<h2>Select Bins to Delete</h2>
+
+<% @bins.each do |bin| %>
+  <p>
+    <%= bin.name %>
+    <%= link_to "Delete", delete_bin_path(bin), method: :delete, class: "btn", data: { confirm: "Are you sure?" } %>
+  </p>
+<% end %>

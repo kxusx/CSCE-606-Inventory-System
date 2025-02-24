@@ -1,0 +1,35 @@
+<%= stylesheet_link_tag "passwords", media: "all" %>
+
+<div class="form-container">
+    <h2>Enter Reset Code</h2>
+
+    <%= form_with url: verify_reset_code_path, method: :post, data: { turbo: false } do |f| %>
+        <label for="reset_code">Reset Code:</label>
+        <%= f.text_field :reset_code, id: "reset_code", required: true %>
+
+        <%= f.submit "Verify", class: "btn" %>
+    <% end %>
+
+    <p id="resend_text">
+        Resend in <span id="timer">30</span> seconds
+    </p>
+</div>
+
+<script>
+    let countdown = 3;
+    let timer = document.getElementById("timer");
+    let resendText = document.getElementById("resend_text");
+
+    function updateTimer() {
+        countdown--;
+        if (countdown > 0) {
+            timer.textContent = countdown;
+            setTimeout(updateTimer, 1000);
+        } else {
+            resendText.innerHTML = `<a href="<%= resend_reset_code_path %>" id="resend_link" class= "resend_link">Resend in 0 seconds</a>`;
+        }
+    }
+
+    // Start the countdown when the page loads
+    setTimeout(updateTimer, 1000);
+</script>

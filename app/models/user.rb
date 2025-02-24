@@ -1,7 +1,11 @@
+require 'devise'
+
 class User < ApplicationRecord
-    # Add bcrypt for secure password storage
-    has_secure_password
-    
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+    devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
     #User can ahve multiple bins
     has_many :bins, dependent: :destroy 
 
@@ -9,10 +13,13 @@ class User < ApplicationRecord
     # Validations
     validates :name, presence: true
     validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+    validates :reset_code, uniqueness: true, allow_nil: true
+    
 
-    # Validate password presence, length, and complexity
-    validates :password, presence: true, length: { minimum: 8 }, format: { 
-      with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+\z/, 
-      message: "must include at least one uppercase letter, one lowercase letter, one number, and one special character" 
-    }    
+    # Custom format validations for specific requirements
+    validates :password, format: { with: /[A-Z]/, message: "must include at least one uppercase letter" }
+    validates :password, format: { with: /[a-z]/, message: "must include at least one lowercase letter" }
+    validates :password, format: { with: /\d/, message: "must include at least one number" }
+    validates :password, format: { with: /[\W_]/, message: "must include at least one special character" }
+
 end

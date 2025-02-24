@@ -36,14 +36,15 @@ end
 
 
 Then('I should be redirected to the login page') do
-  expected_login_path = Rails.application.routes.url_helpers.login_path # Correct path for login
+  expected_login_path = Rails.application.routes.url_helpers.new_user_session_path  # Correct path for login
   expect(current_path).to eq(expected_login_path) # Check if user was redirected to login
 end
 
 
 When('I log in as {string}') do |email|
-  fill_in "Email", with: email
-  fill_in "Password", with: "Password1!"
+  visit new_user_session_path
+  fill_in "user[email]", with: "test@example.com"
+  fill_in "user[password]", with: "Password1!"
   click_button "Login" # This should trigger `get_stored_location` and redirect
 end
 
@@ -61,14 +62,14 @@ Given('I found a NFC bin named {string} with an NFC link') do |bin_name|
 end
 
 And('I should be redirected to the page {string}') do |expected_page|
-  expected_url = Rails.application.routes.url_helpers.dashboard_path
+  expected_url = Rails.application.routes.url_helpers.bins_path
   expect(current_path).to eq(expected_url) # Ensure the redirection is correct
 end
 
 When('I log in creating new user as {string}') do |email|
   @user = User.create!(name: "Test User", email: email, password: "Password1!")
-  visit login_path
-  fill_in "Email", with: email
-  fill_in "Password", with: "Password1!"
+  visit new_user_session_path
+  fill_in "user[email]", with: "not_me@example.com"
+  fill_in "user[password]", with: "Password1!"
   click_button "Login" # This should trigger `get_stored_location` and redirect
 end

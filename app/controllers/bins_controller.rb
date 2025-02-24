@@ -1,11 +1,16 @@
 class BinsController < ApplicationController
-  before_action :require_login
-  before_action :set_bin, only: %i[ show edit update destroy ]
-  before_action :authorize_user, only: [ :show, :edit, :update, :destroy ]
+  before_action :authenticate_user!
+  before_action :set_bin, only: %i[show edit update destroy]
+  before_action :authorize_user, only: %i[show edit update destroy]
 
   # GET /bins or /bins.json
   def index
-    @bins = current_user.bins # only current bin for login users
+    @bins = current_user.bins # Show only bins for the logged-in user
+  end
+
+  # GET /bins/delete-bins → Shows a page to select bins for deletion
+  def delete_page
+    @bins = current_user.bins # List bins that can be deleted
   end
 
   # GET /bins/1 or /bins/1.json
@@ -15,7 +20,7 @@ class BinsController < ApplicationController
 
   # GET /bins/new
   def new
-    @bin = current_user.bins.build # only for bin associated with user
+    @bin = current_user.bins.build # Only allow bins associated with the user
   end
 
   # GET /bins/1/edit
@@ -61,17 +66,18 @@ class BinsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_bin
-      @bin = Bin.find(params.expect(:id))
-    end
 
-    def authorize_user
-      redirect_to bins_path, alert: "Not authorized" if @bin.user != current_user
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_bin
+    @bin = Bin.find(params[:id]) # Fixed issue: params.expect → params[:id]
+  end
 
-    # Only allow a list of trusted parameters through.
-    def bin_params
-      params.require(:bin).permit(:name, :location, :category_name, :bin_picture)
-    end
+  def authorize_user
+    redirect_to bins_path, alert: "Not authorized" if @bin.user != current_user
+  end
+
+  # Only allow a list of trusted parameters through.
+  def bin_params
+    params.require(:bin).permit(:name, :location, :category_name, :bin_picture) # Fixed params.expect → params.require & permit
+  end
 end

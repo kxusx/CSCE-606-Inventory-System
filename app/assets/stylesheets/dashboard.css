@@ -1,22 +1,76 @@
-/* Dashboard styles */
+/* Center the entire page vertically and horizontally */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+/* Style the container */
+.container {
+  max-width: 600px;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Capitalize user's name */
 h1 {
-    color: #333;
-  }
-  
-  .btn {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-  }
-  
-  .btn:hover {
-    background-color: #0056b3;
-  }
-  
-  .dashboard-buttons {
-    display: flex;
-    gap: 15px; /* Adds spacing between buttons */
-  }
-  
+  font-size: 24px;
+  color: #333;
+  text-transform: capitalize; /* Ensures first letter of each word is uppercase */
+}
+
+/* Subheading text */
+p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Center the buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Space between buttons */
+  margin-top: 20px;
+}
+
+/* General button styles */
+.btn {
+  display: inline-block;
+  background: #007bff;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+/* Hover effect for buttons */
+.btn:hover {
+  background: #0056b3;
+}
+
+/* Logout button styling */
+.logout-btn {
+  display: block;
+  background: red;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 20px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+/* Hover effect for logout button */
+.logout-btn:hover {
+  background: darkred;
+}

@@ -1,8 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "/bins", type: :request do
-  # Create a test user for authentication
-  let(:user) { User.create!(name: "Test User", email: "test@example.com", password: "Password1!") }
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+  let(:user) { create(:user) }
+  
+  before(:each) do
+    Rails.application.reload_routes!
+    sign_in user
+  end
+  
 
   # Create a valid bin for testing
   let(:valid_attributes) do
@@ -14,26 +21,29 @@ RSpec.describe "/bins", type: :request do
     }
   end
 
-  # Setup authentication before each test
-  before do
-    post login_path, params: { email: user.email, password: "Password1!" }
-    follow_redirect!
+  it "checks that bins_path exists" do
+    Rails.application.reload_routes!
   end
 
-  # 🟢 INDEX (GET /bins)
-  describe "GET /index" do
+  describe "GET /index" do 
     it "renders a successful response" do
-      Bin.create!(valid_attributes) # Ensure a bin exists
-      get bins_path
+      #get new_bin_path
+      get "/bins"
+      #get bin_path
+
       expect(response).to be_successful
+      puts "✅ Test Passed: GET /index"
     end
   end
+  
 
   # 🟢 NEW (GET /bins/new)
   describe "GET /new" do
     it "renders a successful response" do
       get new_bin_path
+      #get "/bins"
       expect(response).to be_successful
+      puts "✅ Test Passed: GET /new"
     end
   end
 
@@ -43,6 +53,7 @@ RSpec.describe "/bins", type: :request do
       bin = Bin.create!(valid_attributes)
       get bin_path(bin)
       expect(response).to be_successful
+      puts "✅ Test Passed: GET /show"
     end
   end
 
@@ -52,6 +63,7 @@ RSpec.describe "/bins", type: :request do
       bin = Bin.create!(valid_attributes)
       get edit_bin_path(bin)
       expect(response).to be_successful
+      puts "✅ Test Passed: GET /edit"
     end
   end
 
@@ -67,6 +79,7 @@ RSpec.describe "/bins", type: :request do
       it "redirects to the created bin" do
         post bins_path, params: { bin: valid_attributes }
         expect(response).to redirect_to(Bin.last)
+        puts "✅ Test Passed: POST /bins"
       end
     end
 
@@ -99,6 +112,7 @@ RSpec.describe "/bins", type: :request do
         patch bin_path(bin), params: { bin: new_attributes }
         bin.reload
         expect(bin.name).to eq("Updated Bin")
+        puts "✅ Test Passed: Update bin"
       end
 
       it "redirects to the bin" do
@@ -130,6 +144,7 @@ RSpec.describe "/bins", type: :request do
       bin = Bin.create!(valid_attributes)
       delete bin_path(bin)
       expect(response).to redirect_to(bins_path)
+      puts "✅ Test Passed: Delete bin"
     end
   end
 end

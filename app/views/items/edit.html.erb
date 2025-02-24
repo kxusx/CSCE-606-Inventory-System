@@ -2,11 +2,127 @@
 
 <h1>Editing item</h1>
 
-<%= render "form", item: @item %>
+<%= form_with(model: @item, local: true) do |form| %>
+  <% if @item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+        <% @item.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :value %>
+    <%= form.number_field :value %>
+  </div>
+
+  <div class="field">
+    <%= form.label :bin_id, "Select Bin" %>
+    <%= form.collection_select :bin_id, 
+                             @bins, 
+                             :id, 
+                             :name, 
+                             { 
+                               include_blank: "No Bin (Unassigned)",
+                               selected: @item.bin_id 
+                             }, 
+                             class: "form-select" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :item_pictures %>
+    <%= form.file_field :item_pictures, multiple: true %>
+  </div>
+
+  <% if @item.item_pictures.attached? %>
+    <div class="field">
+      <p><strong>Current Pictures:</strong></p>
+      <div class="image-preview">
+        <% @item.item_pictures.each do |picture| %>
+          <div class="preview-container">
+            <%= image_tag picture, class: "img-thumbnail", style: "width: 100px; height: 100px; object-fit: cover;" %>
+            <%= button_to "Remove", delete_image_item_path(@item, image_id: picture.id),
+                method: :delete,
+                class: "btn btn-danger btn-sm mt-1",
+                data: { confirm: "Are you sure you want to remove this image?" } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="actions mt-3">
+    <%= form.submit "Update Item", class: "btn btn-primary" %>
+  </div>
+<% end %>
 
 <br>
 
-<div>
-  <%= link_to "Show this item", @item %> |
-  <%= link_to "Back to items", items_path %>
+<div class="mt-3">
+  <%= link_to "Show this item", @item, class: "btn btn-info" %> |
+  <%= link_to "Back to items", items_path, class: "btn btn-secondary" %>
 </div>
+
+<div class="mt-4">
+  <p class="text-muted">
+    <i class="fas fa-info-circle"></i>
+    You can leave the bin unselected to mark this item as unassigned.
+  </p>
+</div>
+
+<% content_for :styles do %>
+  <style>
+    .field {
+      margin-bottom: 1rem;
+    }
+    
+    .field label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    
+    .field input[type="text"],
+    .field input[type="number"],
+    .field select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    #error_explanation {
+      color: #dc3545;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #dc3545;
+      border-radius: 4px;
+      background-color: #f8d7da;
+    }
+    
+    #error_explanation h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .image-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .preview-container {
+      text-align: center;
+    }
+  </style>
+<% end %>

@@ -8,7 +8,7 @@ Feature: User Login
 
   Scenario: Successful login
     When I visit the login page
-    And I fill in "email" with "rafaeldms27@icloud.com"
-    And I fill in "password" with "Abc1234!"
+    And I fill in "Email" with "rafaeldms27@icloud.com"
+    And I fill in "Password" with "Abc1234!"
     And I press "Login"
     Then I should see "Welcome, Rafael!"
