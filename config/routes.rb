@@ -1,16 +1,23 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: "sessions" }, skip: [:registrations]
-  
+  # Devise authentication routes
+  devise_for :users, controllers: { sessions: "sessions" }
+
+  # Root path
+  root to: "sessions#new", as: :unauthenticated_root
+
+  # Devise-specific custom routes (ensure no duplication)
   devise_scope :user do
     get "signup", to: "users#new", as: "signup"
-    get "users/sign_out", to: 'sessions#destroy'
     post "signup", to: "users#create"
-    root to: "sessions#new", as: :unauthenticated_root
   end
-  
+
+  # Dashboard route
   get "dashboard", to: "dashboard#index", as: "dashboard"
 
+  # Resources for items
   resources :items
+
+  # Bins management
   resources :bins do
     collection do
       get "view", to: "bins#index", as: "view"
@@ -20,7 +27,11 @@ Rails.application.routes.draw do
       delete "delete", to: "bins#destroy", as: "delete"
     end
   end
-  
+
+  # ✅ Add routes for locations
+  resources :locations
+
+  # Bin deletion page
   get "delete-bins", to: "bins#delete_page", as: "delete_bins"
 
   # Log history route
@@ -34,6 +45,6 @@ Rails.application.routes.draw do
     post "verify_reset_code", to: "password#verify_reset_code", as: "verify_reset_code"
     get "resend_reset_code", to: "password#resend_reset_code", as: "resend_reset_code"
     get "reset", to: "password#reset", as: "new_password_reset"
-    post "update", to: "password#update",  as: "update_password"
+    post "update", to: "password#update", as: "update_password"
   end
 end

@@ -9,7 +9,9 @@ class User < ApplicationRecord
     #User can ahve multiple bins
     has_many :bins, dependent: :destroy 
 
-  
+    #User can have multiple locations
+    has_many :locations, dependent: :destroy 
+ 
     # Validations
     validates :name, presence: true
     validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }

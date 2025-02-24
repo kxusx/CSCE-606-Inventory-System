@@ -23,6 +23,21 @@ RSpec.describe SessionsController, type: :request do
       end
     end
 
+  describe "DELETE #destroy" do
+    it "logs out the user, updates session logout_time, and redirects to login" do
+      sign_in user  # Simulate logging in
+      session_record = Session.create!(user: user, login_time: Time.current) # Simulate an active session
+
+      delete destroy_user_session_path  
+
+      expect(session_record.reload.logout_time).not_to be_nil 
+      expect(response).to redirect_to(new_user_session_path) 
+      expect(controller.current_user).to be_nil  
+      puts "✅ Test Passed: DELETE destroy (logout)"
+    end
+  end
+ 
+
     context "with invalid credentials" do
       it "renders the login page with an error message" do
         post new_user_session_path, params: { user: { email: user.email, password: "wrongpassword" } }

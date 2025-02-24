@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_24_010857) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_24_200018) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -62,6 +62,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_010857) do
     t.index ["bin_id"], name: "index_items_on_bin_id"
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_locations_on_user_id"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.datetime "login_time"
+    t.datetime "logout_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -81,4 +98,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_010857) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bins", "users"
   add_foreign_key "items", "bins"
+  add_foreign_key "locations", "users"
+  add_foreign_key "sessions", "users"
 end

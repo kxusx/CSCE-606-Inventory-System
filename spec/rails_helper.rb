@@ -42,8 +42,9 @@ end
 RSpec.configure do |config|
   # for factory bot 
   config.include FactoryBot::Syntax::Methods
+  config.include Rails.application.routes.url_helpers
   # configure device
-  config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include Devise::Test::IntegrationHelpers, type: :feature
   config.before(:suite) do
     Rails.application.reload_routes!
   end
