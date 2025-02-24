@@ -1,11 +1,11 @@
 class BinsController < ApplicationController
   before_action :require_login
   before_action :set_bin, only: %i[ show edit update destroy ]
-  before_action :authorize_user, only: [:show, :edit, :update, :destroy]
+  before_action :authorize_user, only: [ :show, :edit, :update, :destroy ]
 
   # GET /bins or /bins.json
   def index
-    @bins = current_user.bins #only current bin for login users
+    @bins = current_user.bins # only current bin for login users
   end
 
   # GET /bins/1 or /bins/1.json
@@ -72,6 +72,6 @@ class BinsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def bin_params
-      params.expect(bin: [ :name, :location, :category_name ])
+      params.require(:bin).permit(:name, :location, :category_name, :bin_picture)
     end
 end

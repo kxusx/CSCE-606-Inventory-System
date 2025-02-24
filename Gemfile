@@ -75,4 +75,5 @@ group :test do
   gem "simplecov", require: false
 end
 
-gem "image_processing", ">= 1.2"
+gem "image_processing", "~> 1.2"
+gem "ruby-vips"

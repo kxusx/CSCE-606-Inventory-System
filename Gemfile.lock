@@ -438,7 +438,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner-active_record
   debug
-  image_processing (>= 1.2)
+  image_processing (~> 1.2)
   importmap-rails
   irb (= 1.15.1)
   jbuilder
@@ -450,6 +450,7 @@ DEPENDENCIES
   rqrcode
   rspec-rails
   rubocop-rails-omakase
+  ruby-vips
   selenium-webdriver
   simplecov
   sqlite3 (>= 2.1)
