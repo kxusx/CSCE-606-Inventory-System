@@ -481,6 +481,7 @@ DEPENDENCIES
   rqrcode
   rspec-rails
   rubocop-rails-omakase
+  ruby-vips
   selenium-webdriver
   simplecov
   sqlite3 (>= 2.1)
