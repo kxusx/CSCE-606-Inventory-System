@@ -44,35 +44,39 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
 RSpec.configure do |config|
-<<<<<<< HEAD
   config.before(:each, type: :system) do
-    driven_by(:selenium_chrome_headless)
+  driven_by(:selenium_chrome_headless)
   end
+
+  # Include Devise test helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include FactoryBot::Syntax::Methods
-
-  [:controller, :view, :request].each do |type|
-    config.include ::Rails::Controller::Testing::TestProcess, type: type
-    config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
-    config.include ::Rails::Controller::Testing::Integration, type: type
-  end
-=======
-  # for factory bot 
-  config.include FactoryBot::Syntax::Methods
-  # configure device
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # Include FactoryBot helpers
+  config.include FactoryBot::Syntax::Methods
+
+  # Ensure routes are reloaded before the test suite runs
   config.before(:suite) do
-    Rails.application.reload_routes!
+  Rails.application.reload_routes!
   end
+
+  # Include Warden test helpers
   config.include Warden::Test::Helpers
-  config.include FactoryBot::Syntax::Methods # If using FactoryBot
+
+  # Reset Warden after each test
   config.after(:each) do
-    Warden.test_reset!
+  Warden.test_reset!
   end
 
-
->>>>>>> origin/main
+  # Include Rails controller testing helpers
+  [:controller, :view, :request].each do |type|
+  config.include ::Rails::Controller::Testing::TestProcess, type: type
+  config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
+  config.include ::Rails::Controller::Testing::Integration, type: type
+  end
+end
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
