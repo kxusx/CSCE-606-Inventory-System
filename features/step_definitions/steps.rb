@@ -43,10 +43,10 @@ Then('I should be on the login page') do
 end
 
 
-# for updating bin 
+# for updating bin
 Given('I am logged in as {string} with password {string}') do |email, password|
   @user = User.create!(email: email, password: password, name: "Test User")
-  
+
   visit login_path
   fill_in "Email", with: email
   fill_in "Password", with: password
@@ -72,7 +72,7 @@ Then('I should see {string} on the bins list') do |updated_bin_name|
   expect(page).to have_content(updated_bin_name)
 end
 
-#adding an item
+# adding an item
 Given('a bin named {string} exists') do |bin_name|
   @bin = Bin.create!(name: bin_name, location: "Garage", category_name: "Misc", user: @user)
 end
@@ -92,4 +92,3 @@ end
 Then('I should be redirected to the item details page') do
   expect(current_path).to match(%r{/items/\d+}) # Matches /items/1, /items/2, etc.
 end
-

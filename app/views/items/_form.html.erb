@@ -13,32 +13,32 @@
 
   <div>
     <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, id: "item_name" %>
   </div>
 
   <div>
     <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
+    <%= form.text_field :description, id: "item_description" %>
   </div>
 
   <div>
     <%= form.label :created_date, style: "display: block" %>
-    <%= form.text_field :created_date %>
+    <%= form.text_field :created_date, id: "item_created_date" %>
   </div>
 
   <div>
     <%= form.label :value, style: "display: block" %>
-    <%= form.text_field :value %>
+    <%= form.text_field :value, id: "item_value" %>
   </div>
 
   <div>
     <%= form.label :bin_id, style: "display: block" %>
-    <%= form.number_field :bin_id %>
+    <%= form.number_field :bin_id, id: "item_bin_id" %>
   </div>
 
   <div>
     <%= form.label :item_picture, "Upload Picture", style: "display: block" %>
-    <%= form.file_field :item_picture %>
+    <%= form.file_field :item_picture, id: "item_picture" %>
   </div>
 
   <div>

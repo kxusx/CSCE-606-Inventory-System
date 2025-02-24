@@ -4,13 +4,14 @@ Feature: Add Picture to an Item
   So that I can associate an image with the item
 
   Scenario: User successfully uploads a picture for an item
-    Given I am on the new item page
-    When I fill in the item field "Name" with "Laptop"
-    And I fill in the item field "Description" with "A high-performance laptop"
-    And I fill in the item field "Created date" with "2025-02-24"
-    And I fill in the item field "Value" with "1200"
+    Given I am a logged-in user
+    When I visit the new item page for items
+    And I fill in the item-specific field "Name" with "Laptop"
+    And I fill in the item-specific field "Description" with "A high-performance laptop"
+    And I fill in the item-specific field "Created date" with "2025-02-24"
+    And I fill in the item-specific field "Value" with "1200"
     And I select a bin
-    And I attach a file "spec/fixtures/files/item_picture.jpg" to "Item picture"
-    And I press "Create Item"
-    Then I should see "Item was successfully created"
+    And I attach a file "spec/fixtures/files/item_picture.jpg" to the item picture field
+    And I click the item button "Create Item"
+    Then I should see the item success message "Item was successfully created"
     And I should see the uploaded item picture
