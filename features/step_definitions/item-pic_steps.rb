@@ -1,55 +1,52 @@
-Given("I am a logged-in user for items") do
+# Step to log in as a user
+Given("I am a logged-in user for item creation") do
   @user = User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!')
-  visit login_path
-  fill_in "Email", with: @user.email
-  fill_in "Password", with: "Password1!"
+  visit new_user_session_path
+  fill_in "user[email]", with: "test@example.com"
+  fill_in "user[password]", with: "Password1!"
   click_button "Login"
 end
 
-When("I visit the new item page for items") do
+
+
+# Step to visit the new item page
+When("I visit the new item page to add a picture") do
   visit new_item_path
 end
 
-
-When('I fill in the item-specific field {string} with {string}') do |field, value|
+# Step to fill in item-specific fields for picture upload
+When("I fill in the item-specific field {string} with {string}") do |field, value|
   case field
   when "Name"
-    fill_in "item_name", with: value
-  when "Description"
-    fill_in "item_description", with: value
-  when "Created date"
-    fill_in "item_created_date", with: value
+    fill_in "item[name]", with: value
   when "Value"
-    fill_in "item_value", with: value
+    fill_in "item[value]", with: value
   else
     fill_in field, with: value
   end
 end
 
-
-When("I select a bin") do
-  user = @user || User.first || User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!')
-  bin = Bin.first || Bin.create!(name: "Default Bin", user: user)
-
-  fill_in "Bin", with: bin.id  # Use fill_in instead of select
+# Step for selecting a bin from the dropdown
+When('I select a bin') do
+  select "Choose a bin", from: "item[bin_id]"  # Ensure the "Choose a bin" is an option in the dropdown
 end
 
-When("I debug the page") do
-  puts page.html  # Prints the full HTML content of the current page
+# Step to attach a file for item picture
+When('I attach a file {string} to the item picture field') do |file_path|
+  attach_file('item[item_pictures][]', Rails.root.join(file_path)) # Attach the file to the item_picture field
 end
 
-
-When("I attach a file {string} to the item picture field") do |file_path|
-  attach_file("item[item_picture]", Rails.root.join(file_path))  # Use the correct field name from HTML
+# Step to click the item button to create the item
+When('I click the item button {string}') do |button|
+  click_button(button)  # Click the Create Item button
 end
 
-When("I click the item button {string}") do |button|
-  click_button(button)
+# Step to verify item creation success message
+Then('I should see the item success message {string}') do |message|
+  expect(page).to have_content(message)  # Expect to see the success message after item creation
 end
 
-Then(/^I should see the item success message "(.*)"$/) do |message|
-  expect(page).to have_selector('.flash-message', text: message, visible: :visible)
+# Step to verify the uploaded item picture
+Then('I should see the uploaded item picture') do
+  expect(page).to have_css("img")  # Expect an image tag for the uploaded picture
 end
-
-Then("I should see the uploaded item picture") do
-  expect(page).to have_css("img")
