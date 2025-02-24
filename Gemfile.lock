@@ -470,11 +470,8 @@ DEPENDENCIES
   devise
   dotenv-rails
   factory_bot_rails
-<<<<<<< HEAD
-=======
   faker
   image_processing (>= 1.2)
->>>>>>> origin/main
   importmap-rails
   irb (= 1.15.1)
   jbuilder
@@ -486,10 +483,7 @@ DEPENDENCIES
   rack_session_access
   rails (~> 8.0.1)
   rails-controller-testing
-<<<<<<< HEAD
-=======
   rqrcode
->>>>>>> origin/main
   rspec-rails
   rubocop-rails-omakase
   ruby-vips
