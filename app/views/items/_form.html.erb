@@ -1,8 +1,7 @@
 <%= form_with(model: item) do |form| %>
   <% if item.errors.any? %>
-    <div style="color: red">
+    <div id="error_explanation">
       <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
-
       <ul>
         <% item.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,37 +10,26 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
+  <div class="field">
+    <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
+  <div class="field">
+    <%= form.label :value %>
+    <%= form.number_field :value, step: :any %>
   </div>
 
-  <div>
-    <%= form.label :created_date, style: "display: block" %>
-    <%= form.text_field :created_date %>
+  <div class="field">
+    <%= form.label :bin_id, "Bin" %>
+    <%= form.select :bin_id, 
+        [["No Bin", ""]] + @bins.map { |b| [b.name, b.id] },
+        { selected: item.bin_id },
+        { class: "bin-dropdown" } %>
+    <%= form.hidden_field :no_bin %>
   </div>
 
-  <div>
-    <%= form.label :value, style: "display: block" %>
-    <%= form.text_field :value %>
-  </div>
-
-  <div>
-    <%= form.label :bin_id, style: "display: block" %>
-    <%= form.number_field :bin_id %>
-  </div>
-
-  <div>
-    <%= form.label :item_picture, "Upload Picture", style: "display: block" %>
-    <%= form.file_field :item_picture %>
-  </div>
-
-  <div>
+  <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>

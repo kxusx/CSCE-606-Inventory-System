@@ -17,6 +17,8 @@ class Item < ApplicationRecord
   def prevent_deletion_and_unassign
     # Instead of allowing destruction, unassign from bin
     self.update(bin_id: nil, no_bin: true)
+    # Add an error message that will be available in the flash
+    errors.add(:base, "Item was unassigned instead of deleted")
     # Prevent the actual destruction
     throw :abort
   end

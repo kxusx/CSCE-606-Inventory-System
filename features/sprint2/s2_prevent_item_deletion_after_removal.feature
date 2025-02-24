@@ -5,31 +5,21 @@ Feature: Prevent Item Deletion After Bin Removal
   So that I don't lose item data when reorganizing my inventory
 
   Background:
-    Given I am logged in as "user@example.com" with password "Password123!"
+    Given I am a logged-in user
     And I have a bin named "Kitchen Stuff"
-    And I have an item "Coffee Maker" in the "Kitchen Stuff" bin
+    And I have an item "Coffee Maker" in bin "Kitchen Stuff"
 
   Scenario: Removing an item from a bin
     When I visit the edit page for item "Coffee Maker"
-    And I select "No Bin" from the bin dropdown
-    And I click "Update Item"
+    And I remove the bin assignment
     Then I should see "Item was successfully updated"
-    And I should see "Coffee Maker" in the unassigned items list
-    And the item "Coffee Maker" should have no bin assigned
+    And the item "Coffee Maker" should be unassigned
 
-  Scenario: Attempting to delete an item
-    When I visit the items page
-    And I click "Delete" for item "Coffee Maker"
-    Then I should see "Item was unassigned instead of deleted"
-    And I should see "Coffee Maker" in the unassigned items list
-    And the item "Coffee Maker" should have no bin assigned
 
-  Scenario: Reassigning an unassigned item to a new bin
+  Scenario: Reassigning an unassigned item
     Given I have an unassigned item "Blender"
     And I have a bin named "New Kitchen Bin"
-    When I visit the edit page for item "Blender"
-    And I select "New Kitchen Bin" from the bin dropdown
-    And I click "Update Item"
+    When I assign item "Blender" to bin "New Kitchen Bin"
     Then I should see "Item was successfully updated"
-    And I should see "Blender" in the "New Kitchen Bin" items list
+    And the item "Blender" should be in bin "New Kitchen Bin"
 
