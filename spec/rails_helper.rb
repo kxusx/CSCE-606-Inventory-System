@@ -76,7 +76,7 @@ RSpec.configure do |config|
   config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
   config.include ::Rails::Controller::Testing::Integration, type: type
   end
-end
+  
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
