@@ -519,7 +519,7 @@
           null,
           null,
           1,
-          7,
+          8,
           null,
           null,
           null,
@@ -626,7 +626,7 @@
           null,
           null,
           1,
-          0,
+          1,
           null,
           null,
           1,
@@ -659,7 +659,7 @@
           null
         ]
       },
-      "/home/saba/CSCE-606/CSCE-606-Inventory-System/app/controllers/items_controller.rb": {
+      "/home/saba/CSCE-606/CSCE-606-Inventory-System/app/controllers/bins_controller.rb": {
         "lines": [
           1,
           1,
@@ -673,29 +673,21 @@
           null,
           null,
           1,
-          null,
-          null,
-          null,
           1,
-          1,
-          null,
-          null,
-          null,
-          1,
-          null,
-          null,
           null,
           null,
           null,
           1,
           1,
           null,
-          1,
-          0,
           null,
           null,
           1,
           null,
+          null,
+          null,
+          1,
+          1,
           null,
           1,
           1,
@@ -743,7 +735,7 @@
           null,
           null,
           1,
-          2,
+          1,
           null,
           null
         ]
@@ -759,7 +751,7 @@
           null
         ]
       },
-      "/home/saba/CSCE-606/CSCE-606-Inventory-System/app/controllers/bins_controller.rb": {
+      "/home/saba/CSCE-606/CSCE-606-Inventory-System/app/controllers/items_controller.rb": {
         "lines": [
           0,
           0,
@@ -774,7 +766,6 @@
           null,
           0,
           0,
-          0,
           null,
           null,
           0,
@@ -786,8 +777,17 @@
           0,
           null,
           null,
+          null,
+          null,
           0,
           0,
+          null,
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
           null,
           0,
           0,
@@ -888,6 +888,6 @@
         "branches": {}
       }
     },
-    "timestamp": 1740415602
+    "timestamp": 1740416752
   }
 }

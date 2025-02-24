@@ -3,8 +3,15 @@
 <p><strong>Location:</strong> <%= @bin.location %></p>
 <p><strong>Category:</strong> <%= @bin.category_name %></p>
 
-<h2>Items in This Bin</h2>
+<!-- Display the Bin Picture -->
+<% if @bin.bin_picture.attached? %>
+  <h3>Bin Picture</h3>
+  <%= image_tag @bin.bin_picture, size: "200x200" %> <!-- You can adjust the size as needed -->
+<% else %>
+  <p>No picture uploaded for this bin.</p>
+<% end %>
 
+<h2>Items in This Bin</h2>
 <% if @bin.items_in_bin.any? %>
   <table class="table">
     <thead>
@@ -36,7 +43,6 @@
 
 <!-- Copy to Clipboard Button -->
 <button class="btn btn-primary" onclick="copyToClipboard()">Copy URL to NCF Chip</button>
-
 
 <div style='margin-top: 20px;'>
   <%= link_to "Back to All Bins", bins_path, class: "btn btn-secondary" %>
