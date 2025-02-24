@@ -59,6 +59,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_22_202234) do
     t.decimal "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "no_bin"
     t.index ["bin_id"], name: "index_items_on_bin_id"
   end
 

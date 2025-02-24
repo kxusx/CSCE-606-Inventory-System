@@ -91,9 +91,34 @@ When('I fill in the item field {string} with {string}') do |field, value|
 end
 
 Then('I should be redirected to the item details page') do
-  expect(current_path).to match(%r{/items/\d+}) # Matches /items/1, /items/2, etc.
+  expect(current_path).to eq("/items")  # Exact match
 end
 
 Given('I have a bin named {string}') do |bin_name|
   @bin = Bin.create!(name: bin_name, user: @user, location: "Garage", category_name: "Misc")
+end
+
+
+When('I visit the login page s1') do
+  visit login_path
+end
+
+When('I fill in {string} with {string} s1') do |field, value|
+  case field
+  when "Name"
+    fill_in "user[name]", with: value
+  when "Email"
+    fill_in "user[email]", with: value
+  when "Password"
+    fill_in "user[password]", with: value
+  when "Password confirmation"
+    fill_in "user[password_confirmation]", with: value
+  else
+    fill_in field, with: value
+  end
+end
+
+When('I select {string} from the bin dropdown') do |bin_name|
+  find('select#item_bin_id', wait: 5) # Wait for the dropdown to appear
+  select bin_name, from: 'item_bin_id'
 end

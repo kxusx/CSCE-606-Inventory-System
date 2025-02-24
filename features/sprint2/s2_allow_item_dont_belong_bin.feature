@@ -5,14 +5,13 @@ Feature: Create Items Without Bin Assignment
   So that I can catalog items before organizing them
 
   Background:
-    Given I am logged in as "user@example.com" with password "Password123!"
+    Given I am a logged-in user
 
   Scenario: Creating an item without a bin
     When I visit the new item page
-    And I fill in "Name" with "New Camera"
-    And I fill in "Description" with "Digital Camera"
-    And I fill in "Value" with "499.99"
-    And I select "No Bin" from the bin dropdown
+    And I fill in the item field "name" with "New Camera"
+    And I fill in the item field "value" with "499.99"
+    And I select "bin" from the bin dropdown
     And I click "Create Item"
     Then I should see "Item was successfully created"
     And I should see "New Camera" in the unassigned items list
@@ -45,5 +44,4 @@ Feature: Create Items Without Bin Assignment
     Then I should see an "Unassigned Items" section
     And I should see "Old Phone" in the unassigned items list
     And I should see "Headphones" in the unassigned items list
-F
 

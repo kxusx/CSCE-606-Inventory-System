@@ -36,6 +36,7 @@ class ItemsController < ApplicationController
     @item.no_bin = @item.bin_id.nil?
 
     if @item.save
+      flash[:notice] = "Item was successfully created"  # ✅ Ensure this is set
       redirect_to items_path
     else
       @bins = current_user.bins  # Fetch bins again in case of error
