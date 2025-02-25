@@ -89,17 +89,7 @@ gem "image_processing", ">= 1.2"
 
 gem "ruby-vips"
 
-#factory
-group :test do
-  gem 'factory_bot_rails'
-end
-
 #faker
 group :development, :test do
   gem 'faker'
-end
-
-# rails-controller -testing
-group :test do
-  gem 'rails-controller-testing'
 end
