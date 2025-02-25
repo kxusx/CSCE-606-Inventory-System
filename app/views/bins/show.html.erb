@@ -3,13 +3,6 @@
 <p><strong>Location:</strong> <%= @bin.location %></p>
 <p><strong>Category:</strong> <%= @bin.category_name %></p>
 
-<% if @bin.bin_picture.attached? %>
-  <h3>Bin Picture</h3>
-  <%= image_tag @bin.bin_picture, size: "200x200" %> <!-- You can adjust the size as needed -->
-<% else %>
-  <p>No picture uploaded for this bin.</p>
-<% end %>
-
 <h2>Items in This Bin</h2>
 
 <% if @bin.items_in_bin.any? %>
