@@ -8,7 +8,7 @@ class PasswordController < ApplicationController
   :reset, 
   :update
   ]
-  
+
   require 'securerandom'
   def new
       super
