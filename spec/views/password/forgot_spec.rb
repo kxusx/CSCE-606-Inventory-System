@@ -10,7 +10,7 @@ RSpec.describe 'password/forgot', type: :view do
     expect(rendered).to have_selector('h2', text: 'Forgot Password')
   end
 
-  it 'has the correct form elements' do
+  it 'has the correct form elements' do 
     expect(rendered).to have_selector("form[action='#{send_reset_code_path}'][method='post']") do |form|
       expect(form).to have_selector('label[for="email"]', text: 'Enter your registered email:')
       expect(form).to have_selector('input[type="email"][id="email"][required]')

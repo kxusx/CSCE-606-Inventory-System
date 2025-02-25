@@ -23,12 +23,10 @@ RSpec.describe 'Reset Password Page', type: :system do
       it 'allows password reset with valid matching passwords' do
         fill_in 'password', with: 'NewPassword123!'
         fill_in 'password_confirmation', with: 'NewPassword123!'
-        click_button 'Reset Password'
-        
-        # Add expectations based on your success behavior
-        # For example:
-        # expect(page).to have_current_path(new_user_session_path)
-        # expect(page).to have_content('Password reset successful!')
+        accept_alert('Password reset successful!') do
+          click_button 'Reset Password'
+        end
+        expect(page).to have_current_path(new_user_session_path)
       end
     end
 

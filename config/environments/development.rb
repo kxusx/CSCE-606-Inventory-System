@@ -89,15 +89,15 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
 
-  # SMTP Settings (Same as production)
-  config.action_mailer.smtp_settings = {
-    address: Rails.application.credentials.dig(:smtp, :address),
-    port: Rails.application.credentials.dig(:smtp, :port),
-    authentication: Rails.application.credentials.dig(:smtp, :authentication),
-    enable_starttls_auto: Rails.application.credentials.dig(:smtp, :enable_starttls_auto),
-    user_name: Rails.application.credentials.dig(:smtp, :user_name),
-    password: Rails.application.credentials.dig(:smtp, :password)   # Set this in your environment variables
-  }
+config.action_mailer.smtp_settings = {
+  address: ENV["SMTP_ADDRESS"],
+  port: ENV["SMTP_PORT"].to_i, # Ensure this is converted to an integer
+  authentication: ENV["SMTP_AUTHENTICATION"],
+  enable_starttls_auto: ENV["SMTP_ENABLE_STARTTLS_AUTO"] == "true",
+  user_name: ENV["SMTP_USER_NAME"],
+  password: ENV["SMTP_PASSWORD"]
+}
+
   
   # Ensure caching is disabled in development
   config.cache_classes = false
