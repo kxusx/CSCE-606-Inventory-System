@@ -61,7 +61,8 @@ RSpec.configure do |config|
   config.before(:suite) do
   Rails.application.reload_routes!
   end
-
+  
+  config.include Rails.application.routes.url_helpers, type: :view
   # Include Warden test helpers
   config.include Warden::Test::Helpers
 

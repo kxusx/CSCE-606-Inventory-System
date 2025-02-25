@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'password/forgot', type: :view do
+
   before do
+    puts "DEBUG: #{Rails.application.routes.url_helpers.send_reset_code_path}"
     render
   end
 
