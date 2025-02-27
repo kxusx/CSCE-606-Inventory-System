@@ -23,11 +23,13 @@ RSpec.describe Bin, type: :model do
       bin = Bin.new(valid_attributes.merge(name: nil))
       expect(bin).not_to be_valid
       expect(bin.errors[:name]).to include("can't be blank")
+      puts "✅ Test Passed: requires name"
     end
 
     it 'belongs to a user' do
       bin = Bin.new(valid_attributes.merge(user: nil))
       expect(bin).not_to be_valid
+      puts "✅ Test Passed: belongs to user"
     end
 
 
@@ -35,6 +37,7 @@ RSpec.describe Bin, type: :model do
     it 'generates a QR code upon creation' do
       bin = Bin.create!(valid_attributes)
       expect(bin.qr_code).not_to be_nil
+      puts "✅ Test Passed: generated qr code upon creation"
     end
 
     # QR Code contains the correct URL
@@ -43,6 +46,7 @@ RSpec.describe Bin, type: :model do
       expected_url = "http://127.0.0.1:3000/bins/#{bin.id}"
       #call method that has the URL
       expect(bin.send(:qr_code_data)).to eq(expected_url) # Compare it with the generated QR code
+      puts "✅ Test Passed: has a valid QR code"
     end
   end
 
@@ -54,22 +58,26 @@ RSpec.describe Bin, type: :model do
       association = described_class.reflect_on_association(:user)
       expect(association.macro).to eq :belongs_to
       expect(association.options[:counter_cache]).to include(active: true)
+      puts "✅ Test Passed: Associations - belong to user"
     end
 
     it 'has many items' do
       association = described_class.reflect_on_association(:items)
       expect(association.macro).to eq :has_many
+      puts "✅ Test Passed: Association, has many items"
     end
 
     it 'has many attached bin pictures' do
       expect(bin).to respond_to(:bin_pictures)
       expect(bin.bin_pictures).to be_an_instance_of(ActiveStorage::Attached::Many)
+      puts "✅ Test Passed: Association: has many attached "
     end
 
     # QR Code - should only work for correct user
     it 'ensures QR code belongs to the correct user' do
       bin = Bin.create!(valid_attributes)
       expect(bin.user_id).to eq(user.id) # insures correct ownership
+      puts "✅ Test Passed: Association: Ensure QR code belongs to correct user"
     end
   end
 
@@ -89,10 +97,12 @@ RSpec.describe Bin, type: :model do
       items = bin.items_in_bin
       expect(items).to include(item1, item2)
       expect(items).not_to include(other_item)
+      puts "✅ Test Passed: Intance Method, return item belonging to bin"
     end
 
     it 'returns empty when bin has no items' do
       expect(bin.items_in_bin).to be_empty
+      puts "✅ Test Passed: Intance Method, return empty when bin has no item"
     end
   end
 
@@ -110,6 +120,7 @@ RSpec.describe Bin, type: :model do
 
       expect(bin.bin_pictures).to be_attached
       expect(bin.bin_pictures.count).to eq(2)
+      puts "✅ Test Passed: bin picture"
     end
 
     it 'destroys attached pictures when bin is destroyed' do
@@ -151,6 +162,7 @@ RSpec.describe Bin, type: :model do
     it 'maintains association with items' do
       expect(bin.items).not_to be_empty
       expect(bin.items.first.bin).to eq(bin)
+      puts "✅ Test Passed: maintain association with items"
     end
 
     it 'allows items to be reassigned before deletion' do
