@@ -33,7 +33,7 @@ RSpec.describe "Sessions", type: :request do
     it "logs out the user successfully" do
       sign_in user  # Ensure the user is logged in before logging out
       delete destroy_user_session_path  # Use the Devise logout path
-      expect(response).to redirect_to(unauthenticated_root_path)  #  Update expectation
+      expect(response).to redirect_to(new_user_session_path)  #  Update expectation
       follow_redirect!
       expect(response.body).to include("Password")  # ✅ Ensure the login page is shown
       puts "✅ Test Passed: DELETE logout"

@@ -112,8 +112,8 @@ RSpec.describe Bin, type: :model do
 
     it 'can have multiple attached pictures' do
       # Simulating file attachments
-      file1 = fixture_file_upload('spec/fixtures/test_image1.jpg', 'image/jpeg')
-      file2 = fixture_file_upload('spec/fixtures/test_image2.jpg', 'image/jpeg')
+      file1 = fixture_file_upload('spec/fixtures/files/item_picture.jpg', 'image/jpeg')
+      file2 = fixture_file_upload('spec/fixtures/files/bin_picture.jpg', 'image/jpeg')
       
       bin.bin_pictures.attach(file1)
       bin.bin_pictures.attach(file2)

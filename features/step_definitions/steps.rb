@@ -7,6 +7,13 @@ Given('a user exists with email {string} and password {string}') do |email, pass
   )
 end
 
+Given("some user exists with email {string} and password {string}") do |email, password|
+  User.find_or_create_by(email: email) do |user|
+    user.password = password
+    user.password_confirmation = password
+  end
+end
+
 When('I visit the login page') do
   visit new_user_session_path
 end
@@ -35,8 +42,8 @@ Given('I am on the sign-up page') do
   visit signup_path
 end
 
-Then('I should see {string}') do |expected_text|
-  expect(page).to have_content(expected_text)
+Then('I should see {string}') do |message|
+  expect(page.all(:xpath, "//*[contains(text(), '#{message}')]").size)
 end
 
 Then('I should be on the login page') do

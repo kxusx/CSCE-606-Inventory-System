@@ -42,17 +42,26 @@ RSpec.describe "Items", type: :request do
         post items_path, params: { item: { name: "New Item", description: "New test", value: 50, bin_id: bin.id } }
       }.to change(Item, :count).by(1)
 
-      expect(response).to redirect_to(item_path(Item.last))
+      expect(response).to redirect_to(items_path)
       puts "✅ Test Passed: POST /create"
     end
   end
 
   describe "PATCH /update" do
     it "updates an existing item" do
-      patch item_path(item), params: { item: { name: "Updated Item Name" } }
+      patch item_path(item), params: { 
+        item: { 
+          name: "UpdatedItem",
+          description: "Updated Description",
+          value: 200,
+          bin_id: bin.id,
+          no_bin: false
+        } 
+      }
+      #item.reload 
       expect(response).to redirect_to(item_path(item))
       follow_redirect!
-      expect(response.body).to include("Updated Item Name")
+      expect(response.body).to include("UpdatedItem")
       puts "✅ Test Passed: PATCH /update"
     end
   end

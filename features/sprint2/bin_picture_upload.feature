@@ -11,5 +11,5 @@ Feature: Add Picture to a Bin
     And I fill in the bin field "Category name" with "Electronics"
     And I attach a bin picture "spec/fixtures/files/bin_picture.jpg" to the bin picture field
     And I press the bin button "Create Bin"
-    Then I should see the bin creation success message "Bin was successfully created"
+    Then I should see the bin creation success message "Bin was successfully created."
     And I should see the uploaded bin picture

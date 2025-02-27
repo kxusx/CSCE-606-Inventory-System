@@ -1,7 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Reset Password Page', type: :system do
-  let(:user) { create(:user, email: 'test@example.com', password: 'OldPassword123!') }
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+
+  before(:each) do
+    Rails.application.reload_routes!
+  end
+  
+  let(:user) { create(:user, email: 'test@example.com', password: 'OldPassword123!', password_confirmation: 'OldPassword123!') }
+
   
   before do
     driven_by(:selenium_chrome_headless)

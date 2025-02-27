@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'Reset Code Page', type: :system do
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+
+  before(:each) do
+    Rails.application.reload_routes!
+  end
+  
   before do
     driven_by(:selenium_chrome_headless)
     visit reset_code_path

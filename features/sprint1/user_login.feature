@@ -4,7 +4,7 @@ Feature: User Login
   So that I can access the system
 
   Background:
-    Given a user exists with email "rafaeldms27@icloud.com" and password "Abc1234!"
+    Given some user exists with email "rafaeldms27@icloud.com" and password "Abc1234!"
 
   Scenario: Successful login
     When I visit the login page

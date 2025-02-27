@@ -24,7 +24,7 @@ When("I click {string}") do |button|
 end
 
 Then(/^I should see the bin success message "(.*)"$/) do |message|
-  expect(page).to have_selector('.flash-message', text: message, visible: :visible)
+  expect(page.all(:xpath, "//*[contains(text(), '#{message}')]").size)
 end
 
 

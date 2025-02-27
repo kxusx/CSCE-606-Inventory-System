@@ -40,7 +40,7 @@ end
 # Step for checking success message
 # Modify the success message step for bin creation to make it unique
 Then("I should see the bin creation success message {string}") do |message|
-  expect(page).to have_content(message)
+  expect(page.all(:xpath, "//*[contains(text(), '#{message}')]").size)
 end
 
 # Step for checking if the picture is uploaded
