@@ -92,7 +92,6 @@ RSpec.describe Item, type: :model do
           unassigned_item.update!(bin: bin, no_bin: false)
         }.to change { unassigned_item.bin }.from(nil).to(bin)
           .and change { unassigned_item.no_bin }.from(true).to(false)
-        
         puts "✅ Test: Can be assigned to bin later - PASSED"
       end
     end
