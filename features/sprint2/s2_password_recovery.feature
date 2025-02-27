@@ -10,7 +10,7 @@ Feature: Password Recovery
     Given I am on the forgot password page
     When I enter my email "test@example.com"
     And I press the "Send Reset Code"
-    Then I should see the "Reset code sent to your email"
+    Then I should see the "Reset code sent to your email" s2
 
   Scenario: Entering a valid reset code
     Given I have requested a password reset
@@ -25,7 +25,7 @@ Feature: Password Recovery
     When I enter "NewPassword1!" as my new password
     And I confirm "NewPassword1!" as my new password
     And I press "Reset Password"
-    Then I should see "Password reset successful!"
+    Then I should see the "Password reset successful!" s2
     And I should be redirected to the login page1
 
   Scenario: Entering an invalid reset code

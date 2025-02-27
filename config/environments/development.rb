@@ -89,15 +89,16 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
 
-  # SMTP Settings (Same as production)
   config.action_mailer.smtp_settings = {
-    address: Rails.application.credentials.dig(:smtp, :address),
-    port: Rails.application.credentials.dig(:smtp, :port),
-    authentication: Rails.application.credentials.dig(:smtp, :authentication),
-    enable_starttls_auto: Rails.application.credentials.dig(:smtp, :enable_starttls_auto),
-    user_name: Rails.application.credentials.dig(:smtp, :user_name),
-    password: Rails.application.credentials.dig(:smtp, :password)   # Set this in your environment variables
+    address: "smtp.gmail.com",
+    port: 587,
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: "inventorycontrol83@gmail.com",  
+    password: "pgzr wkge mwug ysuy",
   }
+  
+
   
   # Ensure caching is disabled in development
   config.cache_classes = false

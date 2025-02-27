@@ -1,4 +1,5 @@
 class SessionsController < Devise::SessionsController
+
   before_action :redirect_if_authenticated, only: [:new]
   skip_before_action :require_no_authentication, only: [:new]
 
