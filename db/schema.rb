@@ -85,13 +85,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_200018) do
     t.string "name"
     t.string "email"
     t.integer "bins_count", default: 0, null: false
-    t.string "reset_code"
-    t.datetime "reset_sent_at"
     t.string "encrypted_password", default: "", null: false
-    t.datetime "remember_created_at"
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
+    t.datetime "remember_created_at"
+    t.string "reset_code"
+    t.datetime "reset_sent_at"
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

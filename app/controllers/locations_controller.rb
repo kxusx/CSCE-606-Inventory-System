@@ -23,8 +23,14 @@ class LocationsController < ApplicationController
       flash[:notice] = "Location created successfully!"
       redirect_to locations_path
     else
-      flash[:alert] = "Failed to create location"
-      render :new
+      flash.now[:alert] = "Failed to create location"
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }  # ✅ Standard HTML fallback
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }  # ✅ Handle Turbo
+      end
+      #flash.now[:alert] = "Failed to create location"
+      #flash[:alert] = "Failed to create location"
+      #render :new
     end
   end
 

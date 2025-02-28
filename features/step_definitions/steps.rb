@@ -7,6 +7,13 @@ Given('a user exists with email {string} and password {string}') do |email, pass
   )
 end
 
+Given("some user exists with email {string} and password {string}") do |email, password|
+  User.find_or_create_by(email: email) do |user|
+    user.password = password
+    user.password_confirmation = password
+  end
+end
+
 When('I visit the login page') do
   visit new_user_session_path
 end
@@ -35,8 +42,8 @@ Given('I am on the sign-up page') do
   visit signup_path
 end
 
-Then('I should see {string}') do |expected_text|
-  expect(page).to have_content(expected_text)
+Then('I should see {string}') do |message|
+  expect(page.all(:xpath, "//*[contains(text(), '#{message}')]").size)
 end
 
 Then('I should be on the login page') do
@@ -44,10 +51,10 @@ Then('I should be on the login page') do
 end
 
 
-# for updating bin 
+# for updating bin
 Given('I am logged in as {string} with password {string}') do |email, password|
   @user = User.create!(email: email, password: password, name: "Test User")
-  
+
   visit new_user_session_path
   fill_in "Email", with: email
   fill_in "Password", with: password
@@ -73,7 +80,7 @@ Then('I should see {string} on the bins list') do |updated_bin_name|
   expect(page).to have_content(updated_bin_name)
 end
 
-#adding an item
+# adding an item
 Given('a bin named {string} exists') do |bin_name|
   @bin = Bin.create!(name: bin_name, location: "Garage", category_name: "Misc", user: @user)
 end

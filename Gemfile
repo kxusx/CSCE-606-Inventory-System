@@ -45,8 +45,11 @@ gem "thruster", require: false  # HTTP asset caching/compression
 # Development and Test Group Gems
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+  gem 'factory_bot_rails'
   gem "brakeman", require: false  # Security analysis
   gem "rubocop-rails-omakase", require: false  # Style guide 
+  gem 'rack_session_access'
+  gem 'rack-test'
   
   # Testing
   gem "rspec-rails"      # RSpec for unit testing
@@ -57,7 +60,7 @@ group :development, :test do
   gem "capybara"         # Capybara for feature tests
   gem "selenium-webdriver"  # Selenium for browser automation
 
-  gem 'dotenv-rails'
+  gem "dotenv-rails"
 end
 
 # Console on error pages in development
@@ -65,10 +68,14 @@ group :development do
   gem "web-console"
 end
 
+group :test do
+  gem 'rails-controller-testing'
+end
+
 # Benchmarking and interactive Ruby console (included explicitly)
 gem "benchmark", "0.4.0"
 gem "irb", "1.15.1"
-gem 'devise'
+gem "devise"
 
 # QR code generator
 gem "rqrcode"
@@ -80,17 +87,19 @@ end
 
 gem "image_processing", ">= 1.2"
 
-#factory
+gem "ruby-vips"
+
+# factory
 group :test do
-  gem 'factory_bot_rails'
+  gem "factory_bot_rails"
 end
 
-#faker
+# faker
 group :development, :test do
-  gem 'faker'
+  gem "faker"
 end
 
 # rails-controller -testing
 group :test do
-  gem 'rails-controller-testing'
+  gem "rails-controller-testing"
 end

@@ -10,5 +10,5 @@ Feature: QR Code Generation for Bins
     And I fill in the bin "Location" with "Garage"
     And I fill in the bin "bin_category_name" with "Misc"
     And I click "Create Bin"
-    Then I should see the bin success message "Bin was successfully created"
+    Then I should see the bin success message "Bin was successfully created."
     And I should see a QR code

@@ -18,18 +18,21 @@ RSpec.describe Item, type: :model do
     it 'is valid with valid attributes' do
       item = Item.new(valid_attributes)
       expect(item).to be_valid
+      puts "✅ Test Passed: Validation"
     end
 
     it 'requires a name' do
       item = Item.new(valid_attributes.merge(name: nil))
       expect(item).not_to be_valid
       expect(item.errors[:name]).to include("can't be blank")
+      puts "✅ Test Passed: Requires Name"
     end
 
     it 'validates value is greater than or equal to 0' do
       item = Item.new(valid_attributes.merge(value: -1))
       expect(item).not_to be_valid
       expect(item.errors[:value]).to include('must be greater than or equal to 0')
+      puts "✅ Test Passed: Validates value is greater than or equal to 0"
     end
   end
 
@@ -38,12 +41,14 @@ RSpec.describe Item, type: :model do
     it 'belongs to a bin' do
       association = described_class.reflect_on_association(:bin)
       expect(association.macro).to eq :belongs_to
+      puts "✅ Test Passed: Association"
     end
 
     it 'has many attached item pictures' do
       item = Item.new(valid_attributes)
       expect(item).to respond_to(:item_pictures)
       expect(item.item_pictures).to be_an_instance_of(ActiveStorage::Attached::Many)
+      puts "✅ Test Passed: Has many attached item pictures"
     end
   end
 
@@ -77,6 +82,7 @@ RSpec.describe Item, type: :model do
         expect(item.name).to eq('Test Item')
         expect(item.description).to eq('A test item')
         expect(item.value).to eq(100.00)
+        puts "✅ Test Passed: CRUD Save"
       end
     end
 
@@ -86,16 +92,19 @@ RSpec.describe Item, type: :model do
       it 'retrieves an existing item' do
         found_item = Item.find(item.id)
         expect(found_item).to eq(item)
+        puts "✅ Test Passed: CRUD Retrieve"
       end
 
       it 'retrieves items by storage location' do
         items = Item.where(storage_location: 'Attic')
         expect(items).to include(item)
+        puts "✅ Test Passed: CRUD retreive Storage"
       end
 
       it 'retrieves items by user' do
         items = user.items
         expect(items).to include(item)
+        puts "✅ Test Passed: CRUD Retrieve items by user"
       end
     end
 
@@ -107,6 +116,7 @@ RSpec.describe Item, type: :model do
           item.update(name: 'New LED Lights', storage_location: 'Garage')
         }.to change { item.name }.to('New LED Lights')
           .and change { item.storage_location }.to('Garage')
+        puts "✅ Test Passed: CRUD UPDATE"
       end
 
       it 'moves item to a different bin' do
@@ -114,6 +124,7 @@ RSpec.describe Item, type: :model do
         expect {
           item.update(bin: new_bin)
         }.to change { item.bin }.to(new_bin)
+        puts "✅ Test Passed: Moves"
       end
     end
 
@@ -124,6 +135,7 @@ RSpec.describe Item, type: :model do
         expect {
           item.destroy
         }.to change(Item, :count).by(-1)
+      puts "✅ Test Passed: CRUD Delete"
       end
 
       it 'can be restored if accidentally deleted', if: Item.respond_to?(:with_deleted) do
@@ -131,6 +143,7 @@ RSpec.describe Item, type: :model do
         expect {
           item.restore
         }.to change(Item, :count).by(1)
+      puts "✅ Test Passed: CRUD Destroy"
       end
     end
   end

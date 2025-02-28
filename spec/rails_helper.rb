@@ -1,6 +1,11 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'devise'
 require 'spec_helper'
+require 'factory_bot_rails'
+require 'capybara/rspec'
+require 'selenium-webdriver'
+require "rack_session_access/capybara"
+Capybara.javascript_driver = :selenium_chrome_headless
 require 'faker'
 require 'rails-controller-testing'
 Rails::Controller::Testing.install
@@ -39,22 +44,41 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
 RSpec.configure do |config|
-  # for factory bot 
+  config.before(:each, type: :system) do
+  driven_by(:selenium_chrome_headless)
+  end
+  config.include Rails.application.routes.url_helpers #sid 
+
+  # Include Devise test helpers
+  config.include Devise::Test::IntegrationHelpers, type: :feature # sid 
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # Include FactoryBot helpers
   config.include FactoryBot::Syntax::Methods
-  config.include Rails.application.routes.url_helpers
-  # configure device
-  config.include Devise::Test::IntegrationHelpers, type: :feature
+
+  # Ensure routes are reloaded before the test suite runs
   config.before(:suite) do
-    Rails.application.reload_routes!
+  Rails.application.reload_routes!
   end
+
+  # Include Warden test helpers
   config.include Warden::Test::Helpers
-  config.include FactoryBot::Syntax::Methods # If using FactoryBot
+
+  # Reset Warden after each test
   config.after(:each) do
-    Warden.test_reset!
+  Warden.test_reset!
   end
 
-
+  # Include Rails controller testing helpers
+  [:controller, :view, :request].each do |type|
+  config.include ::Rails::Controller::Testing::TestProcess, type: type
+  config.include ::Rails::Controller::Testing::TemplateAssertions, type: type
+  config.include ::Rails::Controller::Testing::Integration, type: type
+  end
+  
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')

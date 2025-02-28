@@ -90,10 +90,9 @@ class ItemsController < ApplicationController
       end
     end
     
-
+    
     # Only allow a list of trusted parameters through.
     def item_params
-      # params.expect(item: [ :name, :description, :created_date, :value, :bin_id ])
       params.require(:item).permit(:name, :description, :value, :bin_id, :no_bin, item_pictures: [])
     end
 end
