@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <ul class="nav-links">
+    <li><%= link_to "BINS", bins_path %></li>
+    <li><%= link_to "ITEMS", items_path %></li>
+    <li><%= link_to "LOG", logs_path if defined?(logs_path) %></li>
+    <li><%= link_to "SALE", sales_path if defined?(logs_path) %></li>
+  </ul>
+
+<!-- Profile icon -->
+    <div class="profile">
+  <%= link_to "A", "#", class: "profile-icon disabled-link" %>
+</div>
+</nav>
