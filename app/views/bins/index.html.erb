@@ -19,7 +19,7 @@
       <% @bins.each do |bin| %>
         <tr>
           <td><%= link_to bin.name, bin_path(bin) %></td>
-          <td><%= bin.location %></td>
+          <td><%= bin.location.name %></td>
           <td><%= bin.category_name %></td>
           <td>
             <% if bin.bin_picture.attached? %>

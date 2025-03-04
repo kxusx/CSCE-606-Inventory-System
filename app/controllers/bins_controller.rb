@@ -20,22 +20,35 @@ class BinsController < ApplicationController
 
   # GET /bins/new
   def new
-    @bin = current_user.bins.build # Only allow bins associated with the user
+    @bin = current_user.bins.build  
+    @locations = current_user.locations  #fetch existing location for dropdown
   end
 
   # GET /bins/1/edit
   def edit
+    @bin = current_user.bins.find(params[:id])
+    @locations = current_user.locations 
   end
 
   # POST /bins or /bins.json
   def create
-    @bin = current_user.bins.build(bin_params)
+    @bin = current_user.bins.build(bin_params.except(:location_id, :new_location))
+    #@bin = current_user.bins.build(bin_params.except(:location)) # Exclude location from direct params
+    #@bin.location = Location.find_by(name: bin_params[:location]) # Find the Location object
+    # Use existing location if selected
+    if bin_params[:location_id].present?
+      @bin.location = Location.find_by(id: bin_params[:location_id])
+    elsif bin_params[:new_location].present?
+      # Create a new location if none is selected
+      @bin.location = current_user.locations.create(name: bin_params[:new_location])
+    end
 
     respond_to do |format|
       if @bin.save
         format.html { redirect_to @bin, notice: "Bin was successfully created." }
         format.json { render :show, status: :created, location: @bin }
       else
+        @locations = current_user.locations # Ensure dropdown is still populated on error
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @bin.errors, status: :unprocessable_entity }
       end
@@ -45,15 +58,28 @@ class BinsController < ApplicationController
   # PATCH/PUT /bins/1 or /bins/1.json
   def update
     respond_to do |format|
-      if @bin.update(bin_params)
+      # Remove location_id and new_location before updating other attributes
+      if @bin.update(bin_params.except(:location_id, :new_location))
+  
+        # Handle location update logic
+        if bin_params[:location_id].present?
+          @bin.location = Location.find_by(id: bin_params[:location_id])
+        elsif bin_params[:new_location].present?
+          @bin.location = current_user.locations.create(name: bin_params[:new_location])
+        end
+  
+        @bin.save # Save location changes
+  
         format.html { redirect_to @bin, notice: "Bin was successfully updated." }
         format.json { render :show, status: :ok, location: @bin }
       else
+        @locations = current_user.locations # Ensure dropdown is still populated on error
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @bin.errors, status: :unprocessable_entity }
       end
     end
   end
+  
 
   # DELETE /bins/1 or /bins/1.json
   def destroy
@@ -78,6 +104,6 @@ class BinsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def bin_params
-    params.require(:bin).permit(:name, :location, :category_name, :bin_picture) # Fixed params.expect → params.require & permit
+    params.require(:bin).permit(:name, :location, :category_name, :bin_picture, :location_id, :new_location) # Fixed params.expect → params.require & permit
   end
 end

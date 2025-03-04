@@ -10,11 +10,13 @@
 # Clear existing records (optional, only if you want to delete everything before seeding)
 
 # Find or create the user
-# Delete existing records to avoid duplicates
-Item.delete_all
-Bin.delete_all
-User.delete_all
+# Clear existing records in the correct order
+Item.destroy_all
+Bin.destroy_all
+Location.destroy_all
+User.destroy_all
 
+puts "running seed"
 # Helper method to create users with unique bins and items
 def create_user_with_bins_and_items(name, email, bins_and_items)
   user = User.find_or_create_by!(email: email) do |u|
@@ -23,29 +25,46 @@ def create_user_with_bins_and_items(name, email, bins_and_items)
     u.password_confirmation = "Abc1234!"  # Ensure Devise processes it
   end
 
-  # Create unique bins and items for this user
-  bins_and_items.each do |bin_info|
-    bin = user.bins.create!(name: bin_info[:name], location: bin_info[:location], category_name: bin_info[:category])
+
+  puts "✅ Created User: #{user.name} (#{user.email}) with ID: #{user.id}"
+
+  # Create locations for this user
+  locations = [
+    Location.create!(name: "Warehouse A", user: user),
+    Location.create!(name: "Tech Lab", user: user),
+    Location.create!(name: "Living Room", user: user),
+    Location.create!(name: "Office Desk", user: user)
+  ]
+
+
+  # Create bins with assigned locations
+  bins_and_items.each_with_index do |bin_info, index|
+    location = locations[index % locations.size] # Assign a location in a round-robin fashion
+    #puts "✅  User: #{user.name} (#{user.email}) with ID: #{user.id}"
+    bin = user.bins.create!(name: bin_info[:name], location: location, category_name: bin_info[:category])
+    #puts "✅  bin: #{bin.name} (#{bin.location.name}) with ID: #{bin.id}"
+
     # Generate and save QR Code
     bin.send(:update_qr_code)
+    puts "reach here?"
 
     bin_info[:items].each do |item|
-      bin.items.create!(name: item[:name], description: item[:description], created_date: Time.now, value: item[:value])
+      bin.items.create!(name: item[:name], description: item[:description], created_date: Time.now, value: item[:value],location: bin.location, user: bin.user)
     end
   end
 
-  puts "✅ Created user: #{user.name} (#{user.email}) with #{bins_and_items.size} bins and #{bins_and_items.sum { |b| b[:items].size }} items"
+  puts "✅ Created user: #{user.name} (#{user.email}) with #{bins_and_items.size} bins, #{locations.size} locations, and #{bins_and_items.sum { |b| b[:items].size }} items"
 end
 
 # Define unique bins and items for each user
 admin_bins = [
-  { name: "Server Room Equipment", location: "Server Room", category: "IT",
+  { name: "Server Room Equipment", category: "IT",
     items: [
       { name: "Rack Server", description: "Dell PowerEdge Server", value: 2500.0 },
       { name: "UPS Battery", description: "Uninterruptible Power Supply", value: 400.0 }
     ]
   },
-  { name: "Networking", location: "Tech Lab", category: "IT",
+  { name: "Networking", category: "IT",
     items: [
       { name: "Cisco Router", description: "Cisco ISR 4000 Series", value: 1500.0 },
       { name: "Ethernet Switch", description: "Netgear 24-Port Switch", value: 200.0 }
@@ -54,13 +73,13 @@ admin_bins = [
 ]
 
 rafael_bins = [
-  { name: "Home Electronics", location: "Living Room", category: "Gadgets",
+  { name: "Home Electronics", category: "Gadgets",
     items: [
       { name: "Smart TV", description: "Samsung 55-inch 4K TV", value: 700.0 },
       { name: "Soundbar", description: "Bose Soundbar 700", value: 500.0 }
     ]
   },
-  { name: "Office Essentials", location: "Office Desk", category: "Work",
+  { name: "Office Essentials", category: "Work",
     items: [
       { name: "Laptop", description: "MacBook Pro 16-inch", value: 2400.0 },
       { name: "Monitor", description: "Dell 27-inch Monitor", value: 300.0 }

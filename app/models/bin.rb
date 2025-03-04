@@ -2,6 +2,7 @@ require "rqrcode"
 
 class Bin < ApplicationRecord
   belongs_to :user, counter_cache: true # counter cache for bin counts
+  belongs_to :location
   has_many :items # reference to items
   has_one_attached :bin_picture, dependent: :destroy # bin with multiple pictures
   after_create :update_qr_code

@@ -1,5 +1,7 @@
 class Item < ApplicationRecord
+  belongs_to :user
   belongs_to :bin, optional: true
+  belongs_to :location, optional: true
   has_many_attached :item_pictures, dependent: :destroy
   
   validates :name, presence: true
@@ -13,6 +15,10 @@ class Item < ApplicationRecord
   end
 
   private
+
+  def inherit_bin_location
+    self.location_id = bin.location_id if bin.present?
+  end
 
   def prevent_deletion_and_unassign
     # Instead of allowing destruction, unassign from bin
