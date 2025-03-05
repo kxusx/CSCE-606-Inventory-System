@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   # ✅ Add routes for locations
   resources :locations
 
+  # ✅ Add routes for Search API
+  get 'search', to: 'search#index' # API route for fetching search data
+
 
 
   # Password Reset Routes

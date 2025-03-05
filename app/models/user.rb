@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
     #User can ahve multiple bins
     has_many :bins, dependent: :destroy 
+    has_many :items, dependent: :destroy 
 
     #User can have multiple locations
     has_many :locations, dependent: :destroy 
