@@ -5,48 +5,36 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    
     <%= javascript_include_tag 'copy_to_clipboard' %>
+    <%= javascript_include_tag "flash" %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-     <% unless (controller_name == "sessions" && action_name == "new") || 
-            (controller_name == "passwords" && ["new", "edit"].include?(action_name)) %>
-    <%= render "shared/navbar" %>
-  <% end %>
-    <% if flash[:notice] %>
-    <div class="flash-message">
-      <%= flash[:notice]%>
-      </div>
-      <script>
-        alert("<%= j(flash[:notice]) %>");
-        console.log("<%= j(flash[:notice]) %>");
-      </script>
+    <% unless (controller_name == "sessions" && action_name == "new") || 
+              (controller_name == "passwords" && ["new", "edit"].include?(action_name)) %>
+      <%= render "shared/navbar" %>
     <% end %>
 
-    <% if flash[:console_alert] %>
-      <script>
-          setTimeout(function() {
-              alert("<%= j(flash[:console_alert]) %>");
-              console.log("<%= j(flash[:console_alert]) %>");
-          }, 500); // Delay to ensure execution
-      </script>
-    <% end %>
-    
+    <% flash.each do |key, message| %>
+  <div class="flash-message" id="flash-popup" data-flash-type="<%= key %>">
+    <%= message %>
+  </div>
+  <% end %>
+
+
     <%= yield %>
   </body>
 </html>
