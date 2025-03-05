@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Items", type: :request do
-  include Devise::Test::IntegrationHelpers
-  include Rails.application.routes.url_helpers
   let(:user) { create(:user) }
-  let(:bin) { create(:bin, user: user) }
-  let(:item) { create(:item, bin: bin) }  # Ensures the item is associated with a bin
+  let(:location) { create(:location, user: user) } 
+  let(:bin) { create(:bin, user: user, location: location) }
+  let(:item) { create(:item, bin: bin, location:location, user:user) }  # Ensures the item is associated with a bin
 
   before(:each) do
     Rails.application.reload_routes!

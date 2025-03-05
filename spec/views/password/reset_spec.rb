@@ -11,6 +11,7 @@ RSpec.describe 'password/reset', type: :view do
   end
 
   before do
+    Rails.application.reload_routes!
     assign(:user, user)
     render
   end

@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "/bins", type: :request do
-  include Devise::Test::IntegrationHelpers
-  include Rails.application.routes.url_helpers
   let(:user) { create(:user) }
+  let(:location) { create(:location, user: user, name: "Garage") } 
   
   before(:each) do
     Rails.application.reload_routes!
@@ -15,7 +14,7 @@ RSpec.describe "/bins", type: :request do
   let(:valid_attributes) do
     {
       name: "Test Bin",
-      location: "Garage",
+      location_id: location.id,
       category_name: "Misc",
       user_id: user.id
     }
@@ -88,11 +87,13 @@ RSpec.describe "/bins", type: :request do
         expect {
           post bins_path, params: { bin: valid_attributes.merge(name: nil) }
         }.to_not change(Bin, :count)
+        puts "✅ Test Passed: with invalid parameter"
       end
 
       it "renders a response with 422 status" do
         post bins_path, params: { bin: valid_attributes.merge(name: nil) }
         expect(response).to have_http_status(422)
+        puts "✅ Test Passed: render 422 status"
       end
     end
   end
@@ -102,7 +103,6 @@ RSpec.describe "/bins", type: :request do
     let(:new_attributes) do
       {
         name: "Updated Bin",
-        location: "Updated Garage"
       }
     end
 

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'password/forgot', type: :view do
   before do
+    Rails.application.reload_routes!
     render
   end
 

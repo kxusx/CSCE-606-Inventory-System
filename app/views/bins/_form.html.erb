@@ -18,10 +18,12 @@
 
   <% locations ||= [] %> <!-- Ensure locations is never nil -->
 
-  <div>
-    <%= form.label :location_id, "Select Existing Location", style: "display: block" %>
-    <%= form.select :location_id, options_from_collection_for_select(locations, :id, :name), include_blank: "Choose a location" %>
-  </div>
+ <div>
+  <%= form.label :location_id, "Select Existing Location", style: "display: block" %>
+  <%= form.select :location_id, 
+        options_from_collection_for_select(locations, :id, :name, form.object.location_id), 
+        include_blank: "Choose a location" %>
+</div>
 
 
   <!-- Input for adding a new location -->

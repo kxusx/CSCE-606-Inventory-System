@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "bins/index", type: :view do
-  include Devise::Test::IntegrationHelpers
-  include Rails.application.routes.url_helpers
   let(:user) { create(:user) }
-  let(:bins) { create_list(:bin, 2, user: user) }  # ✅ Generate bins dynamically
+  let(:location) { create(:location, user: user) } 
+  let(:bins) { create_list(:bin, 2, user: user, location: location) }  # ✅ Generate bins dynamically
 
   before(:each) do
     Rails.application.reload_routes!
@@ -32,8 +31,9 @@ RSpec.describe "bins/index", type: :view do
       # ✅ Use dynamically generated bin names from FactoryBot
       bins.each do |bin|
         assert_select "tbody tr td", text: bin.name, count: 1
-        assert_select "tbody tr td", text: bin.location, count: 1
+        assert_select "tbody tr td", text: bin.location.name, count: bins.count
         assert_select "tbody tr td", text: bin.category_name, count: 1
+      puts "✅ Test Passed: view bins/index"
       end
     end
   end

@@ -25,7 +25,9 @@
 
   <body>
     <% unless (controller_name == "sessions" && action_name == "new") || 
-              (controller_name == "passwords" && ["new", "edit"].include?(action_name)) %>
+              (controller_name == "password" && ["new", "edit", "forgot", "reset_code","reset"].include?(action_name)) ||
+              (controller_name == "registrations" && action_name == "new") ||
+              (controller_name == "users" && action_name == "new") %>
       <%= render "shared/navbar" %>
     <% end %>
 
