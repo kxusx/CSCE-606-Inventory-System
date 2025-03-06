@@ -5,8 +5,10 @@ class ItemsController < ApplicationController
 
   # GET /items or /items.json
   def index
-    @items = Item.left_joins(:bin)
-                 .where('bins.user_id = ? OR items.bin_id IS NULL', current_user.id)
+    @items = current_user.items  # ✅ Fetch items directly associated with the user
+
+    # Apply search filtering if a name is provided
+    @items = @items.search_by_name(params[:name])
   end
 
   # GET /items/1 or /items/1.json

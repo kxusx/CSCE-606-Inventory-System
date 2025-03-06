@@ -1,6 +1,9 @@
 document.addEventListener("turbo:load", function () {
   const searchInventoryInput = document.getElementById("search-inventory");
   const searchItemsInput = document.getElementById("search-items");
+  const searchInventoryBtn = document.getElementById("search-inventory-btn"); // button for bin
+  const searchItemsBtn = document.getElementById("search-items-btn"); // button for item
+
   if (!searchInventoryInput || !searchItemsInput) return; // Stop if search boxes are missing
 
   let searchData = { bins: [], locations: [], items: [] };
@@ -70,6 +73,25 @@ document.addEventListener("turbo:load", function () {
     const query = searchItemsInput.value.trim();
     const results = filterResults(query, "items");
     showSuggestions(results, searchItemsInput);
+  });
+
+  // BUTTON search .. make sure it trigger the query
+  searchInventoryBtn.addEventListener("click", function () {
+    const query = searchInventoryInput.value.trim();
+    if (query) {
+      window.location.href = `/bins?name=${query}`;
+    } else {
+      window.location.href = "/bins"; // If empty, go to full bin list
+    }
+  });
+
+  searchItemsBtn.addEventListener("click", function () {
+    const query = searchItemsInput.value.trim();
+    if (query) {
+      window.location.href = `/items?name=${query}`;
+    } else {
+      window.location.href = "/items"; // If empty, go to full item list
+    }
   });
 
   // Close dropdowns if clicked outside

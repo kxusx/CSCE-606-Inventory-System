@@ -10,6 +10,11 @@ class Item < ApplicationRecord
 
   before_destroy :prevent_deletion_and_unassign
 
+  # Scope for searching items by name
+  scope :search_by_name, ->(query) {
+    where("LOWER(name) LIKE ?", "%#{query.downcase}%") if query.present?
+  }
+
   def unassigned?
     bin_id.nil? && no_bin?
   end

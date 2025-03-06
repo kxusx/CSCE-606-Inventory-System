@@ -8,6 +8,11 @@ class Bin < ApplicationRecord
   after_create :update_qr_code
 
   validates :name, presence: true
+  
+  # Scope to search bins by name
+  scope :search_by_name, ->(query) {
+    where("LOWER(name) LIKE ?", "%#{query.downcase}%") if query.present?
+  }
 
   # query for items in bin, it will be use in bin/show view
   def items_in_bin
@@ -38,4 +43,6 @@ class Bin < ApplicationRecord
       standalone: true
     )
   end
+
+
 end
