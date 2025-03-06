@@ -30,7 +30,7 @@ class ItemsController < ApplicationController
   # modify to ensure only can create items in bin
   # modify later for standalone items
   def create
-    @item = Item.new(item_params)
+    @item = current_user.items.build(item_params) 
 
     # Set no_bin to true if no bin is selected
     @item.no_bin = @item.bin_id.nil?

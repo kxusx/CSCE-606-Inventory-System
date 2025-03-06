@@ -1,12 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Bin, type: :model do
-  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!', bins_count: 0) }
+  let(:user) { create(:user) }
+  let(:location) { create(:location, user: user) } 
   let(:valid_attributes) do
     {
       name: 'Storage Box',
       user: user,
-      location: "Garage",
+      location: location,
       category_name: "Misc"
     }
   end

@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Item, type: :model do
-  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!') }
-  
+  let(:user) { create(:user) }
+  let(:location) { create(:location, user: user) } 
+
   describe 'creating unassigned items' do
     context 'when creating an item without a bin' do
       let(:unassigned_item) do
@@ -10,7 +11,8 @@ RSpec.describe Item, type: :model do
           name: 'Unassigned Item',
           description: 'An item without a bin',
           value: 150.00,
-          no_bin: true
+          no_bin: true,
+          user: user
         )
       end
 
@@ -81,12 +83,13 @@ RSpec.describe Item, type: :model do
           name: 'Initially Unassigned',
           description: 'Test item',
           value: 75.00,
-          no_bin: true
+          no_bin: true,
+          user: user
         )
       end
 
       it 'can be assigned to a bin later' do
-        bin = Bin.create!(name: 'New Bin', user: user, location: "Garage", category_name: "Misc")
+        bin = Bin.create!(name: 'New Bin', user: user, location: location, category_name: "Misc")
         
         expect {
           unassigned_item.update!(bin: bin, no_bin: false)

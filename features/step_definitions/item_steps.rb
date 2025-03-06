@@ -19,7 +19,8 @@ Given('I have an unassigned item {string}') do |item_name|
     name: item_name,
     value: 100.00,
     no_bin: true,
-    bin_id: nil
+    bin_id: nil,
+    user: @user
   )
 end
 

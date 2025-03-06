@@ -2,14 +2,17 @@ require 'rails_helper'
 
 RSpec.describe Item, type: :model do
   # Setup test data
-  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!') }
-  let(:bin) { Bin.create!(name: 'Storage Box', user: user) }
+  let(:user) { create(:user) }
+  let(:location) { create(:location, user: user) } 
+  let(:bin) { create(:bin, user: user, location: location) }
   let(:valid_attributes) do
     {
       name: 'Test Item',
       description: 'A test item',
       value: 100.00,
-      bin: bin
+      bin: bin,
+      user: user,
+      location: location
     }
   end
 

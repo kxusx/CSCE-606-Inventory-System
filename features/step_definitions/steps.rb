@@ -102,7 +102,8 @@ Then('I should be redirected to the item details page') do
 end
 
 Given('I have a bin named {string}') do |bin_name|
-  @bin = Bin.create!(name: bin_name, user: @user, location: "Garage", category_name: "Misc")
+  location = Location.find_or_create_by!(name: "Garage", user: @user)  # ✅ Ensure Location object
+  @bin = Bin.create!(name: bin_name, user: @user, location: location, category_name: "Misc")
 end
 
 

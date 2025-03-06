@@ -12,13 +12,14 @@ When("I visit the new bin page to add picture") do
   expect(page).to have_content("New bin")  # Adjust if your page title is different
 end
 
+
 # Step for filling in bin fields
 When('I fill in the bin field {string} with {string}') do |field, value|
   case field
   when 'Name'
     fill_in 'bin_name', with: value
   when 'Location'
-    fill_in 'bin_location', with: value
+    select(value, from: 'bin_location_id')  # ✅ Ensure this matches the `id` in the form
   when 'Category name'
     fill_in 'bin_category_name', with: value
   else
@@ -40,10 +41,17 @@ end
 # Step for checking success message
 # Modify the success message step for bin creation to make it unique
 Then("I should see the bin creation success message {string}") do |message|
-  expect(page.all(:xpath, "//*[contains(text(), '#{message}')]").size)
+  using_wait_time 5 do  # ✅ Waits for JavaScript execution
+    expect(page).to have_content(message)  # ✅ Ensure success message appears
+    end
 end
+
 
 # Step for checking if the picture is uploaded
 Then('I should see the uploaded bin picture') do
   expect(page).to have_css("img")  # Ensures an image is displayed
+end
+
+Given("I have a valid location") do
+  @location = Location.find_or_create_by!(name: "Warehouse A", user: @user)
 end
