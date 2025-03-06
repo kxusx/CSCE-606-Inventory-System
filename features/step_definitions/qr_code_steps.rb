@@ -1,5 +1,6 @@
 Given("I am a logged-in user") do
   @user = User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!')
+  
   visit new_user_session_path
   fill_in "user[email]", with: "test@example.com"
   fill_in "user[password]", with: "Password1!"
@@ -37,9 +38,12 @@ end
 # step definition for scan
  
 Given(/^I have a bin named "(.*)" with a QR code$/) do |bin_name|
+  user = @user
+  location = @location
   @bin = Bin.create!(
     name: bin_name,
-    location: "Garage",
+    location: location,
+    user:user,
     category_name: "Misc",
     user: @user # Assuming @user is already set from a previous step
   )

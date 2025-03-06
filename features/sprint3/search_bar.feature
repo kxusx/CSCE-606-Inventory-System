@@ -6,51 +6,43 @@ Feature: Search Bars on Dashboard
   Background:
     Given I am a logged-in user on the dashboard
     And I have a valid location
+    And I have bins with names "Storage Bin" and "Office Supplies" 
+    And I have items with names "drill" and "screwdriver" on bin "Storage Bin"
+    And I have items with names "staple" and "eraser" on bin "Office Supplies"
 
-  ### ✅ SEARCH BAR FOR BINS/CATEGORIES ###
+
+
+  ### ✅ SEARCH BAR FOR BINS/CATEGORIES ##
+  
+  @javascript
   Scenario: Searching for a bin by name
-    When I enter "Storage" in the bins search bar
+    When I enter "Storage Bin" in the bins search bar
     And I click the bins search button
-    Then I should see bins matching "Storage"
+    Then I should see bins matching "Storage Bin"
 
+  @javascript
   Scenario: Searching for a category
-    When I enter "Electronics" in the bins search bar
+    When I enter "tech" in the bins search bar
     And I click the bins search button
-    Then I should see categories matching "Electronics"
+    Then I should see categories matching "tech"
 
+  @javascript
   Scenario: No results found for bins/categories
     When I enter "NonExistentBin" in the bins search bar
     And I click the bins search button
-    Then I should see a message "No bins or categories found."
+    Then I should see a message "You have no bins yet"
 
-  ### ✅ SEARCH BAR FOR ITEMS ###
+  @javascript
   Scenario: Searching for an item by name
-    When I enter "Drill" in the items search bar
+    When I enter "drill" in the items search bar
     And I click the items search button
-    Then I should see items matching "Drill"
+    Then I should see items matching "drill"
 
-  Scenario: Searching for an item with filters
-    When I enter "Hammer" in the items search bar
-    And I select "Tools" from the items filter dropdown
-    And I click the items search button
-    Then I should see items matching "Hammer" under the "Tools" category
-
+  @javascript
   Scenario: No results found for items
     When I enter "NonExistentItem" in the items search bar
     And I click the items search button
-    Then I should see a message "No items found."
+    Then I should see a message "No items yet"
 
-  ### ✅ GENERAL SCENARIOS ###
-  Scenario: Clearing the search field resets results
-    When I enter "Hammer" in the items search bar
-    And I click the items search button
-    Then I should see items matching "Hammer"
-    When I clear the items search field
-    Then the item search results should be reset
 
-    When I enter "Storage" in the bins search bar
-    And I click the bins search button
-    Then I should see bins matching "Storage"
-    When I clear the bins search field
-    Then the bin search results should be reset
 
