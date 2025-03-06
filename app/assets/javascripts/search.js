@@ -3,6 +3,7 @@ document.addEventListener("turbo:load", function () {
   const searchItemsInput = document.getElementById("search-items");
   const searchInventoryBtn = document.getElementById("search-inventory-btn"); // button for bin
   const searchItemsBtn = document.getElementById("search-items-btn"); // button for item
+  const searchLocationBtn = document.getElementById("search-location-btn"); // button for location
 
   if (!searchInventoryInput || !searchItemsInput) return; // Stop if search boxes are missing
 
@@ -67,6 +68,11 @@ document.addEventListener("turbo:load", function () {
     const query = searchInventoryInput.value.trim();
     const results = filterResults(query, "bins");
     showSuggestions(results, searchInventoryInput);
+  });
+
+  // Listen for clicks on the Search by Location button
+  searchLocationBtn.addEventListener("click", function () {
+    window.location.href = "/locations"; // Redirect to /locations
   });
 
   searchItemsInput.addEventListener("input", function () {

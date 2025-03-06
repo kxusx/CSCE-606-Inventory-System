@@ -9,10 +9,11 @@ class Bin < ApplicationRecord
 
   validates :name, presence: true
   
-  # Scope to search bins by name
-  scope :search_by_name, ->(query) {
-    where("LOWER(name) LIKE ?", "%#{query.downcase}%") if query.present?
+  # Scope to search bins by name or category
+  scope :search_by_name, -> (query) {
+    where("LOWER(name) LIKE LOWER(?) OR LOWER(category_name) LIKE LOWER(?)", "%#{query}%", "%#{query}%") if query.present?
   }
+
 
   # query for items in bin, it will be use in bin/show view
   def items_in_bin

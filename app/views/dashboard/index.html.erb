@@ -16,23 +16,26 @@
   <%= javascript_include_tag "application" %>
 </head>
 <body>
-  <h1>Dashboard</h1>
+  <h1>My Inventory</h1>
   <div class="search-container">
     <!-- Search Bin/Category -->
     <div class="search-box">
       <input type="text" id="search-inventory" placeholder="Search by Bin/Category..." autocomplete="off">
-      <button id="search-inventory-btn">Search</button>
+      <button id="search-inventory-btn" tabindex="2">Search</button>
     </div>
 
     <!-- Search for Items -->
     <div class="search-box">
       <input type="text" id="search-items" placeholder="Search Items..." autocomplete="off">
-      <button id="search-items-btn">Search</button>
+      <button id="search-items-btn" tabindex="4">Search</button>
     </div>
   </div>
 
   <!-- Search by Location Button -->
   <button id="search-location-btn" class="search-location-btn">Search by Location</button>
+
+
+
 
 
 <!-- Logout Button -->
