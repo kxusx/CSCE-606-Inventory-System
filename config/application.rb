@@ -24,5 +24,7 @@ module RobertLightFoot
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    require 'zip'  # Add this line to require rubyzip
+    require 'selenium-webdriver'
   end
 end

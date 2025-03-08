@@ -58,7 +58,7 @@ group :development, :test do
 
   # System tests
   gem 'capybara'      # Capybara for feature tests
-  gem "selenium-webdriver"  # Selenium for browser automation
+  gem "selenium-webdriver", "~> 4.0"  # Selenium for browser automation
 
   gem "dotenv-rails"
 end
@@ -89,11 +89,6 @@ gem "image_processing", ">= 1.2"
 
 gem "ruby-vips"
 
-# factory
-group :test do
-  gem "factory_bot_rails"
-end
-
 # faker
 group :development, :test do
   gem "faker"
@@ -103,3 +98,5 @@ end
 group :test do
   gem "rails-controller-testing"
 end
+
+gem "rubyzip", "~> 2.3"
