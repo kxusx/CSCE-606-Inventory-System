@@ -11,6 +11,7 @@
         <th>Name</th>
         <th>Location</th>
         <th>Category</th>
+        <th>Picture</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -18,11 +19,15 @@
       <% @bins.each do |bin| %>
         <tr>
           <td><%= link_to bin.name, bin_path(bin) %></td>
-          <td><%= bin.location %></td>
+          <td><%= bin.location.name %></td>
           <td><%= bin.category_name %></td>
           <td>
-            <%= link_to "Edit", edit_bin_path(bin), class: "btn btn-warning btn-sm" %>
-            <%= button_to "Delete", bin, method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+            <% if bin.bin_picture.attached? %>
+              <%= image_tag bin.bin_picture.variant(resize_to_limit: [100, 100]).processed, alt: "Bin Picture", class: "img-thumbnail" %>
+            <% else %>
+              No Picture
+            <% end %>
+
           </td>
         </tr>
       <% end %>

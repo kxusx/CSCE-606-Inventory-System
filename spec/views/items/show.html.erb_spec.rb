@@ -1,22 +1,23 @@
 require 'rails_helper'
 
 RSpec.describe "items/show", type: :view do
+  let(:user) { create(:user) }
+  let(:location) { create(:location, user: user) } 
+  let(:bin) { create(:bin, user: user, location: location) }
+  let!(:item) { create(:item, name: "Test Item", description: "Test Description", value: 150, bin: bin, user: user) }  # ✅ Ensure item has a user
+
   before(:each) do
-    assign(:item, Item.create!(
-      name: "Name",
-      description: "Description",
-      created_date: "Created Date",
-      value: "Value",
-      bin_id: 2
-    ))
+    Rails.application.reload_routes!
+    assign(:item, item)  # ✅ Assign `@item` to the view
   end
 
-  it "renders attributes in <p>" do
+  it "renders item attributes in <p>" do
     render
-    expect(rendered).to match(/Name/)
-    expect(rendered).to match(/Description/)
-    expect(rendered).to match(/Created Date/)
-    expect(rendered).to match(/Value/)
-    expect(rendered).to match(/2/)
+
+    expect(rendered).to match(/Test Item/)
+    expect(rendered).to match(/Test Description/)
+    expect(rendered).to match(/150/)  # ✅ Matches value without currency symbol
+    expect(rendered).to match(/#{bin.name}/)  # ✅ Matches bin name instead of bin_id
+    puts "✅ Test Passed: items / show"
   end
 end

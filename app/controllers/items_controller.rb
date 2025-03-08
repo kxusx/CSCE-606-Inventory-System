@@ -5,8 +5,10 @@ class ItemsController < ApplicationController
 
   # GET /items or /items.json
   def index
-    @items = Item.left_joins(:bin)
-                 .where('bins.user_id = ? OR items.bin_id IS NULL', current_user.id)
+    @items = current_user.items  # ✅ Fetch items directly associated with the user
+
+    # Apply search filtering if a name is provided
+    @items = @items.search_by_name(params[:name])
   end
 
   # GET /items/1 or /items/1.json
@@ -30,7 +32,7 @@ class ItemsController < ApplicationController
   # modify to ensure only can create items in bin
   # modify later for standalone items
   def create
-    @item = Item.new(item_params)
+    @item = current_user.items.build(item_params) 
 
     # Set no_bin to true if no bin is selected
     @item.no_bin = @item.bin_id.nil?
@@ -90,10 +92,9 @@ class ItemsController < ApplicationController
       end
     end
     
-
+    
     # Only allow a list of trusted parameters through.
     def item_params
-      # params.expect(item: [ :name, :description, :created_date, :value, :bin_id ])
       params.require(:item).permit(:name, :description, :value, :bin_id, :no_bin, item_pictures: [])
     end
 end

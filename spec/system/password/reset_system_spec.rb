@@ -1,7 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Reset Password Page', type: :system do
-  let(:user) { create(:user, email: 'test@example.com', password: 'OldPassword123!') }
+  include Devise::Test::IntegrationHelpers
+  include Rails.application.routes.url_helpers
+
+  before(:each) do
+    Rails.application.reload_routes!
+  end
+  
+  let(:user) { create(:user, email: 'test@example.com', password: 'OldPassword123!', password_confirmation: 'OldPassword123!') }
+
   
   before do
     driven_by(:selenium_chrome_headless)
@@ -23,10 +31,24 @@ RSpec.describe 'Reset Password Page', type: :system do
       it 'allows password reset with valid matching passwords' do
         fill_in 'password', with: 'NewPassword123!'
         fill_in 'password_confirmation', with: 'NewPassword123!'
-        accept_alert('Password reset successful!') do
-          click_button 'Reset Password'
-        end
-        expect(page).to have_current_path(new_user_session_path)
+        
+        click_button 'Reset Password'  # ✅ Triggers the success message
+        
+        # ✅ Ensure the flash modal appears
+        expect(page).to have_selector('.flash-modal', wait: 5)
+  
+        # ✅ Ensure the correct success message is displayed
+        expect(page).to have_content('Password reset successful!')
+  
+        # ✅ Click the "OK" button inside the flash modal
+        find('.flash-close-btn').click
+  
+        # ✅ Ensure the modal disappears
+        expect(page).not_to have_selector('.flash-modal')
+  
+        expect(page).to have_current_path(new_user_session_path)  # ✅ Ensure redirection
+  
+        puts "✅ Test Passed: password reset form"
       end
     end
 
@@ -47,6 +69,7 @@ RSpec.describe 'Reset Password Page', type: :system do
         expect(page).to have_content('Password must include at least one uppercase letter')
       end
     end
+    puts "✅ Test Passed: password reset form"
   end
 
   describe 'tooltip functionality' do
@@ -59,6 +82,7 @@ RSpec.describe 'Reset Password Page', type: :system do
       expect(page).to have_content('Include at least one uppercase letter')
       expect(page).to have_content('Include at least one lowercase letter')
       expect(page).to have_content('Include at least one special character')
+      puts "✅ Test Passed: requiremts on hover"
     end
   end
 end

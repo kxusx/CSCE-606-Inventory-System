@@ -1,4 +1,4 @@
-<%= form_with(model: bin) do |form| %>
+<%= form_with(model: bin, html: { multipart: true }) do |form| %>
   <% if bin.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(bin.errors.count, "error") %> prohibited this bin from being saved:</h2>
@@ -16,14 +16,30 @@
     <%= form.text_field :name %>
   </div>
 
+  <% locations ||= [] %> <!-- Ensure locations is never nil -->
+
+ <div>
+  <%= form.label :location_id, "Select Existing Location", style: "display: block" %>
+  <%= form.select :location_id, 
+        options_from_collection_for_select(locations, :id, :name, form.object.location_id), 
+        include_blank: "Choose a location" %>
+</div>
+
+
+  <!-- Input for adding a new location -->
   <div>
-    <%= form.label :location, style: "display: block" %>
-    <%= form.text_field :location %>
+    <%= form.label :new_location, "Or Add a New Location", style: "display: block" %>
+    <%= form.text_field :new_location, placeholder: "Enter new location if not listed" %>
   </div>
 
   <div>
     <%= form.label :category_name, style: "display: block" %>
     <%= form.text_field :category_name %>
+  </div>
+
+  <div>
+    <%= form.label :bin_picture, style: "display: block" %>
+    <%= form.file_field :bin_picture %>
   </div>
 
   <div>

@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :item do
-    name { "Item A" }
-    description { "A test item" }
+    sequence(:name) { |n| "Test Item #{n}" }  # ✅ Ensure unique names
+    description { "A test description" }
     value { 100 }
-    association :bin  # Ensures each item belongs to a bin
+    association :bin
   end
 end

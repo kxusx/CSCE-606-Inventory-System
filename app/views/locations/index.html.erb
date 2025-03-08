@@ -1,0 +1,25 @@
+<h1>Your Locations</h1>
+
+<%= link_to "Add New Location", new_location_path, class: "button" %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @locations.each do |location| %>
+      <tr>
+        <td><%= location.name %></td>
+        <td>
+          <%= link_to "Edit", edit_location_path(location), class: "button" %> |
+           
+       </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Back to Dashboard", dashboard_path, class: "button" %>

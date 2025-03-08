@@ -93,12 +93,16 @@ RSpec.describe User, type: :model do
 
   # Password reset functionality
   describe 'password reset' do
-    let(:user) { User.create(name: 'Test User', email: 'test@example.com', password: 'password123') }
-
+    new_user = let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!', bins_count: 0) }
+    puts "✅ Created User: #{new_user.inspect}"
+    new_user
     it 'generates a password reset token' do
       expect {
-        user.generate_password_reset_token
-      }.to change { user.reset_password_token }.from(nil)
+        user.send_reset_password_instructions
+      }.to change { user.reload.reset_password_token }.from(nil)
+      puts "✅ Test Passed: password reset"
+      expect(user.reset_password_token).not_to be_nil
+      expect(user.reset_password_sent_at).not_to be_nil
     end
 
     it 'sets password reset token expiry' do

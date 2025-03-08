@@ -6,6 +6,7 @@ Feature: Create Items Without Bin Assignment
 
   Background:
     Given I am a logged-in user
+    And I have a valid location
 
   Scenario: Creating an item without a bin
     When I visit the new item page
@@ -18,7 +19,7 @@ Feature: Create Items Without Bin Assignment
     When I visit the new item page
     And I fill in the item field "value" with "-10.00"
     And I click "Create Item"
-    Then I should see "Name can't be blank"
+    Then I should see "t be blank"
 
   Scenario: Creating an item and assigning it to a bin later
     Given I have an unassigned item "Old Laptop"

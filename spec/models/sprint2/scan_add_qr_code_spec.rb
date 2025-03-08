@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Bin, type: :model do
-  # Setup test data
-  let(:user) { User.create!(name: 'Test User', email: 'test@example.com', password: 'Password1!', bins_count: 0) }
+  let(:user) { create(:user) }
+  let(:location) { create(:location, user: user) } 
   let(:valid_attributes) do
     {
       name: 'Storage Box',
       user: user,
-      location: "Garage",
+      location: location,
       category_name: "Misc"
     }
   end
@@ -46,7 +46,6 @@ RSpec.describe Bin, type: :model do
       it 'generates the correct QR code URL in development' do
         bin = Bin.create!(valid_attributes)
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
-
         expected_url = "http://127.0.0.1:3000/bins/#{bin.id}"
         expect(bin.send(:qr_code_data)).to eq(expected_url)
         puts "✅ Test: QR code contains correct development URL - PASSED"
@@ -54,9 +53,13 @@ RSpec.describe Bin, type: :model do
 
       it 'generates the correct QR code URL in production' do
         bin = Bin.create!(valid_attributes)
-        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
+        # Force Rails to behave as if it's in production
+        allow(Rails.env).to receive(:production?).and_return(true)
 
-        expected_url = "https://inventory-system-lightfoot-c73b05a2c5ae.herokuapp.com/bins/#{bin.id}"
+        # Ensure ENV["APP_HOST"] is set for the test
+        ENV["APP_HOST"] = "https://robert-inventory-f91e26f91bb2.herokuapp.com"
+
+        expected_url = "#{ENV["APP_HOST"]}/bins/#{bin.id}"
         expect(bin.send(:qr_code_data)).to eq(expected_url)
         puts "✅ Test: QR code contains correct production URL - PASSED"
       end

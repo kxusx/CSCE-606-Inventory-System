@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'password/reset_code', type: :view do
   describe 'page structure' do
     before do
+      Rails.application.reload_routes!
       render
     end
 

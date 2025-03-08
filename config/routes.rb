@@ -26,6 +26,14 @@ Rails.application.routes.draw do
   # Log history route
   get "log-history", to: "logs#index", as: "log_history"
 
+  # ✅ Add routes for locations
+  resources :locations
+
+  # ✅ Add routes for Search API
+  get 'search', to: 'search#index' # API route for fetching search data
+
+
+
   # Password Reset Routes
   scope :password do
     get "forgot", to: "password#forgot", as: "forgot_password"

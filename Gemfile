@@ -60,7 +60,7 @@ group :development, :test do
   gem 'capybara'      # Capybara for feature tests
   gem "selenium-webdriver"  # Selenium for browser automation
 
-  gem 'dotenv-rails'
+  gem "dotenv-rails"
 end
 
 # Console on error pages in development
@@ -75,7 +75,7 @@ end
 # Benchmarking and interactive Ruby console (included explicitly)
 gem "benchmark", "0.4.0"
 gem "irb", "1.15.1"
-gem 'devise'
+gem "devise"
 
 # QR code generator
 gem "rqrcode"
@@ -89,7 +89,17 @@ gem "image_processing", ">= 1.2"
 
 gem "ruby-vips"
 
-#faker
+# factory
+group :test do
+  gem "factory_bot_rails"
+end
+
+# faker
 group :development, :test do
-  gem 'faker'
+  gem "faker"
+end
+
+# rails-controller -testing
+group :test do
+  gem "rails-controller-testing"
 end

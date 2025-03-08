@@ -1,5 +1,7 @@
 class Item < ApplicationRecord
+  belongs_to :user
   belongs_to :bin, optional: true
+  belongs_to :location, optional: true
   has_many_attached :item_pictures, dependent: :destroy
   
   validates :name, presence: true
@@ -8,11 +10,20 @@ class Item < ApplicationRecord
 
   before_destroy :prevent_deletion_and_unassign
 
+  # Scope for searching items by name
+  scope :search_by_name, ->(query) {
+    where("LOWER(name) LIKE ?", "%#{query.downcase}%") if query.present?
+  }
+
   def unassigned?
     bin_id.nil? && no_bin?
   end
 
   private
+
+  def inherit_bin_location
+    self.location_id = bin.location_id if bin.present?
+  end
 
   def prevent_deletion_and_unassign
     # Instead of allowing destruction, unassign from bin

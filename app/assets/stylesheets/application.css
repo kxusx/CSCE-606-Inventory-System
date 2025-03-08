@@ -1,3 +1,119 @@
 /*
  *= require_self
  */
+/* Base styling */
+/* Base styling */
+
+/* Style for non-clickable text */
+.disabled-text {
+  color: gray; /* Make it look inactive */
+  font-size: 14px;
+  cursor: default; /* Prevent click indication */
+  opacity: 0.6; /* Dim the text slightly */
+}
+
+
+/* NAV BAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Left-aligned links */
+.nav-left {
+  display: flex;
+  gap: 20px;
+  list-style: none; /* 🚀 Remove dots */
+  padding: 0;
+  margin: 0;
+}
+
+/* Right-aligned icons & links */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Links (remove underline by default, only show on hover) */
+.nav-link {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+
+
+/* Profile icon */
+.profile-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #4caf50; /* Green circle */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+
+ /* Flash Modal Background */
+.flash-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Flash Message Content */
+.flash-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Success Messages */
+.flash-success {
+  border: 2px solid green;
+}
+
+/* Error Messages */
+.flash-error {
+  border: 2px solid red;
+}
+
+/* Close Button */
+.flash-close-btn {
+  background: #0078d7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.flash-close-btn:hover {
+  background: #005a9e;
+}

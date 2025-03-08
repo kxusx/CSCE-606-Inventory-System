@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+   <!-- Load application-wide styles -->
+  <%= stylesheet_link_tag "application", media: "all" %>
+
+   <!-- Load dashboard-specific styles -->
     <%= stylesheet_link_tag "dashboard", media: "all" %>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - RobertLightFoot</title>
+
+  <!-- Load dashboard-JS Aplications -->
+  <%= javascript_include_tag "application" %>
 </head>
 <body>
-    <div class="container">
-        <% if @user.present? %>
-            <h1>Welcome, <%= @user.name.capitalize %>!</h1>
-            <p>Your inventory management system</p>
-        <% else %>
-            <h1>Welcome, Guest!</h1>
-            <p>Please log in to manage your inventory.</p>
-        <% end %>
-
-        <div class="button-container">
-            <%= link_to "View Bins", view_bins_path, class: "btn" %>
-            <%= link_to "Add Bins", add_bins_path, class: "btn" %>
-            <%= link_to "Delete Bins", delete_bins_path, class: "btn" %>
-            <%= link_to "Log History", log_history_path, class: "btn" %>
-        </div>
-
-        <!-- Logout button -->
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn", data: {confirm: "Are you sure you want to log out?" } %>
-
+  <h1>My Inventory</h1>
+  <div class="search-container">
+    <!-- Search Bin/Category -->
+    <div class="search-box">
+      <input type="text" id="search-inventory" placeholder="Search by Bin/Category..." autocomplete="off">
+      <button id="search-inventory-btn" tabindex="2">Search</button>
     </div>
+
+    <!-- Search for Items -->
+    <div class="search-box">
+      <input type="text" id="search-items" placeholder="Search Items..." autocomplete="off">
+      <button id="search-items-btn" tabindex="4">Search</button>
+    </div>
+  </div>
+
+  <!-- Search by Location Button -->
+  <button id="search-location-btn" class="search-location-btn">Search by Location</button>
+
+
+
+
+
+<!-- Logout Button -->
+<%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn", data: { confirm: "Are you sure you want to log out?" } %>
 </body>
 </html>

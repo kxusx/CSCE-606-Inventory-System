@@ -49,8 +49,10 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
   driven_by(:selenium_chrome_headless)
   end
+  config.include Rails.application.routes.url_helpers #sid 
 
   # Include Devise test helpers
+  config.include Devise::Test::IntegrationHelpers, type: :feature # sid 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
 

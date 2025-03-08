@@ -87,22 +87,24 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   # Use SMTP for email delivery
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true
 
   # Default host for email links
   config.action_mailer.default_url_options = { host: 'yourdomain.com', protocol: 'https' }
 
-  # SMTP Settings (Use environment variables or Rails credentials)
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+
   config.action_mailer.smtp_settings = {
-    address: Rails.application.credentials.dig(:smtp, :address),
-    port: Rails.application.credentials.dig(:smtp, :port),
-    domain: Rails.application.credentials.dig(:smtp, :domain), # Ensure this is set
-    authentication: Rails.application.credentials.dig(:smtp, :authentication),
-    enable_starttls_auto: Rails.application.credentials.dig(:smtp, :enable_starttls_auto),
-    user_name: Rails.application.credentials.dig(:smtp, :user_name),
-    password: Rails.application.credentials.dig(:smtp, :password) # Should be set in credentials
-}
+    address: "smtp.gmail.com",
+    port: 587,
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: ENV["GMAIL_USERNAME"],  # Use Heroku env variable
+    password: ENV["GMAIL_PASSWORD"],  # Use Heroku env variable
+  }
+
+  config.action_mailer.default_url_options = { host: "https://robert-inventory-f91e26f91bb2.herokuapp.com", protocol: "https" }
+
 
 end
