@@ -57,7 +57,7 @@ group :development, :test do
   gem "database_cleaner-active_record"  # Clean database between tests
 
   # System tests
-  gem "capybara"         # Capybara for feature tests
+  gem 'capybara'      # Capybara for feature tests
   gem "selenium-webdriver"  # Selenium for browser automation
 
   gem 'dotenv-rails'
