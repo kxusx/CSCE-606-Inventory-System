@@ -5,8 +5,12 @@ class BinsController < ApplicationController
 
   # GET /bins or /bins.json
   def index
-    @bins = current_user.bins # Show only bins for the logged-in user
-    @bins = @bins.search_by_name(params[:name]) # ✅ Keeps user filtering + adds search
+    if params[:location_id]
+      @bins = current_user.bins.where(location_id: params[:location_id])
+    else
+      @bins = current_user.bins # Show only bins for the logged-in user
+    end
+    @bins = @bins.search_by_name(params[:name]) 
   end
 
   # GET /bins/delete-bins → Shows a page to select bins for deletion

@@ -11,20 +11,23 @@
 
 # Find or create the user
 # Clear existing records in the correct order
+puts "Destroying existing records..."
+ActiveRecord::Base.connection.execute("PRAGMA foreign_keys = OFF")
 Item.destroy_all
 Bin.destroy_all
 Location.destroy_all
 User.destroy_all
+ActiveRecord::Base.connection.execute("PRAGMA foreign_keys = ON")
 
-puts "running seed"
+puts "Running seed..."
 # Helper method to create users with unique bins and items
 def create_user_with_bins_and_items(name, email, bins_and_items)
+  puts "Creating user #{name} with email #{email}..."
   user = User.find_or_create_by!(email: email) do |u|
     u.name = name
     u.password = "Abc1234!"
     u.password_confirmation = "Abc1234!"  # Ensure Devise processes it
   end
-
 
   puts "✅ Created User: #{user.name} (#{user.email}) with ID: #{user.id}"
 
@@ -36,20 +39,23 @@ def create_user_with_bins_and_items(name, email, bins_and_items)
     Location.create!(name: "Office Desk", user: user)
   ]
 
+  puts "✅ Created Locations for User: #{user.name} (#{user.email})"
 
   # Create bins with assigned locations
   bins_and_items.each_with_index do |bin_info, index|
     location = locations[index % locations.size] # Assign a location in a round-robin fashion
-    #puts "✅  User: #{user.name} (#{user.email}) with ID: #{user.id}"
+    puts "Creating bin #{bin_info[:name]} at location #{location.name}..."
     bin = user.bins.create!(name: bin_info[:name], location: location, category_name: bin_info[:category])
-    #puts "✅  bin: #{bin.name} (#{bin.location.name}) with ID: #{bin.id}"
+    puts "✅ Created Bin: #{bin.name} (#{bin.location.name}) for User: #{user.name} (#{user.email})"
 
     # Generate and save QR Code
     bin.send(:update_qr_code)
-    puts "reach here?"
+    puts "✅ Generated QR Code for Bin: #{bin.name}"
 
     bin_info[:items].each do |item|
-      bin.items.create!(name: item[:name], description: item[:description], created_date: Time.now, value: item[:value],location: bin.location, user: bin.user)
+      puts "Creating item #{item[:name]} in bin #{bin.name}..."
+      bin.items.create!(name: item[:name], description: item[:description], created_date: Time.now, value: item[:value], location: bin.location, user: user)  # Ensure user: user is set correctly
+      puts "✅ Created Item: #{item[:name]} in Bin: #{bin.name} for User: #{user.name} (#{user.email})"
     end
   end
 

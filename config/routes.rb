@@ -27,12 +27,13 @@ Rails.application.routes.draw do
   get "log-history", to: "logs#index", as: "log_history"
 
   # ✅ Add routes for locations
-  resources :locations
+  resources :locations do
+    resources :bins, only: [:index]
+    resources :items, only: [:index]
+  end
 
   # ✅ Add routes for Search API
   get 'search', to: 'search#index' # API route for fetching search data
-
-
 
   # Password Reset Routes
   scope :password do

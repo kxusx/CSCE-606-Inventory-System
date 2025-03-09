@@ -5,6 +5,16 @@ class LocationsController < ApplicationController
   # GET /locations
   def index
     @locations = current_user.locations
+    
+    if params[:name].present?
+      @locations = @locations.where("LOWER(name) LIKE ?", "%#{params[:name].downcase}%")
+    end
+  
+    if request.xhr?
+      render partial: "locations_table", locals: { locations: @locations }, layout: false
+    else
+      render :index
+    end
   end
 
   # GET /locations/:id
@@ -25,12 +35,9 @@ class LocationsController < ApplicationController
     else
       flash.now[:alert] = "Failed to create location"
       respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }  # ✅ Standard HTML fallback
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }  # ✅ Handle Turbo
+        format.html { render :new, status: :unprocessable_entity }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }
       end
-      #flash.now[:alert] = "Failed to create location"
-      #flash[:alert] = "Failed to create location"
-      #render :new
     end
   end
 

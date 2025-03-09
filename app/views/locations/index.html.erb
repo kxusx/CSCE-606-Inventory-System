@@ -1,25 +1,69 @@
-<h1>Your Locations</h1>
+  <h1 class="center">Your Locations</h1>
 
-<%= link_to "Add New Location", new_location_path, class: "button" %>
+  <%= link_to "Add New Location", new_location_path, class: "button add-new-location" %>
+  <%= stylesheet_link_tag 'locations', media: 'all', 'data-turbo-track': 'reload' %> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @locations.each do |location| %>
+  <table>
+    <thead>
       <tr>
-        <td><%= location.name %></td>
-        <td>
-          <%= link_to "Edit", edit_location_path(location), class: "button" %> |
-           
-       </td>
+        <th id="name-header">
+          Name
+          <i class="fa fa-search" id="search-icon" style="cursor: pointer; margin-left: 10px;"></i>
+        </th>
+        <th class="center">Total Bins</th>
+        <th class="center">Total Items</th>
+        <th class="center">View Bins</th>
+        <th class="center">View Items</th>
+        <th class="center">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody id="locations-table">
+      <%= render partial: "locations_table", locals: { locations: @locations } %>
+    </tbody>
+  </table>
 
-<%= link_to "Back to Dashboard", dashboard_path, class: "button" %>
+  <%= link_to "Back to Dashboard", dashboard_path, class: "button back-to-dashboard" %>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+  const searchIcon = document.getElementById("search-icon");
+  const locationsTable = document.getElementById("locations-table");
+
+  function attachSearchEvent() {
+    const searchIcon = document.getElementById("search-icon");
+    searchIcon.addEventListener("click", function() {
+      const th = document.getElementById("name-header");
+      if (!document.getElementById("search-input")) {
+        th.innerHTML = '<input type="text" id="search-input" placeholder="Search by name...">';
+        const searchInput = document.getElementById("search-input");
+
+        let debounceTimeout;
+        searchInput.addEventListener("input", function() {
+          clearTimeout(debounceTimeout);
+          debounceTimeout = setTimeout(() => {
+            const query = searchInput.value;
+
+            fetch(`/locations?name=${query}`, {
+              headers: {
+                "X-Requested-With": "XMLHttpRequest"
+              }
+            })
+            .then(response => response.text())
+            .then(html => {
+              locationsTable.innerHTML = html;
+            });
+          }, 300);
+        });
+
+        searchInput.addEventListener("blur", function() {
+          th.innerHTML = 'Name <i class="fa fa-search" id="search-icon" style="cursor: pointer; margin-left: 10px;"></i>';
+          attachSearchEvent();
+        });
+        searchInput.focus(); 
+      }
+    });
+  }
+  attachSearchEvent(); 
+});
+  </script>

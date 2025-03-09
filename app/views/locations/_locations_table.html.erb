@@ -1,0 +1,22 @@
+<!-- filepath: /home/arun_akashr/RobertLightFoot/app/views/locations/_locations_table.html.erb -->
+<% locations.each do |location| %>
+  <tr>
+    <td><%= location.name %></td>
+    <td class="center"><%= location.bins.count %></td>
+    <td class="center"><%= location.items.count %></td>
+    <td class="center">
+      <%= link_to bins_path(location_id: location.id), class: "button" do %>
+        <i class="fa fa-eye"></i>
+      <% end %>
+    </td>
+    <td class="center">
+      <%= link_to items_path(location_id: location.id), class: "button" do %>
+        <i class="fa fa-eye"></i>
+      <% end %>
+    </td>
+    <td class="center">
+      <%= link_to "Edit", edit_location_path(location), class: "button" %>
+      <%= link_to "Delete", location, method: :delete, data: { confirm: "Are you sure?" }, class: "button" %>
+    </td>
+  </tr>
+<% end %>

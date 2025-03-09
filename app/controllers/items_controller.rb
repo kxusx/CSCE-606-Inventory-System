@@ -5,8 +5,11 @@ class ItemsController < ApplicationController
 
   # GET /items or /items.json
   def index
-    @items = current_user.items  # ✅ Fetch items directly associated with the user
-
+    if params[:location_id]
+      @items = current_user.items.where(location_id: params[:location_id])
+    else
+      @items = current_user.items # Show only bins for the logged-in user
+    end
     # Apply search filtering if a name is provided
     @items = @items.search_by_name(params[:name])
   end

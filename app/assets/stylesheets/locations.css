@@ -1,0 +1,46 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px; /* Add space between the table and the "Add New Location" button */
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px;
+  }
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.fa-eye {
+  color: white;
+}
+
+.center {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.add-new-location {
+  margin-bottom: 5px; /* Add space between "Add New Location" button and the table */
+}
+
+.back-to-dashboard {
+  margin-top: 20px; /* Add space above the "Back to Dashboard" button */
+}
