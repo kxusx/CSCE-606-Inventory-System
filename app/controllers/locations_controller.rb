@@ -5,7 +5,7 @@ class LocationsController < ApplicationController
   # GET /locations
   def index
     @locations = current_user.locations
-    
+    @location = Location.new
     if params[:name].present?
       @locations = @locations.where("LOWER(name) LIKE ?", "%#{params[:name].downcase}%")
     end
@@ -47,6 +47,7 @@ class LocationsController < ApplicationController
 
   # PATCH/PUT /locations/:id
   def update
+    Rails.logger.debug "Params received: #{params.inspect}"
     if @location.update(location_params)
       flash[:notice] = "Location updated successfully!"
       redirect_to locations_path
