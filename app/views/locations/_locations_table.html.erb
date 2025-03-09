@@ -1,27 +1,33 @@
 <!-- filepath: /home/arun_akashr/RobertLightFoot/app/views/locations/_locations_table.html.erb -->
-<% locations.each do |location| %>
+<% if locations.empty? %>
   <tr>
-    <td><%= location.name %></td>
-    <td class="center"><%= location.bins.count %></td>
-    <td class="center"><%= location.items.count %></td>
-    <td class="center">
-      <%= link_to bins_path(location_id: location.id), class: "button" do %>
-        <i class="fa fa-eye"></i>
-      <% end %>
-    </td>
-    <td class="center">
-      <%= link_to items_path(location_id: location.id), class: "button" do %>
-        <i class="fa fa-eye"></i>
-      <% end %>
-    </td>
-    <td class="center">
-      <button class="button editLocationBtn" data-location-id="<%= location.id %>">Edit</button>
-      <button class="button deleteLocationBtn" data-location-id="<%= location.id %>">Delete</button>
-    </td>
+    <td colspan="6" class="center">Location doesn't exist</td>
   </tr>
+<% else %>
+  <% locations.each do |location| %>
+    <tr>
+      <td><%= location.name %></td>
+      <td class="center"><%= location.bins.count %></td>
+      <td class="center"><%= location.items.count %></td>
+      <td class="center">
+        <%= link_to bins_path(location_id: location.id), class: "button" do %>
+          <i class="fa fa-eye"></i>
+        <% end %>
+      </td>
+      <td class="center">
+        <%= link_to items_path(location_id: location.id), class: "button" do %>
+          <i class="fa fa-eye"></i>
+        <% end %>
+      </td>
+      <td class="center">
+        <button class="button editLocationBtn" data-location-id="<%= location.id %>">Edit</button>
+        <button class="button deleteLocationBtn" data-location-id="<%= location.id %>">Delete</button>
+      </td>
+    </tr>
+  <% end %>
 <% end %>
 
-<!-- The Modal -->
+<!-- Edit Modal -->
 <div id="editLocationModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>

@@ -1,7 +1,7 @@
-  <h1 class="center">Your Locations</h1>
+<h1 class="center">Your Locations</h1>
 
   <div class="button-container">
-    <%= link_to "Add New Location", new_location_path, class: "button" %>
+    <button class="button addLocationBtn">Add New Location</button>
     <%= link_to "Back to Dashboard", dashboard_path, class: "button" %>
   </div>
 
@@ -27,17 +27,53 @@
     </tbody>
   </table>
 
-  <script>
+<!-- Add Modal -->
+<div id="addLocationModal" class="modal">
+  <div class="modal-content-add">
+    <span class="close">&times;</span>
+    <%= form_with model: @location, local: true, id: "addLocationForm", data: { turbo: false } do |form| %>
+      <%= hidden_field_tag :_method, 'post' %> 
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="form-group">
+        <h3>Enter the location name:</h3>
+        <%= form.text_field :name, required: true, class: "name-input" %>
+      </div>
+      <%= form.submit "Add Location", class: "button update-location" %>
+    <% end %>
+  </div>
+</div>
+
+<script>
   document.addEventListener("DOMContentLoaded", function() {
   const searchIcon = document.getElementById("search-icon");
   const locationsTable = document.getElementById("locations-table");
+  const addModal = document.getElementById("addLocationModal");
+  const addForm = document.getElementById('addLocationForm');
+  const addSpan = addModal.getElementsByClassName("close")[0];
+  const addLocationBtn = document.querySelector('.addLocationBtn');
+
+  function openAddModal() {
+  addLocationBtn.onclick = function() {
+    addForm.action = "/locations";
+    addModal.style.display = "block";
+  };
+
+  addSpan.onclick = function() {
+    addModal.style.display = "none";
+  };
+
+  window.onclick = function(event) {
+    if (event.target == addModal) {
+      addModal.style.display = "none";
+    }
+  };
+}
 
   function attachSearchEvent() {
-    const searchIcon = document.getElementById("search-icon");
     searchIcon.addEventListener("click", function() {
       const th = document.getElementById("name-header");
       if (!document.getElementById("search-input")) {
-        th.innerHTML = '<input type="text" id="search-input" placeholder="Search by name...">';
+        th.innerHTML = '<input type="text" class="name-input" id="search-input" placeholder="Search by name...">';
         const searchInput = document.getElementById("search-input");
 
         let debounceTimeout;
@@ -66,6 +102,8 @@
       }
     });
   }
-  attachSearchEvent(); 
-});
-  </script>
+
+  attachSearchEvent();
+  openAddModal();
+  });
+</script>

@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_location, only: [:update, :destroy]
 
   # GET /locations
   def index
@@ -9,21 +9,12 @@ class LocationsController < ApplicationController
     if params[:name].present?
       @locations = @locations.where("LOWER(name) LIKE ?", "%#{params[:name].downcase}%")
     end
-  
+
     if request.xhr?
       render partial: "locations_table", locals: { locations: @locations }, layout: false
     else
       render :index
     end
-  end
-
-  # GET /locations/:id
-  def show
-  end
-
-  # GET /locations/new
-  def new
-    @location = current_user.locations.new
   end
 
   # POST /locations
@@ -39,10 +30,6 @@ class LocationsController < ApplicationController
         format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }
       end
     end
-  end
-
-  # GET /locations/:id/edit
-  def edit
   end
 
   # PATCH/PUT /locations/:id
