@@ -26,6 +26,9 @@ class Item < ApplicationRecord
   end
 
   def prevent_deletion_and_unassign
+    if Thread.current[:deletion_context] == :from_locations
+      return true
+    end
     # Instead of allowing destruction, unassign from bin
     self.update(bin_id: nil, no_bin: true)
     # Add an error message that will be available in the flash

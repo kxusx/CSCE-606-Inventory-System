@@ -47,7 +47,6 @@ class LocationsController < ApplicationController
 
   # PATCH/PUT /locations/:id
   def update
-    Rails.logger.debug "Params received: #{params.inspect}"
     if @location.update(location_params)
       flash[:notice] = "Location updated successfully!"
       redirect_to locations_path
@@ -59,8 +58,16 @@ class LocationsController < ApplicationController
 
   # DELETE /locations/:id
   def destroy
-    @location.destroy
-    flash[:notice] = "Location deleted successfully!"
+
+    Thread.current[:deletion_context] = :from_locations
+    
+    if @location.destroy
+      flash[:notice] = "Location deleted successfully!"
+    else
+      flash[:alert] = "Failed to delete location: #{@location.errors.full_messages.join(", ")}"
+    end
+
+    Thread.current[:deletion_context] = nil
     redirect_to locations_path
   end
 

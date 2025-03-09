@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_04_205715) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_09_204052) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -90,21 +90,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_04_205715) do
     t.string "name"
     t.string "email"
     t.integer "bins_count", default: 0, null: false
+    t.string "reset_code"
+    t.datetime "reset_sent_at"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "reset_code"
-    t.datetime "reset_sent_at"
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "bins", "locations"
+  add_foreign_key "bins", "locations", on_delete: :cascade
   add_foreign_key "bins", "users"
-  add_foreign_key "items", "bins"
-  add_foreign_key "items", "locations"
+  add_foreign_key "items", "bins", on_delete: :cascade
+  add_foreign_key "items", "locations", on_delete: :cascade
   add_foreign_key "items", "users"
   add_foreign_key "locations", "users"
   add_foreign_key "sessions", "users"

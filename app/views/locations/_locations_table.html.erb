@@ -16,7 +16,7 @@
     </td>
     <td class="center">
       <button class="button editLocationBtn" data-location-id="<%= location.id %>">Edit</button>
-      <%= link_to "Delete", location, method: :delete, data: { confirm: "Are you sure?" }, class: "button" %>
+      <button class="button deleteLocationBtn" data-location-id="<%= location.id %>">Delete</button>
     </td>
   </tr>
 <% end %>
@@ -32,34 +32,70 @@
         <h3>Enter the new name:</h3>
         <%= form.text_field :name, required: true, class: "name-input" %>
       </div>
+      <%= form.submit "Update Location", class: "button update-location" %>
+    <% end %>
+  </div>
+</div>
 
-      <div>
-        <%= form.submit "Update Location", class: "button update-location" %>
+<!-- Delete Modal -->
+<div id="deleteLocationModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>This action will delete the location, its associated bins and items. Are you sure you want to proceed? </h3>
+    <%= form_with model: @location, local: true, id: "deleteLocationForm", data: { turbo: false } do |form| %>
+      <%= hidden_field_tag :_method, 'delete' %>
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <div class="form-group">
+        <%= form.submit "Yes", class: "button" %>
+        <button type="button" class= "button no" id = "noButton">No</button>
       </div>
     <% end %>
   </div>
 </div>
 
 <script>
-var modal = document.getElementById("editLocationModal");
-var span = document.getElementsByClassName("close")[0];
-var form = document.getElementById('editLocationForm');
 
-span.onclick = function() {
-  modal.style.display = "none";
+var editModal = document.getElementById("editLocationModal");
+var deleteModal = document.getElementById("deleteLocationModal");
+var editForm = document.getElementById('editLocationForm');
+var deleteForm = document.getElementById('deleteLocationForm');
+
+var editSpan = editModal.getElementsByClassName("close")[0];
+var deleteSpan = deleteModal.getElementsByClassName("close")[0];
+var noButton = document.getElementById("noButton");
+
+editSpan.onclick = function() {
+  editModal.style.display = "none";
+}
+deleteSpan.onclick = function() {
+  deleteModal.style.display = "none";
+}
+noButton.onclick = function() {
+  deleteModal.style.display = "none";
 }
 
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  if (event.target == editModal) {
+    editModal.style.display = "none";
+  }
+  if (event.target == deleteModal) {
+    deleteModal.style.display = "none";
   }
 }
 
 document.querySelectorAll('.editLocationBtn').forEach(button => {
   button.onclick = function() {
     var locationId = this.getAttribute('data-location-id');
-    form.action = '/locations/' + locationId;
-    modal.style.display = "block";
+    editForm.action = '/locations/' + locationId;
+    editModal.style.display = "block";
+  }
+});
+
+document.querySelectorAll('.deleteLocationBtn').forEach(button => {
+  button.onclick = function() {
+    var locationId = this.getAttribute('data-location-id');
+    deleteForm.action = '/locations/' + locationId;
+    deleteModal.style.display = "block";
   }
 });
 </script>
