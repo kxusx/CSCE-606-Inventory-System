@@ -24,11 +24,8 @@ class LocationsController < ApplicationController
       flash[:notice] = "Location created successfully!"
       redirect_to locations_path
     else
-      flash.now[:alert] = "Failed to create location"
-      respond_to do |format|
-        format.html { render :new, status: :unprocessable_entity }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("flash", partial: "shared/flash") }
-      end
+      flash[:alert] = "Failed to create location"
+      redirect_to locations_path
     end
   end
 
@@ -39,7 +36,7 @@ class LocationsController < ApplicationController
       redirect_to locations_path
     else
       flash[:alert] = "Failed to update location"
-      render :edit
+      redirect_to locations_path
     end
   end
 
@@ -51,7 +48,7 @@ class LocationsController < ApplicationController
     if @location.destroy
       flash[:notice] = "Location deleted successfully!"
     else
-      flash[:alert] = "Failed to delete location: #{@location.errors.full_messages.join(", ")}"
+      flash[:alert] = "Failed to delete location"
     end
 
     Thread.current[:deletion_context] = nil

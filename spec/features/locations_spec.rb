@@ -27,11 +27,6 @@ RSpec.feature "Locations", type: :feature do
     expect(page).not_to have_content("Living Room")
   end
 
-  scenario "opens the add location modal" do
-    find(".addLocationBtn").click
-    expect(page).to have_selector("#addLocationModal", visible: true)
-  end
-
   scenario "adds a new location" do
     find(".addLocationBtn").click
     within("#addLocationModal") do
@@ -40,4 +35,18 @@ RSpec.feature "Locations", type: :feature do
     click_button "Add Location"
     expect(page).to have_content("New Location")
   end
+
+  scenario "updates a location", js: true do
+    find(".editLocationBtn", match: :first).click
+    fill_in "location_name", with: "Updated Location"
+    click_button "Update Location"
+    expect(page).to have_content("Updated Location")
+  end
+
+  scenario "deletes a location", js: true do
+    find(".deleteLocationBtn", match: :first).click
+    click_button "Yes"
+    expect(page).not_to have_content(location1.name)
+  end
+
 end
