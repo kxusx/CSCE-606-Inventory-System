@@ -5,7 +5,7 @@ require 'factory_bot_rails'
 require 'capybara/rspec'
 require 'selenium-webdriver'
 require "rack_session_access/capybara"
-Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.javascript_driver = :selenium_chrome
 require 'faker'
 require 'rails-controller-testing'
 Rails::Controller::Testing.install

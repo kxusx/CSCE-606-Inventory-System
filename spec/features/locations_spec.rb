@@ -1,46 +1,43 @@
 require 'rails_helper'
-include Rails.application.routes.url_helpers
 
-RSpec.feature "Location Management", type: :feature do
-  let!(:user) { User.create!(name: "Test User", email: "test@example.com", password: "Password@123") }
+RSpec.feature "Locations", type: :feature do
+  let(:user) { create(:user) }
+  let!(:location1) { create(:location, name: "Tech Lab", user: user) }
+  let!(:location2) { create(:location, name: "Living Room", user: user) }
+  let!(:location3) { create(:location, name: "Office Desk", user: user) }
 
   before do
-    login_as(user, scope: :user) # Simulates a logged-in user
-  end
-
-  scenario "User creates a new location" do
-    visit new_location_path
-
-    fill_in "Name", with: "Kitchen"
-    click_button "Create Location"
-
-    expect(page).to have_text("Location created successfully!")
-    expect(page).to have_text("Kitchen")
-  end
-
-  scenario "User views list of locations" do
-    Location.create!(name: "Garage", user: user)
-
+    Rails.application.reload_routes!
+    sign_in user
     visit locations_path
-    expect(page).to have_text("Garage")
   end
 
-  scenario "User edits a location" do
-    location = Location.create!(name: "Basement", user: user)
-
-    visit edit_location_path(location)
-    fill_in "Name", with: "Attic"
-    click_button "Update Location"
-
-    expect(page).to have_text("Location updated successfully!")
-    expect(page).to have_text("Attic")
+  scenario "renders the locations table" do
+    expect(page).to have_content("Your Locations")
+    expect(page).to have_content("Tech Lab")
+    expect(page).to have_content("Living Room")
+    expect(page).to have_content("Office Desk")
+  end
+  
+  scenario "typing in search input fetches results", js: true do
+    find("#search-icon").click
+    fill_in "search-input", with: "Tech Lab"
+  
+    expect(page).to have_content("Tech Lab")
+    expect(page).not_to have_content("Living Room")
   end
 
-  scenario "User submits empty location name" do
-    visit new_location_path
-    click_button "Create Location" # Ensure this matches your form button name
+  scenario "opens the add location modal" do
+    find(".addLocationBtn").click
+    expect(page).to have_selector("#addLocationModal", visible: true)
+  end
 
-    # ✅ Check that it successfully redirects (assuming it redirects to locations_path)
-    expect(page).to have_current_path(locations_path)
+  scenario "adds a new location" do
+    find(".addLocationBtn").click
+    within("#addLocationModal") do
+      fill_in "location[name]", with: "New Location"
+    end
+    click_button "Add Location"
+    expect(page).to have_content("New Location")
   end
 end
