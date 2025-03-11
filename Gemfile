@@ -45,19 +45,19 @@ gem "thruster", require: false  # HTTP asset caching/compression
 # Development and Test Group Gems
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
-  gem 'factory_bot_rails'
+  gem "factory_bot_rails"
   gem "brakeman", require: false  # Security analysis
-  gem "rubocop-rails-omakase", require: false  # Style guide 
-  gem 'rack_session_access'
-  gem 'rack-test'
-  
+  gem "rubocop-rails-omakase", require: false  # Style guide
+  gem "rack_session_access"
+  gem "rack-test"
+
   # Testing
   gem "rspec-rails"      # RSpec for unit testing
   gem "cucumber-rails", require: false  # Cucumber for BDD
   gem "database_cleaner-active_record"  # Clean database between tests
 
   # System tests
-  gem 'capybara'      # Capybara for feature tests
+  gem "capybara"      # Capybara for feature tests
   gem "selenium-webdriver", "~> 4.0"  # Selenium for browser automation
 
   gem "dotenv-rails"
@@ -69,7 +69,7 @@ group :development do
 end
 
 group :test do
-  gem 'rails-controller-testing'
+  gem "rails-controller-testing"
 end
 
 # Benchmarking and interactive Ruby console (included explicitly)
@@ -94,9 +94,5 @@ group :development, :test do
   gem "faker"
 end
 
-# rails-controller -testing
-group :test do
-  gem "rails-controller-testing"
-end
 
 gem "rubyzip", "~> 2.3"
