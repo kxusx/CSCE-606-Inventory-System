@@ -6,6 +6,48 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Filters & Sorting */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+#categoryFilter, #binSearch {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+#resetFilters {
+  padding: 10px 15px;
+  border: none;
+  background: #f8f9fa;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+#resetFilters:hover {
+  background: #e2e6ea;
+}
+
+/* Sorting Button */
+.sort-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.sort-btn:hover {
+  text-decoration: underline;
+}
+
 /* Bins Grid Layout */
 .bins-container {
   display: grid;

@@ -4,10 +4,24 @@
 
 <h1>My Bins</h1>
 
+<!-- Sorting & Filtering -->
+<div class="d-flex justify-content-between mb-3">
+  <!-- Filter by Category -->
+  <select id="categoryFilter" class="form-select w-25">
+    <option value="">All Categories</option>
+    <% Bin.distinct.pluck(:category_name).each do |category| %>
+      <option value="<%= category %>"><%= category %></option>
+    <% end %>
+  </select>
+
+  <!-- Sorting Options -->
+  <button id="sortByName" class="btn btn-outline-primary">Sort by Name</button>
+</div>
+
 <% if @bins.any? %>
   <div class="bins-container">
     <% @bins.each do |bin| %>
-      <div class="bin-card">
+      <div class="bin-card" data-name="<%= bin.name.downcase %>" data-category="<%= bin.category_name.downcase %>">
         <div class="bin-header">
           <h2 class="bin-title"><%= bin.name %></h2>
           <%= button_to "❌", bin, method: :delete, data: { confirm: "Are you sure?" }, class: "delete-btn" %>
@@ -35,3 +49,5 @@
   <%= link_to "Create New Bin", new_bin_path, class: "btn btn-primary" %>
   <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-secondary" %>
 </div>
+
+<script src="<%= asset_path 'bins.js' %>"></script>

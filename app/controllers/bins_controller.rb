@@ -5,12 +5,13 @@ class BinsController < ApplicationController
 
   # GET /bins or /bins.json
   def index
-    if params[:location_id]
-      @bins = current_user.bins.where(location_id: params[:location_id])
-    else
-      @bins = current_user.bins # Show only bins for the logged-in user
-    end
-    @bins = @bins.search_by_name(params[:name]) 
+    @bins = current_user.bins
+
+    # Apply filtering by category
+    @bins = @bins.where(category_name: params[:category]) if params[:category].present?
+
+    # Apply sorting by name
+    @bins = @bins.order(:name) if params[:sort] == "name"
   end
 
   # GET /bins/delete-bins → Shows a page to select bins for deletion
@@ -25,21 +26,21 @@ class BinsController < ApplicationController
 
   # GET /bins/new
   def new
-    @bin = current_user.bins.build  
-    @locations = current_user.locations  #fetch existing location for dropdown
+    @bin = current_user.bins.build
+    @locations = current_user.locations  # fetch existing location for dropdown
   end
 
   # GET /bins/1/edit
   def edit
     @bin = current_user.bins.find(params[:id])
-    @locations = current_user.locations 
+    @locations = current_user.locations
   end
 
   # POST /bins or /bins.json
   def create
     @bin = current_user.bins.build(bin_params.except(:location_id, :new_location))
-    #@bin = current_user.bins.build(bin_params.except(:location)) # Exclude location from direct params
-    #@bin.location = Location.find_by(name: bin_params[:location]) # Find the Location object
+    # @bin = current_user.bins.build(bin_params.except(:location)) # Exclude location from direct params
+    # @bin.location = Location.find_by(name: bin_params[:location]) # Find the Location object
     # Use existing location if selected
     if bin_params[:location_id].present?
       @bin.location = Location.find_by(id: bin_params[:location_id])
@@ -65,16 +66,16 @@ class BinsController < ApplicationController
     respond_to do |format|
       # Remove location_id and new_location before updating other attributes
       if @bin.update(bin_params.except(:location_id, :new_location))
-  
+
         # Handle location update logic
         if bin_params[:location_id].present?
           @bin.location = Location.find_by(id: bin_params[:location_id])
         elsif bin_params[:new_location].present?
           @bin.location = current_user.locations.create(name: bin_params[:new_location])
         end
-  
+
         @bin.save # Save location changes
-  
+
         format.html { redirect_to @bin, notice: "Bin was successfully updated." }
         format.json { render :show, status: :ok, location: @bin }
       else
@@ -84,7 +85,7 @@ class BinsController < ApplicationController
       end
     end
   end
-  
+
 
   # DELETE /bins/1 or /bins/1.json
   def destroy
