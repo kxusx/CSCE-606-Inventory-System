@@ -9,6 +9,23 @@
   </div>
 
   <div class="nav-right">
-    <%= link_to "A", "#", class: "profile-icon disabled-link" %>
+    <div class="profile-dropdown">
+      <%= link_to current_user&.email&.first&.upcase || "A", "#", class: "profile-icon", id: "profile-trigger" %>
+      <div class="profile-dropdown-content" id="profile-dropdown-content">
+        <div class="profile-info">
+          <p><strong>Email:</strong> <%= current_user&.email %></p>
+          <p><strong>Last login:</strong> 
+            <%= Session.where(user: current_user).last&.login_time&.strftime("%Y-%m-%d %H:%M") || "Never" %>
+          </p>
+        </div>
+        <div class="profile-actions">
+          <%= button_to "Logout", 
+              destroy_user_session_path, 
+              method: :delete, 
+              class: "logout-button",
+              data: { turbo_confirm: "Are you sure you want to log out?" } %>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>

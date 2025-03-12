@@ -209,4 +209,68 @@
   
   /* ===================== END FIXES ===================== */
   
+  /* Profile Dropdown Styles */
+  .profile-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .profile-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 1000;
+    margin-top: 8px;
+  }
+
+  .profile-dropdown-content::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+  }
+
+  .profile-info {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 12px;
+  }
+
+  .profile-info p {
+    margin: 8px 0;
+    font-size: 14px;
+  }
+
+  .profile-actions {
+    text-align: center;
+  }
+
+  .logout-button {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+
+  .logout-button:hover {
+    background-color: #cc0000;
+  }
+
+  /* Show dropdown when active */
+  .profile-dropdown-content.active {
+    display: block;
+  }
+  
   
