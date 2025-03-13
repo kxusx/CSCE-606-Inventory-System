@@ -4,13 +4,28 @@
     <span><%= link_to "ITEMS", items_path, class: "nav-link" %></span>
 
     <!-- Always show LOG and SALE as text -->
-    <span class="disabled-text">LOG</span>
-    <span class="disabled-text">SALE</span>
+    <div class="log-dropdown">
+      <span>
+        <%= link_to "LOG", "#", class: "nav-link", id: "log-trigger" %>
+      </span>
+      <div class="log-dropdown-content" id="log-dropdown-content">
+        <div class="date-input-group">
+          <label for="from-date">From:</label>
+          <input type="date" id="from-date" name="from-date">
+        </div>
+        <div class="date-input-group">
+          <label for="to-date">To:</label>
+          <input type="date" id="to-date" name="to-date">
+        </div>
+        <button class="date-search-btn">Search Logs</button>
+      </div>
+    </div>
+    <span><%= link_to "SALE", "", class: "nav-link" %></span>
   </div>
 
   <div class="nav-right">
     <div class="profile-dropdown">
-      <%= link_to current_user&.email&.first&.upcase || "A", "#", class: "profile-icon", id: "profile-trigger" %>
+      <%= link_to current_user&.email&.first&.upcase || "A", "", class: "profile-icon", id: "profile-trigger" %>
       <div class="profile-dropdown-content" id="profile-dropdown-content">
         <div class="profile-info">
           <p><strong>Email:</strong> <%= current_user&.email %></p>

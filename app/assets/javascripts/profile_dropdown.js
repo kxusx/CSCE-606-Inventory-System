@@ -1,7 +1,7 @@
 document.addEventListener('turbo:load', function() {
   const profileTrigger = document.getElementById('profile-trigger');
   const dropdownContent = document.getElementById('profile-dropdown-content');
-
+ 
   if (profileTrigger && dropdownContent) {
     // Toggle dropdown when clicking profile icon
     profileTrigger.addEventListener('click', function(e) {

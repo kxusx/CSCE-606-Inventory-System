@@ -214,7 +214,7 @@
     position: relative;
     display: inline-block;
   }
-
+ 
   .profile-dropdown-content {
     display: none;
     position: absolute;
@@ -273,4 +273,33 @@
     display: block;
   }
   
+  /* create css for log button */
+  .log-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .log-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 10;
+    background-color: white;
+    min-width: 250px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 1000;
+    margin-top: 8px;
+  }
+  .log-dropdown-content::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white;
+  }
+  .log-dropdown-content.active {
+    display: block;
+  }
   
