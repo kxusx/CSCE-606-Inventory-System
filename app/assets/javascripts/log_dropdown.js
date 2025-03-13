@@ -21,4 +21,27 @@ document.addEventListener('turbo:load', function() {
         e.stopPropagation();
       });
     }
+
+    // Sale dropdown functionality
+    const saleTrigger = document.getElementById('sale-trigger');
+    const saleDropdownContent = document.getElementById('sale-dropdown-content');
+   
+    if (saleTrigger && saleDropdownContent) {
+        saleTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            saleDropdownContent.classList.toggle('active');
+            console.log(saleDropdownContent.classList);
+        });
+  
+        document.addEventListener('click', function(e) {
+            if (!saleTrigger.contains(e.target) && !saleDropdownContent.contains(e.target)) {
+                saleDropdownContent.classList.remove('active');
+            }
+        });
+  
+        saleDropdownContent.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
   });

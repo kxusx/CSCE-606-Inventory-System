@@ -123,6 +123,66 @@
   background-color: #357ae8;
 }
 
+.sale-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.sale-dropdown-content {
+  display: none;  /* This ensures it's hidden by default */
+  position: absolute;
+  left: 100%;
+  top: 0;
+  background-color: white;
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  padding: 16px;
+  z-index: 1000;
+  margin-left: 8px;
+}
+
+.sale-dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: -8px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid white;
+}
+
+/* This class will be toggled by JavaScript to show/hide the dropdown */
+.sale-dropdown-content.active {
+  display: block;
+}
+
+.sale-input-group {
+  margin-bottom: 10px;
+}
+
+.sale-input-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.sale-search-btn {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sale-search-btn:hover {
+  background-color: #357ae8;
+}
+
 .nav-link {
   color: #333;
   text-decoration: none;

@@ -20,7 +20,21 @@
         <button class="date-search-btn">Search Logs</button>
       </div>
     </div>
-    <span><%= link_to "SALE", "", class: "nav-link" %></span>
+    <div class="sale-dropdown">
+      <span><%= link_to "SALE", "", class: "nav-link", id: "sale-trigger" %></span>
+      <div class="sale-dropdown-content" id="sale-dropdown-content">
+        <div class="sale-input-group">
+          <input type="number" 
+                 id="sale-amount" 
+                 name="sale-amount" 
+                 placeholder="Enter amount..."
+                 min="0"
+                 step="0.01">
+        </div>
+        <button class="sale-search-btn">Search Sales</button>
+      </div>
+    </div>
+
   </div>
 
   <div class="nav-right">
