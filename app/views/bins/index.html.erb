@@ -27,7 +27,7 @@
           <%= button_to "❌", bin, method: :delete, data: { confirm: "Are you sure?" }, class: "delete-btn" %>
         </div>
         
-        <p class="bin-info">📍 <%= bin.location %></p>
+        <p class="bin-info">📍 <%= bin.location.name %></p>
         <p class="bin-info">📦 <%= bin.category_name %></p>
         
         <div class="bin-image-container">
