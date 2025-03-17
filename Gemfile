@@ -42,6 +42,9 @@ gem "bootsnap", require: false
 gem "kamal", require: false  # Docker-based deployment
 gem "thruster", require: false  # HTTP asset caching/compression
 
+#selenium driver
+gem "selenium-webdriver", "~> 4.0"  # Selenium for browser automation
+
 # Development and Test Group Gems
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
@@ -58,7 +61,6 @@ group :development, :test do
 
   # System tests
   gem "capybara"      # Capybara for feature tests
-  gem "selenium-webdriver", "~> 4.0"  # Selenium for browser automation
 
   gem "dotenv-rails"
 end
