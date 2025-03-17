@@ -23,7 +23,9 @@
     <% @bins.each do |bin| %>
       <div class="bin-card" data-name="<%= bin.name.downcase %>" data-category="<%= bin.category_name.downcase %>">
         <div class="bin-header">
-          <h2 class="bin-title"><%= bin.name %></h2>
+          <h2 class="bin-title">
+          <%= link_to bin.name, bin_path(bin), class: "bin-link" %>
+          </h2>
           <%= button_to "❌", bin, method: :delete, data: { confirm: "Are you sure?" }, class: "delete-btn" %>
         </div>
         

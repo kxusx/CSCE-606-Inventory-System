@@ -6,6 +6,7 @@ class BinsController < ApplicationController
   # GET /bins or /bins.json
   def index
     @bins = current_user.bins
+    @bins = @bins.search_by_name(params[:name]) # ✅ Keeps user filtering + adds search
 
     # Apply filtering by category
     @bins = @bins.where(category_name: params[:category]) if params[:category].present?

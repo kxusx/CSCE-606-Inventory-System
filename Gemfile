@@ -53,7 +53,7 @@ group :development, :test do
 
   # Testing
   gem "rspec-rails"      # RSpec for unit testing
-  gem "cucumber-rails", require: false  # Cucumber for BDD
+  gem "cucumber-rails", '~> 3.1.1', require: false  # Cucumber for BDD
   gem "database_cleaner-active_record"  # Clean database between tests
 
   # System tests

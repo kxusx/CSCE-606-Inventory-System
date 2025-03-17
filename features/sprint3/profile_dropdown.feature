@@ -18,9 +18,10 @@ Feature: Profile Dropdown
     And I click outside the dropdown
     Then the dropdown should be closed
 
+  @javascript
   Scenario: Logging out through the dropdown
     When I click on the profile icon
     And I click the logout button
     And I confirm the logout
-    Then I should be redirected to the login page
+    Then I should be redirected to the log-in page
     And I should see "Signed out successfully"
