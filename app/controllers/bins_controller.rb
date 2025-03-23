@@ -5,6 +5,7 @@ class BinsController < ApplicationController
 
   # GET /bins or /bins.json
   def index
+    puts "Params: #{params.inspect}"
     @bins = current_user.bins
     @bins = @bins.search_by_name(params[:name]) # ✅ Keeps user filtering + adds search
 
